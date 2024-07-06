@@ -5,5 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".view.BookmarkFragment">
 
+    <TextView
+        android:textSize="42sp"
+        android:layout_gravity="center"
+        android:text="bookmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>
