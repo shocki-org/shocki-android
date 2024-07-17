@@ -140,7 +140,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginTop="8dp"
-                android:src="@drawable/explore_icon"
+                android:src="@drawable/profile_icon"
                 app:tint="@color/gray_50" />
 
             <TextView
