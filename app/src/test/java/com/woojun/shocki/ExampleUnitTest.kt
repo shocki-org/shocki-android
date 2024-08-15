@@ -1,4 +1,4 @@
-package com.woojun.shock
+package com.woojun.shocki
 
 import org.junit.Test
 

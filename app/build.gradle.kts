@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.woojun.shock"
+    namespace = "com.woojun.shocki"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.woojun.shock"
+        applicationId = "com.woojun.shocki"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

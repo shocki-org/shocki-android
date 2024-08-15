@@ -1,15 +1,15 @@
-package com.woojun.shock.view
+package com.woojun.shocki.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.woojun.shock.databinding.FragmentProfileBinding
+import com.woojun.shocki.databinding.FragmentExploreBinding
 
-class ProfileFragment : Fragment() {
+class ExploreFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
+    private var _binding: FragmentExploreBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentExploreBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,5 +32,4 @@ class ProfileFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
 }

@@ -1,15 +1,15 @@
-package com.woojun.shock.view
+package com.woojun.shocki.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.woojun.shock.databinding.FragmentBookmarkBinding
+import com.woojun.shocki.databinding.FragmentProfileBinding
 
-class BookmarkFragment : Fragment() {
+class ProfileFragment : Fragment() {
 
-    private var _binding: FragmentBookmarkBinding? = null
+    private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class BookmarkFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,4 +32,5 @@ class BookmarkFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
 }
