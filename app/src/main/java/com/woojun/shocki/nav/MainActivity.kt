@@ -8,14 +8,19 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.woojun.shocki.R
+import androidx.navigation.NavOptions.Builder
 import com.woojun.shocki.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+
+    private var recentPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,23 +34,36 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.nav_host_fragment)
 
-        binding.explore.setOnClickListener {
-            navController.navigate(R.id.explore)
-        }
-        binding.myAssets.setOnClickListener {
-            navController.navigate(R.id.my_assets)
-        }
-        binding.bookmark.setOnClickListener {
-            navController.navigate(R.id.bookmark)
-        }
-        binding.profile.setOnClickListener {
-            navController.navigate(R.id.profile)
+        binding.explore.setOnClickListener { animationSetting(R.id.explore) }
+        binding.myAssets.setOnClickListener { animationSetting(R.id.my_assets) }
+        binding.bookmark.setOnClickListener { animationSetting(R.id.bookmark) }
+        binding.profile.setOnClickListener { animationSetting(R.id.profile) }
+
+    }
+
+    private fun animationSetting(id: Int) {
+        resetNavigationItem()
+
+        fun getNavOptions(enterAnim: Int): NavOptions {
+            return Builder()
+                .setEnterAnim(enterAnim)
+                .setExitAnim(R.anim.anim_fade_out)
+                .build()
         }
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            resetNavigationItem()
-            selectNavigationItem(destination.id)
+        val (newPosition, enterAnim) = when (id) {
+            R.id.explore -> 0 to R.anim.anim_slide_in_from_left_fade_in
+            R.id.my_assets -> if (recentPosition < 1) 1 to R.anim.anim_slide_in_from_right_fade_in else 1 to R.anim.anim_slide_in_from_left_fade_in
+            R.id.bookmark -> if (recentPosition < 2) 2 to R.anim.anim_slide_in_from_right_fade_in else 2 to R.anim.anim_slide_in_from_left_fade_in
+            R.id.profile -> 3 to R.anim.anim_slide_in_from_right_fade_in
+            else -> return
         }
+
+        val navOptions = getNavOptions(enterAnim)
+        recentPosition = newPosition
+        navController.navigate(id, null, navOptions)
+
+        selectNavigationItem(id)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -79,7 +97,6 @@ class MainActivity : AppCompatActivity() {
     private fun selectNavigationItem(destinationId: Int) {
         when (destinationId) {
             R.id.explore -> {
-                Log.d("확인", "explore")
                 binding.exploreIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_100))
                 binding.exploreText.setTextColor(ContextCompat.getColor(this, R.color.gray_100))
 
@@ -87,7 +104,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.my_assets -> {
-                Log.d("확인", "my_assets")
                 binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_100))
                 binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.gray_100))
 
@@ -95,7 +111,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.bookmark -> {
-                Log.d("확인", "bookmark")
                 binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_100))
                 binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.gray_100))
 
@@ -103,7 +118,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.profile -> {
-                Log.d("확인", "profile")
                 binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_100))
                 binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.gray_100))
 
