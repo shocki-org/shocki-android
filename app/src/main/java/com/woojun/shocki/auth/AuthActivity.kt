@@ -1,4 +1,4 @@
-package com.woojun.shocki.view.auth
+package com.woojun.shocki.auth
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

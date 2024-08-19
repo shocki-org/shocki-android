@@ -1,4 +1,4 @@
-package com.woojun.shocki.view.nav
+package com.woojun.shocki.nav.explore
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

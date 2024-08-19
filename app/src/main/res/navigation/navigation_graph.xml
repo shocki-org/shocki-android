@@ -6,22 +6,22 @@
     app:startDestination="@id/explore">
     <fragment
         android:id="@+id/explore"
-        android:name="com.woojun.shocki.view.nav.ExploreFragment"
+        android:name="com.woojun.shocki.nav.explore.ExploreFragment"
         android:label="fragment_explore"
         tools:layout="@layout/fragment_explore" />
     <fragment
         android:id="@+id/bookmark"
-        android:name="com.woojun.shocki.view.nav.BookmarkFragment"
+        android:name="com.woojun.shocki.nav.bookmark.BookmarkFragment"
         android:label="fragment_bookmark"
         tools:layout="@layout/fragment_bookmark" />
     <fragment
         android:id="@+id/my_assets"
-        android:name="com.woojun.shocki.view.nav.MyAssetsFragment"
+        android:name="com.woojun.shocki.nav.myAssets.MyAssetsFragment"
         android:label="fragment_my_assets"
         tools:layout="@layout/fragment_my_assets" />
     <fragment
         android:id="@+id/profile"
-        android:name="com.woojun.shocki.view.nav.ProfileFragment"
+        android:name="com.woojun.shocki.nav.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
