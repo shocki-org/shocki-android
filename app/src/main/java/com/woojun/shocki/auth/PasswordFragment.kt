@@ -5,13 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.woojun.shocki.databinding.FragmentAuthHomeBinding
+import com.woojun.shocki.databinding.FragmentPasswordBinding
 
-class AuthHomeFragment : Fragment() {
+class PasswordFragment : Fragment() {
 
-    private var _binding: FragmentAuthHomeBinding? = null
+    private var _binding: FragmentPasswordBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,27 +20,14 @@ class AuthHomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAuthHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentPasswordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.emailSignInButton.setOnClickListener { emailSignIn() }
-        binding.kakaoLoginButton.setOnClickListener { kakaoLogin() }
-        binding.googleLoginButton.setOnClickListener { googleLogin() }
-        binding.emailLoginButton.setOnClickListener { emailLogin() }
     }
 
-    private fun emailSignIn() {
-    }
-
-    private fun kakaoLogin() {}
-
-    private fun googleLogin() {}
-
-    private fun emailLogin() {}
 
     override fun onDestroy() {
         super.onDestroy()
