@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.woojun.shocki.R
 import com.woojun.shocki.databinding.FragmentAuthHomeBinding
 
 class AuthHomeFragment : Fragment() {
@@ -35,13 +37,16 @@ class AuthHomeFragment : Fragment() {
     }
 
     private fun emailSignIn() {
+        findNavController().navigate(R.id.action_authHomeFragment_to_emailFragment)
     }
 
     private fun kakaoLogin() {}
 
     private fun googleLogin() {}
 
-    private fun emailLogin() {}
+    private fun emailLogin() {
+        findNavController().navigate(R.id.action_authHomeFragment_to_logInFragment)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
