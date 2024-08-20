@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -46,6 +47,8 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -67,14 +70,18 @@ class SignUpFragment : Fragment() {
             passwordToggle = !passwordToggle
         }
 
+        binding.nextButton.setOnClickListener {
+            nextInputAction()
+        }
+
         binding.emailInput.apply {
             this.setOnEditorActionListener(object : TextView.OnEditorActionListener{
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                    if (actionId == EditorInfo.IME_ACTION_NEXT && binding.emailInput.text.isNotEmpty()){
+                    if (actionId == EditorInfo.IME_ACTION_GO && binding.emailInput.text.isNotEmpty()){
                         nextInputAction()
+                        binding.codeInput.requestFocus()
+                        inputMethodManager.showSoftInput(binding.codeInput, InputMethodManager.SHOW_IMPLICIT)
                         return true
-                    } else {
-                        Toast.makeText(requireContext(), "유요한 이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
                     }
                     return false
                 }
@@ -99,8 +106,10 @@ class SignUpFragment : Fragment() {
         binding.codeInput.apply {
             this.setOnEditorActionListener(object : TextView.OnEditorActionListener{
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                    if (actionId == EditorInfo.IME_ACTION_NEXT && binding.codeInput.text.isNotEmpty()){
+                    if (actionId == EditorInfo.IME_ACTION_GO && binding.codeInput.text.isNotEmpty()){
                         nextInputAction()
+                        binding.passwordInput.requestFocus()
+                        inputMethodManager.showSoftInput(binding.passwordInput, InputMethodManager.SHOW_IMPLICIT)
                         return true
                     }
                     return false
@@ -121,10 +130,6 @@ class SignUpFragment : Fragment() {
                 override fun afterTextChanged(editable: Editable) {
                 }
             })
-        }
-
-        binding.nextButton.setOnClickListener {
-            nextInputAction()
         }
 
         binding.passwordInput.apply {
@@ -192,6 +197,7 @@ class SignUpFragment : Fragment() {
 
                     switchText(index)
                     binding.codeInput.isEnabled = false
+
                     index = 2
                 } else {
                     Toast.makeText(requireContext(), "유효한 코드 아닙니다", Toast.LENGTH_SHORT).show()
