@@ -72,7 +72,7 @@ class LoginFragment : Fragment() {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
             override fun afterTextChanged(editable: Editable) {
-                if (checkEmail(binding.emailInput.text.toString()) && checkPassword(binding.passwordInput.text.toString())) {
+                if (binding.emailInput.text.isNotEmpty()) {
                     binding.noneButton.visibility = View.GONE
                     binding.finishButton.visibility = View.VISIBLE
                 } else {
@@ -88,7 +88,7 @@ class LoginFragment : Fragment() {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
             override fun afterTextChanged(editable: Editable) {
-                if (checkEmail(binding.emailInput.text.toString()) && checkPassword(binding.passwordInput.text.toString())) {
+                if (binding.passwordInput.text.isNotEmpty()) {
                     binding.noneButton.visibility = View.GONE
                     binding.finishButton.visibility = View.VISIBLE
                 } else {
