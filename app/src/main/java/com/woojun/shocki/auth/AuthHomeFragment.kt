@@ -1,5 +1,6 @@
 package com.woojun.shocki.auth
 
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,6 +33,10 @@ class AuthHomeFragment : Fragment() {
         binding.kakaoLoginButton.setOnClickListener { kakaoLogin() }
         binding.googleLoginButton.setOnClickListener { googleLogin() }
         binding.emailLoginButton.setOnClickListener { emailLogin() }
+
+        binding.emailLoginButton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+
+
     }
 
     private fun emailSignIn() {

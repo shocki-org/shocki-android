@@ -1,6 +1,5 @@
 package com.woojun.shocki.nav
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +11,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.woojun.shocki.R
 import androidx.navigation.NavOptions.Builder
-import com.woojun.shocki.auth.AuthActivity
 import com.woojun.shocki.databinding.ActivityMainBinding
 
 
@@ -32,9 +30,6 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
-        startActivity(Intent(this@MainActivity, AuthActivity::class.java))
 
         navController = findNavController(R.id.nav_host_fragment)
 
