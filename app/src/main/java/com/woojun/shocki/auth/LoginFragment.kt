@@ -14,6 +14,9 @@ import androidx.navigation.fragment.findNavController
 import com.woojun.shocki.R
 import com.woojun.shocki.databinding.FragmentLoginBinding
 import com.woojun.shocki.nav.MainActivity
+import com.woojun.shocki.util.Util
+import com.woojun.shocki.util.Util.checkEmail
+import com.woojun.shocki.util.Util.checkPassword
 
 
 class LoginFragment : Fragment() {
@@ -58,9 +61,10 @@ class LoginFragment : Fragment() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
 
         binding.finishButton.setOnClickListener {
-            // TODO 임시
-            startActivity(Intent(requireActivity(), MainActivity::class.java))
-            requireActivity().finishAffinity()
+            if (emailLogin()) {
+                startActivity(Intent(requireActivity(), MainActivity::class.java))
+                requireActivity().finishAffinity()
+            }
         }
 
         binding.emailInput.addTextChangedListener(object : TextWatcher {
@@ -69,7 +73,7 @@ class LoginFragment : Fragment() {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
             override fun afterTextChanged(editable: Editable) {
-                if (binding.emailInput.length() > 0 && binding.passwordInput.length() > 0) {
+                if (checkEmail(binding.emailInput.text.toString()) && checkPassword(binding.passwordInput.text.toString())) {
                     binding.noneButton.visibility = View.GONE
                     binding.finishButton.visibility = View.VISIBLE
                 } else {
@@ -85,7 +89,7 @@ class LoginFragment : Fragment() {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
             override fun afterTextChanged(editable: Editable) {
-                if (binding.emailInput.length() > 0 && binding.passwordInput.length() > 0) {
+                if (checkEmail(binding.emailInput.text.toString()) && checkPassword(binding.passwordInput.text.toString())) {
                     binding.noneButton.visibility = View.GONE
                     binding.finishButton.visibility = View.VISIBLE
                 } else {
@@ -95,6 +99,10 @@ class LoginFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun emailLogin(): Boolean {
+        return true
     }
 
     override fun onDestroy() {
