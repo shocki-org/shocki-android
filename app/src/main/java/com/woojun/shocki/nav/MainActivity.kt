@@ -1,7 +1,7 @@
 package com.woojun.shocki.nav
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -12,6 +12,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.woojun.shocki.R
 import androidx.navigation.NavOptions.Builder
+import com.woojun.shocki.auth.AuthActivity
 import com.woojun.shocki.databinding.ActivityMainBinding
 
 
@@ -32,16 +33,19 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+
+        startActivity(Intent(this@MainActivity, AuthActivity::class.java))
+
         navController = findNavController(R.id.nav_host_fragment)
 
-        binding.explore.setOnClickListener { animationSetting(R.id.explore) }
-        binding.myAssets.setOnClickListener { animationSetting(R.id.my_assets) }
-        binding.bookmark.setOnClickListener { animationSetting(R.id.bookmark) }
-        binding.profile.setOnClickListener { animationSetting(R.id.profile) }
+        binding.explore.setOnClickListener { animationNavigate(R.id.explore) }
+        binding.myAssets.setOnClickListener { animationNavigate(R.id.my_assets) }
+        binding.bookmark.setOnClickListener { animationNavigate(R.id.bookmark) }
+        binding.profile.setOnClickListener { animationNavigate(R.id.profile) }
 
     }
 
-    private fun animationSetting(id: Int) {
+    private fun animationNavigate(id: Int) {
         resetNavigationItem()
 
         fun getNavOptions(enterAnim: Int): NavOptions {
