@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.fragment.findNavController
 import com.woojun.shocki.R
 import com.woojun.shocki.databinding.FragmentLoginBinding
 
@@ -14,6 +15,8 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+
+    private var passwordToggle = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +32,25 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.passwordToggleButton.setOnClickListener {
+            if (!passwordToggle) {
+                (it as ImageView).setImageResource(R.drawable.password_hide_icon)
+                binding.passwordInput.apply {
+                    this.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    this.setSelection(this.text.length)
+                }
+            } else {
+                (it as ImageView).setImageResource(R.drawable.password_show_icon)
+                binding.passwordInput.apply {
+                    this.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    this.setSelection(this.text.length)
+                }
+            }
+            passwordToggle = !passwordToggle
+        }
+
+        binding.finishButton.setOnClickListener { findNavController().popBackStack() }
     }
 
     override fun onDestroy() {
