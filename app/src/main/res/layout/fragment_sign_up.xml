@@ -54,6 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <EditText
+            android:maxLines="1"
             android:id="@+id/email_input"
             android:paddingHorizontal="12dp"
             android:layout_width="match_parent"
@@ -66,6 +67,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.cardview.widget.CardView
+        android:visibility="gone"
         app:cardElevation="0dp"
         app:cardCornerRadius="8dp"
         android:layout_marginHorizontal="16dp"
@@ -88,5 +90,28 @@
 
     </androidx.cardview.widget.CardView>
 
+    <com.google.android.material.card.MaterialCardView
+        app:cardElevation="0dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="12dp"
+        android:id="@+id/none_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:strokeColor="@color/background_gray_Border"
+        app:cardBackgroundColor="@color/background_gray_Default"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            style="@style/body_accent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="16dp"
+            android:text="완료"
+            android:textColor="@color/Text_Status_Unable" />
+
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
