@@ -9,7 +9,7 @@ object Util {
     }
 
     fun checkPassword(password: String): Boolean {
-        val pwPattern = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,20}$"
-        return password.length > 5 && Pattern.matches(pwPattern, password)
+        val pwPattern = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9$@$!%*#?&]{8,20}$"
+        return Pattern.matches(pwPattern, password)
     }
 }
