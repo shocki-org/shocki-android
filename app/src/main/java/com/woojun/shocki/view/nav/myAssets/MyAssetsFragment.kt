@@ -1,4 +1,4 @@
-package com.woojun.shocki.nav.myAssets
+package com.woojun.shocki.view.nav.myAssets
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

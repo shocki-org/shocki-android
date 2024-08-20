@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/authHome"
-        android:name="com.woojun.shocki.auth.AuthHomeFragment"
+        android:name="com.woojun.shocki.view.auth.AuthHomeFragment"
         android:label="fragment_auth_home"
         tools:layout="@layout/fragment_auth_home" />
     <fragment
         android:id="@+id/signUp"
-        android:name="com.woojun.shocki.auth.SignUpFragment"
+        android:name="com.woojun.shocki.view.auth.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
     <fragment
         android:id="@+id/logIn"
-        android:name="com.woojun.shocki.auth.LoginFragment"
+        android:name="com.woojun.shocki.view.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
 </navigation>

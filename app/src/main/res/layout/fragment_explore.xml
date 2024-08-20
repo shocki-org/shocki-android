@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".nav.explore.ExploreFragment">
+    tools:context=".view.nav.explore.ExploreFragment">
 
     <androidx.viewpager2.widget.ViewPager2
         app:layout_constraintTop_toTopOf="parent"

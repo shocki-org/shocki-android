@@ -1,4 +1,4 @@
-package com.woojun.shocki.auth
+package com.woojun.shocki.view.auth
 
 import android.graphics.Paint
 import android.os.Bundle

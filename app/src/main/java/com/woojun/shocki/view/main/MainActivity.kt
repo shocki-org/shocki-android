@@ -1,4 +1,4 @@
-package com.woojun.shocki.nav
+package com.woojun.shocki.view.main
 
 import android.os.Bundle
 import android.view.View

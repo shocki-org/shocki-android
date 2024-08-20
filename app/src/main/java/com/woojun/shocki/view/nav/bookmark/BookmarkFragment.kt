@@ -1,4 +1,4 @@
-package com.woojun.shocki.nav.bookmark
+package com.woojun.shocki.view.nav.bookmark
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

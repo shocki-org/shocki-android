@@ -1,4 +1,4 @@
-package com.woojun.shocki.auth
+package com.woojun.shocki.view.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,8 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.woojun.shocki.R
 import com.woojun.shocki.databinding.FragmentLoginBinding
-import com.woojun.shocki.nav.MainActivity
-import com.woojun.shocki.util.Util
+import com.woojun.shocki.view.main.MainActivity
 import com.woojun.shocki.util.Util.checkEmail
 import com.woojun.shocki.util.Util.checkPassword
 
