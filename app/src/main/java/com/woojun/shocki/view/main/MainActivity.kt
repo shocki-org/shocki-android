@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
             insets
         }
 
@@ -80,45 +80,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun resetNavigationItem() {
-        binding.exploreIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_50))
-        binding.exploreText.setTextColor(ContextCompat.getColor(this, R.color.gray_50))
+        binding.exploreIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
+        binding.exploreText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
 
-        binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_50))
-        binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.gray_50))
+        binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
+        binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
 
-        binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_50))
-        binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.gray_50))
+        binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
+        binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
 
-        binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_50))
-        binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.gray_50))
+        binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
+        binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
     }
 
     private fun selectNavigationItem(destinationId: Int) {
         when (destinationId) {
             R.id.explore -> {
-                binding.exploreIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_100))
-                binding.exploreText.setTextColor(ContextCompat.getColor(this, R.color.gray_100))
+                binding.exploreIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                binding.exploreText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
 
                 navigationMode(false)
             }
 
             R.id.my_assets -> {
-                binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_100))
-                binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.gray_100))
+                binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
 
                 navigationMode(false)
             }
 
             R.id.bookmark -> {
-                binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_100))
-                binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.gray_100))
+                binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
 
                 navigationMode(false)
             }
 
             R.id.profile -> {
-                binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.gray_100))
-                binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.gray_100))
+                binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
 
                 navigationMode(false)
             }
