@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.woojun.shocki.data.Banner
-import com.woojun.shocki.databinding.BannerItemBinding
+import com.woojun.shocki.databinding.TopBannerItemBinding
 
 class BannerViewPagerAdapter (private val bannerList: List<Banner>):
     RecyclerView.Adapter<BannerViewPagerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewPagerAdapter.ViewHolder {
-        val binding = BannerItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = TopBannerItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
 
@@ -19,7 +19,7 @@ class BannerViewPagerAdapter (private val bannerList: List<Banner>):
 
     override fun getItemCount(): Int = Int.MAX_VALUE
 
-    inner class ViewHolder(private val binding : BannerItemBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(private val binding : TopBannerItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : Banner){
             binding.textView.text = item.text
             binding.image.setImageResource(item.image)
