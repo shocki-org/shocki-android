@@ -1,17 +1,15 @@
-package com.woojun.shocki.view.nav.alarm
+package com.woojun.shocki.view.nav.notification
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.woojun.shocki.R
-import com.woojun.shocki.databinding.FragmentAlarmBinding
-import com.woojun.shocki.databinding.FragmentMyAssetsBinding
+import com.woojun.shocki.databinding.FragmentNotificationBinding
 
-class AlarmFragment : Fragment() {
+class NotificationFragment : Fragment() {
 
-    private var _binding: FragmentAlarmBinding? = null
+    private var _binding: FragmentNotificationBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +20,7 @@ class AlarmFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAlarmBinding.inflate(inflater, container, false)
+        _binding = FragmentNotificationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
