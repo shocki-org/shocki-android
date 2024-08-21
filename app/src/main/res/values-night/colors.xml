@@ -3,10 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#FF000000</color>
-    <color name="gray_10">#FFFFFF</color>
-    <color name="gray_30">#EEEEF5</color>
-    <color name="gray_50">#BFBFCF</color>
-    <color name="gray_100">#18181C</color>
     <color name="green">#34CA94</color>
     <color name="background_gray_Default">#ff000000</color>
     <color name="background_gray_Default_Pressed">#ff101016</color>

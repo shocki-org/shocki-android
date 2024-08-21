@@ -34,7 +34,7 @@
             android:src="@drawable/search_button_icon"
             app:layout_constraintEnd_toStartOf="@id/notification_button"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/gray_10" />
+            app:tint="@color/white" />
 
         <ImageView
             android:id="@+id/notification_button"
@@ -48,7 +48,7 @@
             android:src="@drawable/notifications_button_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/search_button"
-            app:tint="@color/gray_10" />
+            app:tint="@color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
