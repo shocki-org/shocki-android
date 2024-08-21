@@ -50,7 +50,7 @@ class ExploreFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupWindowInsets()
 
-        binding.viewPager.apply {
+        binding.topBannerViewPager.apply {
             this.adapter = BannerViewPagerAdapter(getTestBannerList())
             this.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -138,7 +138,7 @@ class ExploreFragment : Fragment() {
 
             if(msg.what == 0) {
                 fragment?.let {
-                    fragment.binding.viewPager.setCurrentItemWithDuration(++fragment.currentPosition, 500)
+                    fragment.binding.topBannerViewPager.setCurrentItemWithDuration(++fragment.currentPosition, 500)
                     fragment.autoScrollStart(fragment.intervalTime)
                 }
             }
