@@ -1,7 +1,10 @@
 package com.woojun.shocki.view.main
 
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -62,7 +65,41 @@ class MainActivity : AppCompatActivity() {
         recentPosition = newPosition
         navController.navigate(id, null, navOptions)
 
+        setStatusBar(id)
         selectNavigationItem(id)
+    }
+
+    private fun setStatusBar(id: Int) {
+        if (id != R.id.explore) {
+            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val controller = window.insetsController
+                if (controller != null) {
+                    if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+                        controller.setSystemBarsAppearance(
+                            0, // APPEARANCE_LIGHT_STATUS_BARS 플래그 해제
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                        )
+                    } else {
+                        controller.setSystemBarsAppearance(
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                        )
+                    }
+                }
+            } else {
+                if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+                    @Suppress("DEPRECATION")
+                    window.decorView.systemUiVisibility =
+                        window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+                } else {
+                    @Suppress("DEPRECATION")
+                    window.decorView.systemUiVisibility =
+                        window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
+            }
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
