@@ -23,7 +23,7 @@
         android:id="@+id/bottom_navigation_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray_30"
+        android:background="@color/background_gray_Border"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_bar" />
 
@@ -31,7 +31,7 @@
         android:id="@+id/bottom_navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/background"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -49,19 +49,18 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/explore_icon"
-                app:tint="@color/gray_100" />
+                app:tint="@color/Text_Default_Primary" />
 
             <TextView
+                style="@style/default_default"
                 android:id="@+id/explore_text"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/pretendard_medium"
                 android:gravity="center"
                 android:text="탐색"
-                android:textColor="@color/gray_100"
-                android:textSize="12sp" />
+                android:textColor="@color/Text_Default_Primary" />
 
 
         </LinearLayout>
@@ -80,7 +79,7 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/my_assets_icon"
-                app:tint="@color/gray_50" />
+                app:tint="@color/Text_Status_Unselected" />
 
             <TextView
                 android:id="@+id/my_assets_text"
@@ -88,11 +87,10 @@
                 android:layout_height="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/pretendard_medium"
                 android:gravity="center"
+                style="@style/default_default"
                 android:text="보유 자산"
-                android:textColor="@color/gray_50"
-                android:textSize="12sp" />
+                android:textColor="@color/Text_Status_Unselected" />
 
 
         </LinearLayout>
@@ -111,7 +109,7 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/bookmark_icon"
-                app:tint="@color/gray_50" />
+                app:tint="@color/Text_Status_Unselected" />
 
             <TextView
                 android:id="@+id/bookmark_text"
@@ -119,11 +117,10 @@
                 android:layout_height="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/pretendard_medium"
                 android:gravity="center"
                 android:text="북마크"
-                android:textColor="@color/gray_50"
-                android:textSize="12sp" />
+                android:textColor="@color/Text_Status_Unselected"
+                style="@style/default_default" />
 
 
         </LinearLayout>
@@ -142,7 +139,7 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/profile_icon"
-                app:tint="@color/gray_50" />
+                app:tint="@color/Text_Status_Unselected" />
 
             <TextView
                 android:id="@+id/profile_text"
@@ -150,11 +147,10 @@
                 android:layout_height="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/pretendard_medium"
+                style="@style/default_default"
                 android:gravity="center"
                 android:text="프로필"
-                android:textColor="@color/gray_50"
-                android:textSize="12sp" />
+                android:textColor="@color/Text_Status_Unselected" />
 
 
         </LinearLayout>
