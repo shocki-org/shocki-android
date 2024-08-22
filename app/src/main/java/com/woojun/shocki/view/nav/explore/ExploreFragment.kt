@@ -17,11 +17,15 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.woojun.shocki.R
 import com.woojun.shocki.data.Banner
+import com.woojun.shocki.data.BannerType
 import com.woojun.shocki.databinding.FragmentExploreBinding
 import com.woojun.shocki.databinding.MiddleBannerItemBinding
+import com.woojun.shocki.util.GridSpacingItemDecoration
 import java.lang.ref.WeakReference
 
 class ExploreFragment : Fragment() {
@@ -51,8 +55,10 @@ class ExploreFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupWindowInsets()
 
+        val testBannerList = getTestBannerList("정성담아 키워낸,\n해남 황토 꿀고구마")
+
         binding.topBannerViewPager.apply {
-            this.adapter = BannerViewPagerAdapter(getTestBannerList())
+            this.adapter = BannerViewPagerAdapter(testBannerList, BannerType.Top)
             this.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     currentPosition = position
@@ -77,10 +83,21 @@ class ExploreFragment : Fragment() {
 
         binding.middleBannerViewPager.apply {
             val inflater = LayoutInflater.from(context)
-            val list = getTestBannerList().plus(getTestBannerList()).map { item ->
+            val list = testBannerList.plus(testBannerList).map { item ->
                 Pair(MiddleBannerItemBinding.inflate(inflater), item)
             }
             adapter = MiddleViewPagerAdapter(list)
+        }
+
+        binding.linearList.apply {
+            this.layoutManager = LinearLayoutManager(requireContext())
+            this.adapter = BannerViewPagerAdapter(getTestBannerList("정성담아 키워낸, 해남 황토 꿀고구마정성담아 키워낸, 해남 황토 꿀고구마"), BannerType.Linear)
+        }
+
+        binding.gridList.apply {
+            this.layoutManager = GridLayoutManager(requireContext(), 2)
+            this.adapter = BannerViewPagerAdapter(testBannerList, BannerType.Grid)
+            this.addItemDecoration(GridSpacingItemDecoration())
         }
     }
 
@@ -110,12 +127,12 @@ class ExploreFragment : Fragment() {
         }
     }
 
-    private fun getTestBannerList(): List<Banner> {
+    private fun getTestBannerList(text: String): List<Banner> {
         return listOf(
-            Banner(R.drawable.banner6, "정성담아 키워낸,\n해남 황토 꿀고구마", "1232145"),
-            Banner(R.drawable.banner1, "정성담아 키워낸,\n해남 황토 꿀고구마", "1232145"),
-            Banner(R.drawable.banner4, "정성담아 키워낸,\n해남 황토 꿀고구마", "1232145"),
-            Banner(R.drawable.banner3, "정성담아 키워낸,\n해남 황토 꿀고구마", "1232145"),
+            Banner(R.drawable.banner6, text, "1232145"),
+            Banner(R.drawable.banner1, text, "1232145"),
+            Banner(R.drawable.banner4, text, "1232145"),
+            Banner(R.drawable.banner3, text, "1232145"),
         )
     }
 
