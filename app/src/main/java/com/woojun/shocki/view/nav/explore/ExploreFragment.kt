@@ -21,6 +21,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.woojun.shocki.R
 import com.woojun.shocki.data.Banner
 import com.woojun.shocki.databinding.FragmentExploreBinding
+import com.woojun.shocki.databinding.MiddleBannerItemBinding
 import java.lang.ref.WeakReference
 
 class ExploreFragment : Fragment() {
@@ -73,6 +74,14 @@ class ExploreFragment : Fragment() {
             currentPosition = Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2) % indicatorList.size
             this.setCurrentItem(currentPosition, false)
         }
+
+        binding.middleBannerViewPager.apply {
+            val inflater = LayoutInflater.from(context)
+            val list = getTestBannerList().plus(getTestBannerList()).map { item ->
+                Pair(MiddleBannerItemBinding.inflate(inflater), item)
+            }
+            adapter = MiddleViewPagerAdapter(list)
+        }
     }
 
     private fun setupWindowInsets() {
@@ -103,10 +112,10 @@ class ExploreFragment : Fragment() {
 
     private fun getTestBannerList(): List<Banner> {
         return listOf(
-            Banner(R.drawable.banner6, "정성담아 키워낸,\n해남 황토 꿀고구마"),
-            Banner(R.drawable.banner1, "정성담아 키워낸,\n해남 황토 꿀고구마"),
-            Banner(R.drawable.banner2, "정성담아 키워낸,\n해남 황토 꿀고구마"),
-            Banner(R.drawable.banner3, "정성담아 키워낸,\n해남 황토 꿀고구마"),
+            Banner(R.drawable.banner6, "정성담아 키워낸,\n해남 황토 꿀고구마", "1232145"),
+            Banner(R.drawable.banner1, "정성담아 키워낸,\n해남 황토 꿀고구마", "1232145"),
+            Banner(R.drawable.banner4, "정성담아 키워낸,\n해남 황토 꿀고구마", "1232145"),
+            Banner(R.drawable.banner3, "정성담아 키워낸,\n해남 황토 꿀고구마", "1232145"),
         )
     }
 
