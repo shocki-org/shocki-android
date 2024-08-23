@@ -41,15 +41,50 @@ class MainActivity : AppCompatActivity() {
         binding.bookmark.setOnClickListener { animationNavigate(R.id.bookmark) }
         binding.profile.setOnClickListener { animationNavigate(R.id.profile) }
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            resetNavigationItem()
+            setStatusBar(destination.id)
+            when (destination.id) {
+                R.id.explore -> {
+                    binding.exploreIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.exploreText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+
+                    navigationMode(false)
+                }
+                R.id.my_assets -> {
+                    binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+
+                    navigationMode(false)
+                }
+                R.id.bookmark -> {
+                    binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+
+                    navigationMode(false)
+                }
+                R.id.profile -> {
+                    binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+
+                    navigationMode(false)
+                }
+                else -> {
+                    navigationMode(true)
+                }
+            }
+
+        }
+
     }
 
-    private fun animationNavigate(id: Int) {
-        resetNavigationItem()
-
+    fun animationNavigate(id: Int) {
         fun getNavOptions(enterAnim: Int): NavOptions {
             return Builder()
                 .setEnterAnim(enterAnim)
                 .setExitAnim(R.anim.anim_fade_out)
+                .setPopEnterAnim(R.anim.anim_slide_in_from_left_fade_in)
+                .setPopExitAnim(R.anim.anim_fade_out)
                 .build()
         }
 
@@ -58,15 +93,12 @@ class MainActivity : AppCompatActivity() {
             R.id.my_assets -> if (recentPosition < 1) 1 to R.anim.anim_slide_in_from_right_fade_in else 1 to R.anim.anim_slide_in_from_left_fade_in
             R.id.bookmark -> if (recentPosition < 2) 2 to R.anim.anim_slide_in_from_right_fade_in else 2 to R.anim.anim_slide_in_from_left_fade_in
             R.id.profile -> 3 to R.anim.anim_slide_in_from_right_fade_in
-            else -> return
+            else -> recentPosition to R.anim.anim_slide_in_from_right_fade_in
         }
 
         val navOptions = getNavOptions(enterAnim)
         recentPosition = newPosition
         navController.navigate(id, null, navOptions)
-
-        setStatusBar(id)
-        selectNavigationItem(id)
     }
 
     private fun setStatusBar(id: Int) {
@@ -77,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                 if (controller != null) {
                     if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
                         controller.setSystemBarsAppearance(
-                            0, // APPEARANCE_LIGHT_STATUS_BARS 플래그 해제
+                            0,
                             WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
                         )
                     } else {
@@ -97,6 +129,17 @@ class MainActivity : AppCompatActivity() {
                     window.decorView.systemUiVisibility =
                         window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 }
+            }
+            ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            }
+        } else {
+            ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+                insets
             }
         }
 
@@ -130,36 +173,6 @@ class MainActivity : AppCompatActivity() {
         binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
     }
 
-    private fun selectNavigationItem(destinationId: Int) {
-        when (destinationId) {
-            R.id.explore -> {
-                binding.exploreIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-                binding.exploreText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
 
-                navigationMode(false)
-            }
-
-            R.id.my_assets -> {
-                binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-                binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-
-                navigationMode(false)
-            }
-
-            R.id.bookmark -> {
-                binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-                binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-
-                navigationMode(false)
-            }
-
-            R.id.profile -> {
-                binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-                binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-
-                navigationMode(false)
-            }
-        }
-    }
 
 }
