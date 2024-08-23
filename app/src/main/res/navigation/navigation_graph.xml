@@ -10,15 +10,15 @@
         android:label="fragment_explore"
         tools:layout="@layout/fragment_explore" />
     <fragment
-        android:id="@+id/bookmark"
-        android:name="com.woojun.shocki.view.nav.bookmark.BookmarkFragment"
-        android:label="fragment_bookmark"
-        tools:layout="@layout/fragment_bookmark" />
+        android:id="@+id/category"
+        android:name="com.woojun.shocki.view.nav.category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
     <fragment
-        android:id="@+id/my_assets"
-        android:name="com.woojun.shocki.view.nav.myAssets.MyAssetsFragment"
-        android:label="fragment_my_assets"
-        tools:layout="@layout/fragment_my_assets" />
+        android:id="@+id/store"
+        android:name="com.woojun.shocki.view.nav.store.StoreFragment"
+        android:label="fragment_store"
+        tools:layout="@layout/fragment_store" />
     <fragment
         android:id="@+id/profile"
         android:name="com.woojun.shocki.view.nav.profile.ProfileFragment"

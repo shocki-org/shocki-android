@@ -1,15 +1,15 @@
-package com.woojun.shocki.view.nav.myAssets
+package com.woojun.shocki.view.nav.category
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.woojun.shocki.databinding.FragmentMyAssetsBinding
+import com.woojun.shocki.databinding.FragmentCategoryBinding
 
-class MyAssetsFragment : Fragment() {
+class CategoryFragment : Fragment() {
 
-    private var _binding: FragmentMyAssetsBinding? = null
+    private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class MyAssetsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMyAssetsBinding.inflate(inflater, container, false)
+        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,4 +32,5 @@ class MyAssetsFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
 }

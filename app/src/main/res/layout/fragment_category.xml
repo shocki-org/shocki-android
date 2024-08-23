@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.nav.bookmark.BookmarkFragment">
+    tools:context=".view.nav.category.CategoryFragment">
 
     <TextView
         android:textSize="42sp"
         android:layout_gravity="center"
-        android:text="bookmark"
+        android:text="category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

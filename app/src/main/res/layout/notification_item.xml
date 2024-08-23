@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"/>
 
     <ImageView
-        android:src="@drawable/funding_icon"
+        android:src="@drawable/my_assets_icon"
         app:layout_constraintBottom_toBottomOf="@id/type_text"
         app:layout_constraintTop_toTopOf="@id/type_text"
         app:layout_constraintStart_toEndOf="@id/type_text"

@@ -37,8 +37,8 @@ class MainActivity : BaseActivity() {
         navController = findNavController(R.id.nav_host_fragment)
 
         binding.explore.setOnClickListener { animationNavigate(R.id.explore) }
-        binding.myAssets.setOnClickListener { animationNavigate(R.id.my_assets) }
-        binding.bookmark.setOnClickListener { animationNavigate(R.id.bookmark) }
+        binding.store.setOnClickListener { animationNavigate(R.id.store) }
+        binding.category.setOnClickListener { animationNavigate(R.id.category) }
         binding.profile.setOnClickListener { animationNavigate(R.id.profile) }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -52,17 +52,17 @@ class MainActivity : BaseActivity() {
 
                     navigationMode(false)
                 }
-                R.id.my_assets -> {
-                    binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-                    binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-                    binding.myAssets.isEnabled = false
+                R.id.store -> {
+                    binding.storeIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.storeText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.store.isEnabled = false
 
                     navigationMode(false)
                 }
-                R.id.bookmark -> {
-                    binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-                    binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
-                    binding.bookmark.isEnabled = false
+                R.id.category -> {
+                    binding.categoryIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.categoryText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.category.isEnabled = false
 
                     navigationMode(false)
                 }
@@ -99,10 +99,10 @@ class MainActivity : BaseActivity() {
 
         val (newPosition, enterAnim, clearBackStack) = when (id) {
             R.id.explore -> Triple(0, R.anim.anim_slide_in_from_left_fade_in, true)
-            R.id.my_assets -> Triple(1,
+            R.id.search -> Triple(1,
                 if (recentPosition < 1) R.anim.anim_slide_in_from_right_fade_in else R.anim.anim_slide_in_from_left_fade_in,
                 true)
-            R.id.bookmark -> Triple(2,
+            R.id.category -> Triple(2,
                 if (recentPosition < 2) R.anim.anim_slide_in_from_right_fade_in else R.anim.anim_slide_in_from_left_fade_in,
                 true)
             R.id.profile -> Triple(3, R.anim.anim_slide_in_from_right_fade_in, true)
@@ -176,18 +176,18 @@ class MainActivity : BaseActivity() {
         binding.exploreIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
         binding.exploreText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
 
-        binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
-        binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
+        binding.storeIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
+        binding.storeText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
 
-        binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
-        binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
+        binding.categoryIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
+        binding.categoryText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
 
         binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
         binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
 
         binding.explore.isEnabled = true
-        binding.myAssets.isEnabled = true
-        binding.bookmark.isEnabled = true
+        binding.store.isEnabled = true
+        binding.category.isEnabled = true
         binding.profile.isEnabled = true
     }
 
