@@ -41,15 +41,20 @@ class BannerViewPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = bannerList[position % bannerList.size]
         when (holder) {
-            is TopBannerViewHolder -> holder.bind(item)
-            is LinearBannerViewHolder -> holder.bind(item)
-            is GridViewHolder -> holder.bind(item)
+            is TopBannerViewHolder -> holder.bind(bannerList[position % bannerList.size])
+            is LinearBannerViewHolder -> holder.bind(bannerList[position])
+            is GridViewHolder -> holder.bind(bannerList[position])
         }
     }
 
-    override fun getItemCount(): Int = Int.MAX_VALUE
+    override fun getItemCount(): Int {
+        return if (bannerType == BannerType.Top) {
+            Int.MAX_VALUE
+        } else {
+            bannerList.size
+        }
+    }
 
     inner class TopBannerViewHolder(private val binding: TopBannerItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Banner) {
