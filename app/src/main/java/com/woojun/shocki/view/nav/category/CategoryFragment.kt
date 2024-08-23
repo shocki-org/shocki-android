@@ -61,12 +61,16 @@ class CategoryFragment : Fragment() {
             Banner(R.drawable.banner1, text, "1232145"),
             Banner(R.drawable.banner4, text, "1232145"),
             Banner(R.drawable.banner3, text, "1232145"),
+            Banner(R.drawable.banner6, text, "1232145"),
+            Banner(R.drawable.banner1, text, "1232145"),
+            Banner(R.drawable.banner4, text, "1232145"),
+            Banner(R.drawable.banner3, text, "1232145"),
         )
     }
 
     private fun getCategoryList(): List<Category> {
         return listOf(
-            Category("이것들은"),
+            Category("이것들은", true),
             Category("카테고리임 ㅋ"),
             Category("선택된 칩"),
             Category("ㄹㅇㅋㅋ"),
