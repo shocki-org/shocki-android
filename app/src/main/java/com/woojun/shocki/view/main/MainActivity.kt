@@ -48,24 +48,28 @@ class MainActivity : BaseActivity() {
                 R.id.explore -> {
                     binding.exploreIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
                     binding.exploreText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.explore.isEnabled = false
 
                     navigationMode(false)
                 }
                 R.id.my_assets -> {
                     binding.myAssetsIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
                     binding.myAssetsText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.myAssets.isEnabled = false
 
                     navigationMode(false)
                 }
                 R.id.bookmark -> {
                     binding.bookmarkIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
                     binding.bookmarkText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.bookmark.isEnabled = false
 
                     navigationMode(false)
                 }
                 R.id.profile -> {
                     binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Default_Primary))
                     binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.Text_Default_Primary))
+                    binding.profile.isEnabled = false
 
                     navigationMode(false)
                 }
@@ -154,8 +158,8 @@ class MainActivity : BaseActivity() {
 
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+    override fun getNavController(): NavController {
+        return navController
     }
 
     private fun navigationMode(isGone: Boolean) {
@@ -180,6 +184,11 @@ class MainActivity : BaseActivity() {
 
         binding.profileIcon.setColorFilter(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
         binding.profileText.setTextColor(ContextCompat.getColor(this, R.color.Text_Status_Unselected))
+
+        binding.explore.isEnabled = true
+        binding.myAssets.isEnabled = true
+        binding.bookmark.isEnabled = true
+        binding.profile.isEnabled = true
     }
 
 

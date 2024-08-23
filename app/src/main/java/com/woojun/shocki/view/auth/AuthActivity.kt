@@ -31,4 +31,8 @@ class AuthActivity : BaseActivity() {
         navController.navigate(id, null, navOptions)
     }
 
+    override fun getNavController(): NavController? {
+        return null
+    }
+
 }
