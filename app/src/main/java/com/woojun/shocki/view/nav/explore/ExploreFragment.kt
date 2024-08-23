@@ -26,6 +26,7 @@ import com.woojun.shocki.data.BannerType
 import com.woojun.shocki.databinding.FragmentExploreBinding
 import com.woojun.shocki.databinding.MiddleBannerItemBinding
 import com.woojun.shocki.util.GridSpacingItemDecoration
+import com.woojun.shocki.view.main.MainActivity
 import java.lang.ref.WeakReference
 
 class ExploreFragment : Fragment() {
@@ -54,7 +55,19 @@ class ExploreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupWindowInsets()
+        val activity = (requireActivity() as MainActivity)
+        bannerInit()
 
+        binding.notificationButton.setOnClickListener {
+            activity.animationNavigate(R.id.notification)
+        }
+
+        binding.searchButton.setOnClickListener {
+            activity.animationNavigate(R.id.search)
+        }
+    }
+
+    private fun bannerInit() {
         val testBannerList = getTestBannerList("정성담아 키워낸,\n해남 황토 꿀고구마")
 
         binding.topBannerViewPager.apply {
@@ -101,6 +114,15 @@ class ExploreFragment : Fragment() {
         }
     }
 
+    private fun getTestBannerList(text: String): List<Banner> {
+        return listOf(
+            Banner(R.drawable.banner6, text, "1232145"),
+            Banner(R.drawable.banner1, text, "1232145"),
+            Banner(R.drawable.banner4, text, "1232145"),
+            Banner(R.drawable.banner3, text, "1232145"),
+        )
+    }
+
     private fun setupWindowInsets() {
         requireActivity().enableEdgeToEdge()
 
@@ -125,15 +147,6 @@ class ExploreFragment : Fragment() {
             binding.buttonLayout.setPadding(0, statusBarHeight, 0, navBarHeight)
             insets
         }
-    }
-
-    private fun getTestBannerList(text: String): List<Banner> {
-        return listOf(
-            Banner(R.drawable.banner6, text, "1232145"),
-            Banner(R.drawable.banner1, text, "1232145"),
-            Banner(R.drawable.banner4, text, "1232145"),
-            Banner(R.drawable.banner3, text, "1232145"),
-        )
     }
 
     private fun autoScrollStart(intervalTime: Long) {
