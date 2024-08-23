@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:scrollbars="none"
+    android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.nav.explore.ExploreFragment">
 
@@ -157,7 +158,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:paddingBottom="20dp"
             app:layout_constraintTop_toBottomOf="@id/textView6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
