@@ -1,14 +1,14 @@
 package com.woojun.shocki.view.auth
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions.Builder
 import androidx.navigation.findNavController
 import com.woojun.shocki.R
 import com.woojun.shocki.databinding.ActivityAuthBinding
+import com.woojun.shocki.util.BaseActivity
 
-class AuthActivity : AppCompatActivity() {
+class AuthActivity : BaseActivity() {
     private lateinit var binding: ActivityAuthBinding
     private lateinit var navController: NavController
 

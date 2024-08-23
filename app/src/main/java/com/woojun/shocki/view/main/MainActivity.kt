@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsetsController
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,9 +14,10 @@ import androidx.navigation.findNavController
 import com.woojun.shocki.R
 import androidx.navigation.NavOptions.Builder
 import com.woojun.shocki.databinding.ActivityMainBinding
+import com.woojun.shocki.util.BaseActivity
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -79,24 +79,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun animationNavigate(id: Int) {
-        fun getNavOptions(enterAnim: Int): NavOptions {
-            return Builder()
+        fun getNavOptions(enterAnim: Int, clearBackStack: Boolean): NavOptions {
+            val builder = Builder()
                 .setEnterAnim(enterAnim)
                 .setExitAnim(R.anim.anim_fade_out)
                 .setPopEnterAnim(R.anim.anim_slide_in_from_left_fade_in)
                 .setPopExitAnim(R.anim.anim_fade_out)
-                .build()
+
+            if (clearBackStack) {
+                builder.setPopUpTo(navController.graph.startDestinationId, true)
+            }
+
+            return builder.build()
         }
 
-        val (newPosition, enterAnim) = when (id) {
-            R.id.explore -> 0 to R.anim.anim_slide_in_from_left_fade_in
-            R.id.my_assets -> if (recentPosition < 1) 1 to R.anim.anim_slide_in_from_right_fade_in else 1 to R.anim.anim_slide_in_from_left_fade_in
-            R.id.bookmark -> if (recentPosition < 2) 2 to R.anim.anim_slide_in_from_right_fade_in else 2 to R.anim.anim_slide_in_from_left_fade_in
-            R.id.profile -> 3 to R.anim.anim_slide_in_from_right_fade_in
-            else -> recentPosition to R.anim.anim_slide_in_from_right_fade_in
+        val (newPosition, enterAnim, clearBackStack) = when (id) {
+            R.id.explore -> Triple(0, R.anim.anim_slide_in_from_left_fade_in, true)
+            R.id.my_assets -> Triple(1,
+                if (recentPosition < 1) R.anim.anim_slide_in_from_right_fade_in else R.anim.anim_slide_in_from_left_fade_in,
+                true)
+            R.id.bookmark -> Triple(2,
+                if (recentPosition < 2) R.anim.anim_slide_in_from_right_fade_in else R.anim.anim_slide_in_from_left_fade_in,
+                true)
+            R.id.profile -> Triple(3, R.anim.anim_slide_in_from_right_fade_in, true)
+            else -> Triple(recentPosition, R.anim.anim_slide_in_from_right_fade_in, false)
         }
 
-        val navOptions = getNavOptions(enterAnim)
+        val navOptions = getNavOptions(enterAnim, clearBackStack)
         recentPosition = newPosition
         navController.navigate(id, null, navOptions)
     }
