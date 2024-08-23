@@ -34,6 +34,7 @@
             app:layout_constraintTop_toTopOf="@+id/back_button" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="4dp"
             android:overScrollMode="never"
             android:nestedScrollingEnabled="false"
             android:id="@+id/notification_list"
