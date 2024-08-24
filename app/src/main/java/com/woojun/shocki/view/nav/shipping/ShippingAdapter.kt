@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,10 @@ class ShippingAdapter (private val shippingList: List<String>):
         customDialog.window?.setGravity(Gravity.BOTTOM)
 
         customDialog.setContentView(R.layout.dialog_report_list)
+        customDialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
 
         customDialog.findViewById<CardView>(R.id.different_button).setOnClickListener {
             reportDialog(context)
@@ -60,6 +65,10 @@ class ShippingAdapter (private val shippingList: List<String>):
         customDialog.window?.setGravity(Gravity.BOTTOM)
 
         customDialog.setContentView(R.layout.dialog_report)
+        customDialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
             Toast.makeText(context, "신고가 완료되었어요", Toast.LENGTH_SHORT).show()
