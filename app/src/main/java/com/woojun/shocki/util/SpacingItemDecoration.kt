@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-internal class GridSpacingItemDecoration : RecyclerView.ItemDecoration() {
+internal class SpacingItemDecoration : RecyclerView.ItemDecoration() {
     private val spacing = (4f * Resources.getSystem().displayMetrics.density).toInt()
     private val additionalSpacing = (20f * Resources.getSystem().displayMetrics.density).toInt()
     private val linearStartEndLarge = (16f * Resources.getSystem().displayMetrics.density).toInt()

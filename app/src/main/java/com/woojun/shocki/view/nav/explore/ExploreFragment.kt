@@ -1,6 +1,7 @@
 package com.woojun.shocki.view.nav.explore
 
 import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 import android.os.Build
@@ -25,7 +26,7 @@ import com.woojun.shocki.data.Banner
 import com.woojun.shocki.data.BannerType
 import com.woojun.shocki.databinding.FragmentExploreBinding
 import com.woojun.shocki.databinding.MiddleBannerItemBinding
-import com.woojun.shocki.util.GridSpacingItemDecoration
+import com.woojun.shocki.util.SpacingItemDecoration
 import com.woojun.shocki.view.main.MainActivity
 import java.lang.ref.WeakReference
 
@@ -79,6 +80,10 @@ class ExploreFragment : Fragment() {
                     indicatorList.forEach { it.setBackgroundResource(R.drawable.shape_circle_gray) }
                     val selectedIndicator = indicatorList[position % indicatorList.size]
                     selectedIndicator.setBackgroundResource(R.drawable.shape_circle_green)
+
+                    val animator = ObjectAnimator.ofFloat(selectedIndicator, "alpha", 0.0f, 1.0f)
+                    animator.duration = 500
+                    animator.start()
                 }
                 override fun onPageScrollStateChanged(state: Int) {
                     super.onPageScrollStateChanged(state)
@@ -110,7 +115,7 @@ class ExploreFragment : Fragment() {
         binding.gridList.apply {
             this.layoutManager = GridLayoutManager(requireContext(), 2)
             this.adapter = BannerViewPagerAdapter(testBannerList, BannerType.Grid)
-            this.addItemDecoration(GridSpacingItemDecoration())
+            this.addItemDecoration(SpacingItemDecoration())
         }
     }
 

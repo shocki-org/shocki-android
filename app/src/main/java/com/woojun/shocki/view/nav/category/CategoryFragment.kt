@@ -13,7 +13,7 @@ import com.woojun.shocki.data.Banner
 import com.woojun.shocki.data.BannerType
 import com.woojun.shocki.data.Category
 import com.woojun.shocki.databinding.FragmentCategoryBinding
-import com.woojun.shocki.util.GridSpacingItemDecoration
+import com.woojun.shocki.util.SpacingItemDecoration
 import com.woojun.shocki.view.main.MainActivity
 import com.woojun.shocki.view.nav.explore.BannerViewPagerAdapter
 
@@ -44,13 +44,13 @@ class CategoryFragment : Fragment() {
         binding.categoryList.apply {
             this.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
             this.adapter = CategoryAdapter(getCategoryList())
-            this.addItemDecoration(GridSpacingItemDecoration())
+            this.addItemDecoration(SpacingItemDecoration())
         }
 
         binding.itemList.apply {
             this.layoutManager = GridLayoutManager(requireContext(), 2)
             this.adapter = BannerViewPagerAdapter(getTestBannerList(), BannerType.Grid)
-            this.addItemDecoration(GridSpacingItemDecoration())
+            this.addItemDecoration(SpacingItemDecoration())
         }
     }
 
