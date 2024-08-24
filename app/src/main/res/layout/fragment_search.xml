@@ -24,6 +24,10 @@
             android:layout_height="wrap_content"/>
 
         <EditText
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:id="@+id/search_input"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@null"
@@ -49,7 +53,7 @@
             android:background="@color/background_gray_Default"
             android:overScrollMode="never"
             android:nestedScrollingEnabled="false"
-            android:id="@+id/notification_list"
+            android:id="@+id/search_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/back_button" />
