@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/background"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    android:layout_width="match_parent"
+    android:layout_marginHorizontal="8dp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="어떤 사유로 신고하시겠어요?"
+            android:id="@+id/textView"
+            style="@style/heading_accent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/Text_Default_Primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.card.MaterialCardView
+                app:cardCornerRadius="4dp"
+                app:strokeColor="@color/background_gray_Border"
+                app:cardBackgroundColor="@color/background"
+                android:id="@+id/different_button"
+                android:layout_marginHorizontal="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/null_search_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"/>
+
+                    <TextView
+                        android:layout_marginVertical="8dp"
+                        style="@style/caption_default"
+                        android:textColor="@color/Text_Default_Primary"
+                        android:text="상품이 잘못왔어요"
+                        android:layout_marginStart="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/none_button"
+                app:cardBackgroundColor="@color/background"
+                app:cardCornerRadius="4dp"
+                app:strokeColor="@color/background_gray_Border"
+                android:layout_marginTop="4dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp">
+
+                        <ImageView
+                            android:src="@drawable/close_button"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_marginVertical="8dp"
+                        style="@style/caption_default"
+                        android:textColor="@color/Text_Default_Primary"
+                        android:text="상품이 안와요"
+                        android:layout_marginStart="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                app:cardCornerRadius="4dp"
+                app:cardBackgroundColor="@color/background"
+                app:strokeColor="@color/background_gray_Border"
+                android:id="@+id/etc_button"
+                android:layout_marginTop="4dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/shipping_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"/>
+
+                    <TextView
+                        android:layout_marginVertical="8dp"
+                        style="@style/caption_default"
+                        android:textColor="@color/Text_Default_Primary"
+                        android:text="기타 사유"
+                        android:layout_marginStart="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
