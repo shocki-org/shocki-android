@@ -1,9 +1,293 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
+    android:fillViewport="true"
+    android:scrollbars="none"
     tools:context=".view.nav.payment.PaymentFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_marginStart="6dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="12dp"
+            android:src="@drawable/left_arrow_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextSwitcher
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/back_button"
+            android:id="@+id/textView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:inAnimation="@anim/anim_slide_in_from_left_fade_in"
+            android:outAnimation="@anim/anim_fade_out">
+
+            <TextView
+                android:textColor="@color/Text_Default_Primary"
+                android:id="@+id/text1"
+                style="@style/display_accent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="결제 수단을\n선택해주세요" />
+
+            <TextView
+                android:id="@+id/text2"
+                style="@style/display_accent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이메일을 입력해주세요" />
+
+
+        </TextSwitcher>
+
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/textView">
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/address_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <TextView
+                    android:id="@+id/address_text"
+                    style="@style/caption_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주소"
+                    android:textColor="@color/Text_Default_Secondary" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:cardBackgroundColor="@color/background_gray_Elevated"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/background_gray_Border"
+                    app:strokeWidth="1dp">
+
+                    <EditText
+                        android:hint="010 0000 0000"
+                        android:inputType="textPostalAddress"
+                        android:imeOptions="actionGo"
+                        android:id="@+id/address_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="12dp"
+                        android:textColorHint="@color/Text_Status_Unselected" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/phone_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <TextView
+                    android:id="@+id/phone_text"
+                    style="@style/caption_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전화번호"
+                    android:textColor="@color/Text_Default_Secondary" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:cardBackgroundColor="@color/background_gray_Elevated"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/background_gray_Border"
+                    app:strokeWidth="1dp">
+
+                    <EditText
+                        android:hint="010 0000 0000"
+                        android:inputType="phone"
+                        android:imeOptions="actionGo"
+                        android:id="@+id/phone_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="12dp"
+                        android:textColorHint="@color/Text_Status_Unselected" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/count_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <TextView
+                    android:id="@+id/count_text"
+                    style="@style/caption_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="구매 수량"
+                    android:textColor="@color/Text_Default_Secondary" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:cardBackgroundColor="@color/background_gray_Elevated"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/background_gray_Border"
+                    app:strokeWidth="1dp">
+
+                    <EditText
+                        android:inputType="number"
+                        android:imeOptions="actionGo"
+                        android:id="@+id/count_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:text="1"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="12dp"
+                        android:textColorHint="@color/Text_Status_Unselected" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:background="@null"
+                    android:id="@+id/token"
+                    android:textColor="@color/Text_Default_Primary"
+                    style="@style/body_accent"
+                    android:text="토큰으로 구매하기"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:background="@null"
+                    android:textColor="@color/Text_Default_Primary"
+                    style="@style/body_accent"
+                    android:id="@+id/credit"
+                    android:text="크레딧으로 구매하기"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:background="@null"
+                    android:id="@+id/cash"
+                    android:textColor="@color/Text_Default_Primary"
+                    style="@style/body_accent"
+                    android:text="현금으로 구매하기"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RadioGroup>
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            app:cardElevation="0dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="12dp"
+            android:id="@+id/next_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/background_accent_Default"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/next_button_text"
+                style="@style/body_accent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="16dp"
+                android:text="다음"
+                android:textColor="@color/white" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:visibility="gone"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="12dp"
+            android:id="@+id/none_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:strokeColor="@color/background_gray_Border"
+            app:cardBackgroundColor="@color/background_gray_Default"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                style="@style/body_accent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="16dp"
+                android:text="다음"
+                android:textColor="@color/Text_Status_Unable" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
