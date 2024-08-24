@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_gray_Default"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        app:cardCornerRadius="4dp"
+        android:id="@+id/materialCardView2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginVertical="8dp"
+        android:layout_marginStart="16dp"
+        app:cardBackgroundColor="@color/background_gray_Default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/background_gray_Border">
+
+
+        <ImageView
+            android:id="@+id/default_icon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:src="@drawable/search_button_icon" />
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:id="@+id/thumbnail_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:textColor="@color/Text_Default_Secondary"
+        android:text="위 입력창을 통해"
+        android:id="@+id/title_text"
+        style="@style/body_default"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:ellipsize="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/materialCardView2"
+        app:layout_constraintTop_toTopOf="@+id/materialCardView2" />
+
+    <TextView
+        android:textColor="@color/Text_Default_Secondary"
+        android:text="찾고 싶은 상품을 입력해주세요"
+        android:id="@+id/body_text"
+        style="@style/body_default"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        app:layout_constraintBottom_toBottomOf="@+id/materialCardView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/title_text"
+        app:layout_constraintTop_toBottomOf="@+id/title_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
