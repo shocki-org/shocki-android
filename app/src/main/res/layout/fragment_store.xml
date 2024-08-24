@@ -54,6 +54,9 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:paddingHorizontal="12dp"
+            android:paddingBottom="16dp"
+            android:overScrollMode="never"
+            android:nestedScrollingEnabled="false"
             android:id="@+id/store_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
