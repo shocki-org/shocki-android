@@ -44,4 +44,9 @@
         android:name="com.woojun.shocki.view.nav.detail.StoreDetailFragment"
         android:label="fragment_store_detail"
         tools:layout="@layout/fragment_store_detail" />
+    <fragment
+        android:id="@+id/payment"
+        android:name="com.woojun.shocki.view.nav.payment.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment" />
 </navigation>
