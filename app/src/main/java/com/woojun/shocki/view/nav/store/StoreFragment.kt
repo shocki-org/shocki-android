@@ -34,7 +34,7 @@ class StoreFragment : Fragment() {
         val activity = (requireActivity() as MainActivity)
 
         binding.shippingButton.setOnClickListener {
-            activity.animationNavigate(R.id.notification)
+            activity.animationNavigate(R.id.shipping)
         }
 
         binding.searchButton.setOnClickListener {

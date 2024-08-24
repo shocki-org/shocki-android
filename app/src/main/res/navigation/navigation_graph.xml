@@ -34,4 +34,9 @@
         android:name="com.woojun.shocki.view.nav.notification.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/shipping"
+        android:name="com.woojun.shocki.view.nav.shipping.ShippingFragment"
+        android:label="fragment_shipping"
+        tools:layout="@layout/fragment_shipping" />
 </navigation>
