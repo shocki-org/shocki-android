@@ -1,4 +1,4 @@
-package com.woojun.shocki.view.nav.category
+package com.woojun.shocki.view.nav.funding
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,14 +12,14 @@ import com.woojun.shocki.R
 import com.woojun.shocki.data.Banner
 import com.woojun.shocki.data.BannerType
 import com.woojun.shocki.data.Category
-import com.woojun.shocki.databinding.FragmentCategoryBinding
+import com.woojun.shocki.databinding.FragmentFundingBinding
 import com.woojun.shocki.util.SpacingItemDecoration
 import com.woojun.shocki.view.main.MainActivity
 import com.woojun.shocki.view.nav.explore.BannerViewPagerAdapter
 
-class CategoryFragment : Fragment() {
+class FundingFragment : Fragment() {
 
-    private var _binding: FragmentCategoryBinding? = null
+    private var _binding: FragmentFundingBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +30,7 @@ class CategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        _binding = FragmentFundingBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -43,7 +43,7 @@ class CategoryFragment : Fragment() {
 
         binding.categoryList.apply {
             this.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-            this.adapter = CategoryAdapter(getCategoryList())
+            this.adapter = FundingAdapter(getCategoryList())
             this.addItemDecoration(SpacingItemDecoration())
         }
 

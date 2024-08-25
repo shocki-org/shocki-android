@@ -10,10 +10,10 @@
         android:label="fragment_explore"
         tools:layout="@layout/fragment_explore" />
     <fragment
-        android:id="@+id/category"
-        android:name="com.woojun.shocki.view.nav.category.CategoryFragment"
-        android:label="fragment_category"
-        tools:layout="@layout/fragment_category" />
+        android:id="@+id/funding"
+        android:name="com.woojun.shocki.view.nav.funding.FundingFragment"
+        android:label="fragment_funding"
+        tools:layout="@layout/fragment_funding" />
     <fragment
         android:id="@+id/store"
         android:name="com.woojun.shocki.view.nav.store.StoreFragment"

@@ -1,18 +1,18 @@
-package com.woojun.shocki.view.nav.category
+package com.woojun.shocki.view.nav.funding
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.woojun.shocki.R
 import com.woojun.shocki.data.Category
-import com.woojun.shocki.databinding.CategoryItemBinding
+import com.woojun.shocki.databinding.FundingItemBinding
 
-class CategoryAdapter (private val categoryList: List<Category>):
-    RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+class FundingAdapter (private val categoryList: List<Category>):
+    RecyclerView.Adapter<FundingAdapter.ViewHolder>() {
     private var selectedPosition = 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.ViewHolder {
-        val binding = CategoryItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FundingAdapter.ViewHolder {
+        val binding = FundingItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding).also { handler ->
             binding.root.setOnClickListener {
                 categoryList[selectedPosition].isSelected = false
@@ -25,13 +25,13 @@ class CategoryAdapter (private val categoryList: List<Category>):
         }
     }
 
-    override fun onBindViewHolder(holder: CategoryAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FundingAdapter.ViewHolder, position: Int) {
         holder.bind(categoryList[position])
     }
 
     override fun getItemCount(): Int = categoryList.size
 
-    inner class ViewHolder(private val binding : CategoryItemBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(private val binding : FundingItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(category : Category){
             binding.categoryText.text = category.name
             val resources = binding.root.resources
