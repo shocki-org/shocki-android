@@ -30,7 +30,7 @@ class StoreDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.imageList.apply {
-            this.adapter = DetailAdapter(
+            this.adapter = ImageAdapter(
                 listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3, R.drawable.banner4, R.drawable.banner5)
             )
             this.layoutManager = LinearLayoutManager(requireContext())
