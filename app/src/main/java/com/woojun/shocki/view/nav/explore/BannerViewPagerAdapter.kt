@@ -38,7 +38,7 @@ class BannerViewPagerAdapter(
                 val binding = GridBannerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 GridViewHolder(binding).also { hanler->
                     binding.root.setOnClickListener {
-                        (binding.root.context as MainActivity).animationNavigate(R.id.funding)
+                        (binding.root.context as MainActivity).animationNavigate(R.id.funding_detail)
                     }
                 }
             }
