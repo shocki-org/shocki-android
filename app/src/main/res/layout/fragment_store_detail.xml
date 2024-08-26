@@ -19,6 +19,8 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:src="@drawable/banner6"
+                android:scaleType="centerCrop"
                 android:id="@+id/imageView2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -38,6 +40,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:text="가벼운 어깨, 편안한 하루! 노트북 백팩"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 android:textColor="@color/Text_Default_Secondary"
@@ -49,6 +52,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
             <TextView
+                android:text=""
                 android:textColor="@color/Text_Status_Accent"
                 style="@style/display_accent"
                 app:layout_constraintStart_toStartOf="@id/title_text"
@@ -109,15 +113,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
                 <RelativeLayout
-                    android:background="#E4E4EF"
+                    android:background="@color/background_gray_Default"
                     android:layout_marginTop="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="96dp"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:paddingTop="16dp"
-                        android:paddingBottom="96dp"
                         android:id="@+id/image_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -127,6 +131,8 @@
 
 
                 </RelativeLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
