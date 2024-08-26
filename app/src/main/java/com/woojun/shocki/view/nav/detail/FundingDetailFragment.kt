@@ -1,7 +1,9 @@
 package com.woojun.shocki.view.nav.detail
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.utils.Utils
 import com.google.android.material.tabs.TabLayout
 import com.woojun.shocki.R
 import com.woojun.shocki.databinding.FragmentFundingDetailBinding
@@ -40,6 +47,12 @@ class FundingDetailFragment : Fragment() {
 
         val adapter1 = ImageAdapter(listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3, R.drawable.banner4, R.drawable.banner5))
         val adapter2 = ChatAdapter(listOf())
+
+        binding.graphView.apply {
+            val dataSet = createLineDataSet()
+            val lineData = LineData(dataSet)
+            setupLineChart(this, lineData)
+        }
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
@@ -89,6 +102,39 @@ class FundingDetailFragment : Fragment() {
         }
 
 
+    }
+
+    private fun createLineDataSet(): LineDataSet {
+        val values = ArrayList<Entry>()
+        for (i in 0 until 10) {
+            values.add(Entry(i.toFloat(), (Math.random() * 100).toFloat()))
+        }
+
+        return LineDataSet(values, "").apply {
+            color = resources.getColor(R.color.background_accent_Default)
+            setDrawFilled(true)
+            setDrawCircles(false)
+            setDrawValues(false)
+            fillAlpha = 80
+            fillColor = resources.getColor(R.color.background_accent_Default)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+        }
+    }
+
+    private fun setupLineChart(lineChart: LineChart, lineData: LineData) {
+        lineChart.data = lineData
+        lineChart.description.isEnabled = false
+        lineChart.xAxis.position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
+        lineChart.axisRight.isEnabled = false
+        lineChart.axisLeft.setDrawGridLines(false)
+        lineChart.xAxis.setDrawGridLines(false)
+        lineChart.setTouchEnabled(false)
+        lineChart.isDragEnabled = false
+        lineChart.isScaleXEnabled = false
+        lineChart.isScaleYEnabled = false
+        lineChart.isHighlightPerDragEnabled = false
+        lineChart.legend.isEnabled = false
+        lineChart.invalidate()
     }
 
     private fun setupWindowInsets() {
