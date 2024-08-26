@@ -79,7 +79,6 @@ class MainActivity : BaseActivity() {
             }
 
         }
-
     }
 
     fun animationNavigate(id: Int) {
@@ -91,7 +90,7 @@ class MainActivity : BaseActivity() {
                 .setPopExitAnim(R.anim.anim_fade_out)
 
             if (clearBackStack) {
-                builder.setPopUpTo(navController.graph.startDestinationId, true)
+                builder.setPopUpTo(R.id.explore, true)
             }
 
             return builder.build()
@@ -99,7 +98,7 @@ class MainActivity : BaseActivity() {
 
         val (newPosition, enterAnim, clearBackStack) = when (id) {
             R.id.explore -> Triple(0, R.anim.anim_slide_in_from_left_fade_in, true)
-            R.id.search -> Triple(1,
+            R.id.store -> Triple(1,
                 if (recentPosition < 1) R.anim.anim_slide_in_from_right_fade_in else R.anim.anim_slide_in_from_left_fade_in,
                 true)
             R.id.funding -> Triple(2,
@@ -115,7 +114,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setStatusBar(id: Int) {
-        if (id != R.id.explore) {
+        if (id !in listOf(R.id.explore, R.id.funding_detail, R.id.storeDetail)) {
             val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val controller = window.insetsController
