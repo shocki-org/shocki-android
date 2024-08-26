@@ -3,11 +3,13 @@ package com.woojun.shocki.view.nav.explore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.woojun.shocki.R
 import com.woojun.shocki.data.Banner
 import com.woojun.shocki.data.BannerType
 import com.woojun.shocki.databinding.GridBannerItemBinding
 import com.woojun.shocki.databinding.LinearBannerItemBinding
 import com.woojun.shocki.databinding.TopBannerItemBinding
+import com.woojun.shocki.view.main.MainActivity
 
 class BannerViewPagerAdapter(
     private val bannerList: List<Banner>,
@@ -34,7 +36,11 @@ class BannerViewPagerAdapter(
             }
             3 -> {
                 val binding = GridBannerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                GridViewHolder(binding)
+                GridViewHolder(binding).also { hanler->
+                    binding.root.setOnClickListener {
+                        (binding.root.context as MainActivity).animationNavigate(R.id.funding)
+                    }
+                }
             }
             else -> throw IllegalArgumentException("Invalid viewType")
         }
