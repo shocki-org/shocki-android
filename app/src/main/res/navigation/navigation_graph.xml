@@ -50,7 +50,7 @@
         android:label="fragment_payment"
         tools:layout="@layout/fragment_payment" />
     <fragment
-        android:id="@+id/c"
+        android:id="@+id/funding_detail"
         android:name="com.woojun.shocki.view.nav.detail.FundingDetailFragment"
         android:label="fragment_funding_detail"
         tools:layout="@layout/fragment_funding_detail" />
