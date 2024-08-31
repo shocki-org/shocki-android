@@ -54,4 +54,9 @@
         android:name="com.woojun.shocki.view.nav.detail.FundingDetailFragment"
         android:label="fragment_funding_detail"
         tools:layout="@layout/fragment_funding_detail" />
+    <fragment
+        android:id="@+id/qnaFragment"
+        android:name="com.woojun.shocki.view.nav.detail.QnaFragment"
+        android:label="fragment_qna"
+        tools:layout="@layout/fragment_qna" />
 </navigation>
