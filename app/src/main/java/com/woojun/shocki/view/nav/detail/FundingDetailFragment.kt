@@ -16,13 +16,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.utils.Utils
 import com.google.android.material.tabs.TabLayout
 import com.woojun.shocki.R
+import com.woojun.shocki.data.Chat
+import com.woojun.shocki.data.ChatType
 import com.woojun.shocki.databinding.FragmentFundingDetailBinding
 
 class FundingDetailFragment : Fragment() {
@@ -46,7 +48,7 @@ class FundingDetailFragment : Fragment() {
         setupWindowInsets()
 
         val adapter1 = ImageAdapter(listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3, R.drawable.banner4, R.drawable.banner5))
-        val adapter2 = ChatAdapter(listOf())
+        val adapter2 = ChatAdapter(listOf(Chat("제품 구성품은 무엇이 있나요?", ChatType.Question), Chat("이것 저것 등등등이 들어가있습니다", ChatType.Answer), Chat("", ChatType.Button)))
 
         binding.graphView.apply {
             val dataSet = createLineDataSet()
@@ -75,17 +77,23 @@ class FundingDetailFragment : Fragment() {
                     when (tab.position) {
                         0 -> {
                             binding.defaultImage.visibility = View.GONE
-                            binding.recyclerView.visibility = View.VISIBLE
-                            binding.recyclerView.adapter = adapter1
+                            binding.recyclerView.apply {
+                                visibility = View.VISIBLE
+                                adapter = adapter1
+                                layoutManager = LinearLayoutManager(requireContext())
+                            }
                         }
                         1 -> {
                             if (adapter2.itemCount == 0) {
                                 binding.recyclerView.visibility = View.GONE
                                 binding.defaultImage.visibility = View.VISIBLE
                             } else {
-                                binding.recyclerView.visibility = View.VISIBLE
+                                binding.recyclerView.apply {
+                                    visibility = View.VISIBLE
+                                    adapter = adapter2
+                                    layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+                                }
                                 binding.defaultImage.visibility = View.GONE
-                                binding.recyclerView.adapter = adapter2
                             }
                         }
                     }
