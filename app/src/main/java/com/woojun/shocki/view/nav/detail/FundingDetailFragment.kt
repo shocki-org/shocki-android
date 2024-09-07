@@ -1,16 +1,22 @@
 package com.woojun.shocki.view.nav.detail
 
+import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.view.WindowInsetsController
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -21,6 +27,8 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.slider.Slider
 import com.google.android.material.tabs.TabLayout
 import com.woojun.shocki.R
 import com.woojun.shocki.data.Chat
@@ -63,6 +71,10 @@ class FundingDetailFragment : Fragment() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = adapter1
+        }
+
+        binding.buyButton.setOnClickListener {
+            tokenDialog(requireContext())
         }
 
         binding.tabLayout.apply {
@@ -111,6 +123,35 @@ class FundingDetailFragment : Fragment() {
 
 
     }
+
+    private fun tokenDialog(context: Context) {
+        val customDialog = Dialog(context)
+        customDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        customDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        customDialog.window?.setGravity(Gravity.BOTTOM)
+
+        customDialog.setContentView(R.layout.dialog_token)
+        customDialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+        customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
+            customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
+            customDialog.findViewById<TextView>(R.id.credit_text).text = "${value.toInt() * 10} 크레딧"
+        }
+
+        customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
+            customDialog.cancel()
+        }
+
+        customDialog.findViewById<MaterialCardView>(R.id.cancel_button).setOnClickListener {
+            customDialog.cancel()
+        }
+
+        customDialog.show()
+    }
+
 
     private fun createLineDataSet(): LineDataSet {
         val values = ArrayList<Entry>()
