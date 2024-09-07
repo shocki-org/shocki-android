@@ -39,6 +39,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/token_text"
                 style="@style/body_default"
                 android:textColor="@color/Text_Default_Primary"
                 android:layout_width="wrap_content"
@@ -46,6 +47,7 @@
                 android:text="23개 · " />
 
             <TextView
+                android:id="@+id/credit_text"
                 android:textColor="@color/Text_Status_Accent"
                 style="@style/body_default"
                 android:layout_width="wrap_content"
@@ -57,18 +59,24 @@
         </LinearLayout>
 
         <com.google.android.material.slider.Slider
+            android:stepSize="1"
+            app:trackHeight="3dp"
+            app:thumbHeight="20dp"
+            app:tickColor="@color/background_gray_Default"
             app:thumbColor="@color/background_accent_Default"
             app:trackColor="@color/background_gray_Default"
             android:layout_marginTop="4dp"
             android:id="@+id/slider"
+            android:valueFrom="0"
+            android:valueTo="100"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@+id/textView"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/text1" />
 
         <LinearLayout
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
