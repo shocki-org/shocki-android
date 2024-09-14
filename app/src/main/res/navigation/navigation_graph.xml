@@ -59,4 +59,9 @@
         android:name="com.woojun.shocki.view.nav.detail.QnaFragment"
         android:label="fragment_qna"
         tools:layout="@layout/fragment_qna" />
+    <fragment
+        android:id="@+id/setting"
+        android:name="com.woojun.shocki.view.nav.profile.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>
