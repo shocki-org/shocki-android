@@ -1,9 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
     tools:context=".view.nav.profile.SettingFragment">
 
+    <ImageView
+        android:id="@+id/back_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="6dp"
+        android:padding="12dp"
+        android:src="@drawable/left_arrow_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-</FrameLayout>
+    <TextView
+        app:layout_constraintTop_toTopOf="@id/back_button"
+        app:layout_constraintBottom_toBottomOf="@id/back_button"
+        app:layout_constraintStart_toEndOf="@id/back_button"
+        style="@style/body_default"
+        android:textColor="@color/Text_Default_Primary"
+        android:text="설정"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="계정"
+        android:textColor="#777783"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/back_button" />
+
+    <TextView
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:paddingVertical="8dp"
+        android:id="@+id/logout_button"
+        style="@style/body_accent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="계정 로그아웃"
+        android:textColor="@color/Text_Default_Primary"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <TextView
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:paddingVertical="8dp"
+        android:id="@+id/withdrawal_button"
+        style="@style/body_accent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="계정 탈퇴"
+        android:textColor="@color/Text_Default_Primary"
+        app:layout_constraintStart_toStartOf="@+id/logout_button"
+        app:layout_constraintTop_toBottomOf="@+id/logout_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
