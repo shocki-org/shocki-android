@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.woojun.shocki.R
 import com.woojun.shocki.databinding.FragmentProfileBinding
+import com.woojun.shocki.view.main.MainActivity
 
 class ProfileFragment : Fragment() {
 
@@ -26,6 +28,11 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.settingButton.setOnClickListener {
+            (requireActivity() as MainActivity).animationNavigate(R.id.setting)
+        }
+
     }
 
     override fun onDestroy() {
