@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="010-0000-0000"
-            android:maxEms="13"
+            android:maxLength="13"
             android:paddingHorizontal="12dp"
             android:paddingVertical="12dp"
             android:textColorHint="@color/Text_Status_Unselected" />
