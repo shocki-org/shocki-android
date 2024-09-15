@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbars="none"
-    android:background="@color/background_gray_Default"
+    android:background="@color/background"
     tools:context=".view.nav.search.SearchFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -49,14 +48,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:background="@color/background_gray_Border"
+            android:id="@+id/line"
+            app:layout_constraintTop_toBottomOf="@+id/back_button"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
         <androidx.recyclerview.widget.RecyclerView
-            android:background="@color/background_gray_Default"
             android:overScrollMode="never"
             android:nestedScrollingEnabled="false"
             android:id="@+id/search_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/back_button" />
+            app:layout_constraintTop_toBottomOf="@+id/line" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
