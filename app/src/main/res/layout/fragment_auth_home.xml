@@ -27,7 +27,7 @@
         <androidx.cardview.widget.CardView
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp"
-            android:id="@+id/email_sign_in_button"
+            android:id="@+id/phone_sign_in_button"
             app:cardCornerRadius="4dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="@color/background_accent_Default"
@@ -39,7 +39,7 @@
                 android:layout_gravity="center"
                 style="@style/caption_accent"
                 android:textColor="@color/white"
-                android:text="이메일로 회원가입"
+                android:text="전화번호로 회원가입"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -114,7 +114,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/email_login_button"
+            android:id="@+id/phone_login_button"
             android:paddingTop="4dp"
             android:layout_marginTop="4dp"
             android:paddingBottom="16dp"
