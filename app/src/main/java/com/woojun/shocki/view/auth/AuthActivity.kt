@@ -12,6 +12,12 @@ class AuthActivity : BaseActivity() {
     private lateinit var binding: ActivityAuthBinding
     private lateinit var navController: NavController
 
+    companion object {
+        const val KAKAO = "KAKAO"
+        const val GOOGLE = "GOOGLE"
+        const val PHONE = "PHONE"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
