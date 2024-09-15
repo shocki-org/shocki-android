@@ -4,11 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.woojun.shocki.R
-import com.woojun.shocki.data.Notification
-import com.woojun.shocki.data.NotificationColor
 import com.woojun.shocki.databinding.NotificationItemBinding
+import com.woojun.shocki.dto.AlertResponse
 
-class NotificationAdapter (private val notificationList: List<Notification>):
+class NotificationAdapter (private val notificationList: Array<AlertResponse>):
     RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationAdapter.ViewHolder {
         val binding = NotificationItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -22,15 +21,30 @@ class NotificationAdapter (private val notificationList: List<Notification>):
     override fun getItemCount(): Int = notificationList.size
 
     inner class ViewHolder(private val binding : NotificationItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : Notification){
+        fun bind(item : AlertResponse){
             val resources = binding.root.resources
-            val color = when (item.notificationColor) {
-                NotificationColor.Red -> resources.getColor(R.color.Text_Status_Negative)
-                NotificationColor.Green -> resources.getColor(R.color.Text_Status_Accent)
-                NotificationColor.Blue -> resources.getColor(R.color.Text_Status_Positive)
+
+            val (INFO, PAYBACK, FAILURE, SYSTEM) = listOf("INFO", "PAYBACK", "FAILURE", "SYSTEM")
+
+            val color = when (item.type) {
+                INFO -> {
+                    resources.getColor(R.color.Text_Status_Accent)
+                }
+                PAYBACK -> {
+                    resources.getColor(R.color.Text_Status_Positive)
+                }
+                FAILURE -> {
+                    resources.getColor(R.color.Text_Status_Negative)
+                }
+                SYSTEM -> {
+                    resources.getColor(R.color.Text_Status_Warning)
+                }
+                else -> {
+                    resources.getColor(R.color.Text_Status_Accent)
+                }
             }
             binding.typeText.apply {
-                this.text = item.notificationText
+                this.text = item.title
                 this.setTextColor(color)
             }
             binding.typeImage.setColorFilter(color)
