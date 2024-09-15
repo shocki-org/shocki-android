@@ -175,6 +175,7 @@ class ExploreFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        autoScrollStop()
         _binding = null
     }
 
