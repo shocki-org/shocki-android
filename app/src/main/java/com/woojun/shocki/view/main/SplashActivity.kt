@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.woojun.shocki.R
+import com.woojun.shocki.database.TokenManager
+import com.woojun.shocki.view.auth.AuthActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,8 +19,13 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         CoroutineScope(Dispatchers.IO).launch {
+            val intent = if (TokenManager.accessToken != "") {
+                Intent(this@SplashActivity, MainActivity::class.java)
+            } else {
+                Intent(this@SplashActivity, AuthActivity::class.java)
+            }
             sleep(2000)
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            startActivity(intent)
             finishAffinity()
         }
     }
