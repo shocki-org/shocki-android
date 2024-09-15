@@ -28,7 +28,7 @@ object Util {
     }
 
     fun formatPhoneNumber(phone: String): String {
-        return phone.replaceFirst("010", "+82").replace("-", "")
+        return phone.replaceFirst("010", "+8210").replace("-", "")
     }
 
     private suspend fun postSignIn(context: Context, request: PostLoginRequest): AccessTokenResponse? {
