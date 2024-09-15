@@ -8,6 +8,8 @@ import com.woojun.shocki.dto.PhoneSecondRequest
 import com.woojun.shocki.dto.PhoneSecondResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface RetrofitAPI {
@@ -31,5 +33,10 @@ interface RetrofitAPI {
     suspend fun phoneFinal(
         @Body body: PhoneFinalRequest
     ): Response<AccessTokenResponse>
+
+    @DELETE("user/delete")
+    suspend fun deleteUser(
+        @Header("Authorization") authorization: String,
+    ): Response<Unit>
 
 }

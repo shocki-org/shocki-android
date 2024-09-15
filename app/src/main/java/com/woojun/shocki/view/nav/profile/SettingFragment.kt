@@ -1,11 +1,9 @@
 package com.woojun.shocki.view.nav.profile
 
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.media.session.MediaSession.Token
 import android.os.Bundle
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -17,12 +15,18 @@ import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.woojun.shocki.R
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentSettingBinding
+import com.woojun.shocki.network.RetrofitAPI
+import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.view.auth.AuthActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SettingFragment : Fragment() {
 
@@ -58,9 +62,16 @@ class SettingFragment : Fragment() {
 
         binding.withdrawalButton.setOnClickListener {
             createDialog("계정에서 탈퇴하시겠어요?", "계정에서 탈퇴 할 시,\n" + "계정을 생성 할 때까지 Shocki를 사용하지 못해요") {
-                TokenManager.accessToken = ""
-                startActivity(Intent(requireContext(), AuthActivity::class.java))
-                requireActivity().finishAffinity()
+                lifecycleScope.launch {
+                    val isSuccess = deleteUser()
+                    if (isSuccess) {
+                        TokenManager.accessToken = ""
+                        startActivity(Intent(requireContext(), AuthActivity::class.java))
+                        requireActivity().finishAffinity()
+                    } else {
+                        Toast.makeText(requireContext(), "회원 탈퇴를 실패하셨습니다", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 
@@ -96,6 +107,18 @@ class SettingFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private suspend fun deleteUser(): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.deleteUser("bearer ${TokenManager.accessToken}")
+                response.isSuccessful
+            }
+        } catch (e: Exception) {
+            false
+        }
     }
 
 }
