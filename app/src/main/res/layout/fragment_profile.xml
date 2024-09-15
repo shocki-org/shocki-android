@@ -35,15 +35,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/asset_box"
             app:layout_constraintTop_toBottomOf="@id/text1"
             android:layout_marginTop="24dp"
             android:layout_marginHorizontal="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
-            app:strokeColor="#E4E4EF"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/background_accent_Default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -52,6 +51,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:textColor="@color/white"
                     style="@style/caption_default"
                     android:layout_marginTop="12dp"
                     android:layout_marginStart="12dp"
@@ -68,9 +68,8 @@
                     style="@style/heading_accent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:text="12321011209"
-                    android:textColor="@color/background_accent_Default"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/name_text"
                     app:layout_constraintTop_toBottomOf="@id/name_text" />
@@ -81,7 +80,7 @@
                     app:layout_constraintTop_toTopOf="@id/asset_text"
                     app:layout_constraintBottom_toBottomOf="@id/asset_text"
                     style="@style/heading_accent"
-                    android:textColor="@color/Text_Default_Primary"
+                    android:textColor="@color/white"
                     android:text="크레딧"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -91,89 +90,156 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/credit_box"
-            app:layout_constraintTop_toBottomOf="@id/asset_box"
+        <LinearLayout
             android:layout_marginTop="4dp"
             android:layout_marginHorizontal="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#E4E4EF"
-            app:cardBackgroundColor="@color/white"
+            android:id="@+id/credit_box"
+            app:layout_constraintTop_toBottomOf="@id/asset_box"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.google.android.material.card.MaterialCardView
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="@color/background_gray_Border"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    style="@style/caption_default"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="12dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:id="@+id/text2"
-                    android:text="현재 보유 크레딧"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <TextView
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="12dp"
+                        android:id="@+id/text2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="12dp"
+                        style="@style/caption_default"
+                        android:textColor="@color/Text_Default_Quaternary"
+                        android:text="현재 보유 크레딧"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:layout_marginBottom="12dp"
-                    android:id="@+id/credit_text"
-                    style="@style/body_accent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="12321011209"
-                    android:textColor="@color/background_accent_Default"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/text2"
-                    app:layout_constraintTop_toBottomOf="@id/text2" />
+                    <TextView
+                        android:layout_marginBottom="12dp"
+                        android:id="@+id/now_credit_text"
+                        style="@style/body_accent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1,232,101"
+                        android:textColor="@color/Text_Status_Accent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/text2"
+                        app:layout_constraintTop_toBottomOf="@id/text2" />
 
-                <TextView
-                    android:layout_marginStart="4dp"
-                    app:layout_constraintStart_toEndOf="@id/credit_text"
-                    app:layout_constraintTop_toTopOf="@id/credit_text"
-                    app:layout_constraintBottom_toBottomOf="@id/credit_text"
-                    style="@style/body_accent"
-                    android:textColor="@color/Text_Default_Primary"
-                    android:text="크레딧"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        style="@style/body_accent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="크레딧"
+                        android:textColor="@color/Text_Default_Primary"
+                        app:layout_constraintBottom_toBottomOf="@+id/now_credit_text"
+                        app:layout_constraintStart_toEndOf="@id/now_credit_text"
+                        app:layout_constraintTop_toTopOf="@+id/now_credit_text" />
 
 
-        </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="@color/background_gray_Border"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="12dp"
+                        android:id="@+id/text3"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="12dp"
+                        style="@style/caption_default"
+                        android:textColor="@color/Text_Default_Quaternary"
+                        android:text="정산 예정 금액"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_marginBottom="12dp"
+                        android:id="@+id/future_credit_text"
+                        style="@style/body_accent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1,232,101"
+                        android:textColor="@color/Text_Status_Accent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/text3"
+                        app:layout_constraintTop_toBottomOf="@id/text3" />
+
+                    <TextView
+                        style="@style/body_accent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="크레딧"
+                        android:textColor="@color/Text_Default_Primary"
+                        app:layout_constraintBottom_toBottomOf="@+id/future_credit_text"
+                        app:layout_constraintStart_toEndOf="@id/future_credit_text"
+                        app:layout_constraintTop_toTopOf="@+id/future_credit_text" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:id="@+id/line"
+            app:layout_constraintTop_toBottomOf="@id/credit_box"
+            android:background="#E4E4EF"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
         <TextView
             app:layout_constraintStart_toStartOf="@id/credit_box"
-            android:layout_marginTop="40dp"
-            app:layout_constraintTop_toBottomOf="@id/credit_box"
+            android:layout_marginTop="28dp"
+            app:layout_constraintTop_toBottomOf="@id/line"
             android:text="관심 품목"
             android:id="@+id/pin_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.viewpager.widget.ViewPager
+            android:layout_marginTop="8dp"
             android:id="@+id/pin_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never"
-            android:paddingTop="8dp"
+            android:layout_height="200dp"
             app:layout_constraintTop_toBottomOf="@+id/pin_text" />
 
         <TextView
             app:layout_constraintStart_toStartOf="@id/pin_text"
             android:layout_marginTop="40dp"
             app:layout_constraintTop_toBottomOf="@id/pin_list"
-            android:text="보유 토큰"
+            android:text="보유중인 토큰"
             android:id="@+id/token_assets_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
