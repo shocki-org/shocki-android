@@ -66,13 +66,13 @@ class LoginFragment : Fragment() {
             }
         }
 
-        binding.emailInput.addTextChangedListener(object : TextWatcher {
+        binding.phoneInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
             override fun afterTextChanged(editable: Editable) {
-                if (binding.emailInput.text.isNotEmpty()) {
+                if (binding.phoneInput.text.isNotEmpty()) {
                     binding.noneButton.visibility = View.GONE
                     binding.finishButton.visibility = View.VISIBLE
                 } else {

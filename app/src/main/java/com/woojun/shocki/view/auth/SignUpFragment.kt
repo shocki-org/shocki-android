@@ -74,10 +74,10 @@ class SignUpFragment : Fragment() {
             nextInputAction()
         }
 
-        binding.emailInput.apply {
+        binding.phoneInput.apply {
             this.setOnEditorActionListener(object : TextView.OnEditorActionListener{
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                    if (actionId == EditorInfo.IME_ACTION_GO && binding.emailInput.text.isNotEmpty()){
+                    if (actionId == EditorInfo.IME_ACTION_GO && binding.phoneInput.text.isNotEmpty()){
                         nextInputAction()
                         binding.codeInput.requestFocus()
                         inputMethodManager.showSoftInput(binding.codeInput, InputMethodManager.SHOW_IMPLICIT)
@@ -90,7 +90,7 @@ class SignUpFragment : Fragment() {
                 override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 }
                 override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                    if (binding.emailText.text.isNotEmpty()) {
+                    if (binding.phoneText.text.isNotEmpty()) {
                         binding.nextButton.visibility = View.VISIBLE
                         binding.noneButton.visibility = View.GONE
                     } else {
@@ -177,11 +177,11 @@ class SignUpFragment : Fragment() {
     fun nextInputAction() {
         when(index) {
             0 -> {
-                if (checkEmail(binding.emailInput.text.toString())) {
-                    showViewWithAnimation(binding.emailBox, requireContext())
+                if (checkEmail(binding.phoneInput.text.toString())) {
+                    showViewWithAnimation(binding.phoneBox, requireContext())
                     showViewWithAnimation(binding.codeBox, requireContext())
 
-                    binding.emailInput.isEnabled = false
+                    binding.phoneInput.isEnabled = false
                     switchText(index)
 
                     index = 1
@@ -191,7 +191,7 @@ class SignUpFragment : Fragment() {
             }
             1 -> {
                 if (checkCode(binding.codeInput.text.toString())) {
-                    showViewWithAnimation(binding.emailBox, requireContext())
+                    showViewWithAnimation(binding.phoneBox, requireContext())
                     showViewWithAnimation(binding.codeBox, requireContext())
                     showViewWithAnimation(binding.passwordBox, requireContext())
 
