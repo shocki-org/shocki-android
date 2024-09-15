@@ -17,6 +17,11 @@ android {
 
     val baseUrl = localProperties.getProperty("baseUrl") ?: ""
 
+    val KAKAO_NATIVE_KEY = localProperties.getProperty("KAKAO_NATIVE_KEY") ?: ""
+    val MANIFESTS_KAKAO_NATIVE_KEY = localProperties.getProperty("MANIFESTS_KAKAO_NATIVE_KEY") ?: ""
+
+    val CLIENT_ID = localProperties.getProperty("CLIENT_ID") ?: ""
+
     defaultConfig {
         applicationId = "com.woojun.shocki"
         minSdk = 29
@@ -28,6 +33,14 @@ android {
 
         buildConfigField("String", "baseUrl", "\"$baseUrl\"")
         resValue("string", "baseUrl", baseUrl)
+
+        buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$KAKAO_NATIVE_KEY\"")
+        resValue("string", "KAKAO_NATIVE_KEY", KAKAO_NATIVE_KEY)
+        buildConfigField("String", "MANIFESTS_KAKAO_NATIVE_KEY", "\"$MANIFESTS_KAKAO_NATIVE_KEY\"")
+        resValue("string", "MANIFESTS_KAKAO_NATIVE_KEY", MANIFESTS_KAKAO_NATIVE_KEY)
+
+        buildConfigField("String", "CLIENT_ID", "\"$CLIENT_ID\"")
+        resValue("string", "CLIENT_ID", CLIENT_ID)
     }
 
     buildTypes {
@@ -73,4 +86,10 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.converter.scalars)
+
+    implementation(libs.v2.all)
+
+    implementation(libs.googleid)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.androidx.credentials)
 }
