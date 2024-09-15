@@ -52,6 +52,8 @@ class SignUpFragment : Fragment() {
     private var phone = ""
     private var token = ""
 
+    var lastCallTime = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -198,6 +200,11 @@ class SignUpFragment : Fragment() {
                 val response = retrofitAPI.phoneFirst(PhoneFirstRequest(phone))
                 if (response.isSuccessful) {
                     true
+                } else if (response.code() == 409) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "이미 가입된 번호입니다", Toast.LENGTH_SHORT).show()
+                    }
+                    null
                 } else {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(requireContext(), "코드 전송을 실패하였습니다", Toast.LENGTH_SHORT).show()
@@ -257,57 +264,64 @@ class SignUpFragment : Fragment() {
         }
     }
 
-    fun nextInputAction() {
-        lifecycleScope.launch {
-            when(index) {
-                0 -> {
-                    val phone = binding.phoneInput.text.toString()
-                    if (checkPhone(phone)) {
-                        postCode(formatPhoneNumber(phone))?.let{
-                            showViewWithAnimation(binding.phoneBox, requireContext())
-                            showViewWithAnimation(binding.codeBox, requireContext())
+    private fun nextInputAction() {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastCallTime >= 3000) {
+            lastCallTime = currentTime
+            lifecycleScope.launch {
+                when(index) {
+                    0 -> {
+                        val phone = binding.phoneInput.text.toString()
+                        if (checkPhone(phone)) {
+                            postCode(formatPhoneNumber(phone))?.let{
+                                showViewWithAnimation(binding.phoneBox, requireContext())
+                                showViewWithAnimation(binding.codeBox, requireContext())
 
-                            binding.phoneInput.isEnabled = false
-                            switchText(index)
+                                binding.phoneInput.isEnabled = false
+                                binding.phoneText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
+                                switchText(index)
 
-                            index = 1
+                                index = 1
+                            }
+                        } else {
+                            Toast.makeText(requireContext(), "유효한 전화번호가 아닙니다", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(requireContext(), "유효한 전화번호가 아닙니다", Toast.LENGTH_SHORT).show()
                     }
-                }
-                1 -> {
-                    val phone = binding.phoneInput.text.toString()
-                    val code = binding.codeInput.text.toString()
+                    1 -> {
+                        val phone = formatPhoneNumber(binding.phoneInput.text.toString())
+                        val code = binding.codeInput.text.toString()
 
-                    if (code.isNotEmpty()) {
-                        checkCode(code, phone)?.let {
-                            this@SignUpFragment.phone = phone
-                            token = it.token
+                        if (code.isNotEmpty()) {
+                            checkCode(code, phone)?.let {
+                                this@SignUpFragment.phone = phone
+                                token = it.token
 
-                            showViewWithAnimation(binding.phoneBox, requireContext())
-                            showViewWithAnimation(binding.codeBox, requireContext())
-                            showViewWithAnimation(binding.passwordBox, requireContext())
+                                showViewWithAnimation(binding.phoneBox, requireContext())
+                                showViewWithAnimation(binding.codeBox, requireContext())
+                                showViewWithAnimation(binding.passwordBox, requireContext())
 
-                            switchText(index)
-                            binding.codeInput.isEnabled = false
+                                switchText(index)
+                                binding.codeInput.isEnabled = false
+                                binding.codeText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
 
-                            index = 2
+
+                                index = 2
+                            }
+                        } else {
+                            Toast.makeText(requireContext(), "유효한 코드가 아닙니다", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(requireContext(), "유효한 코드가 아닙니다", Toast.LENGTH_SHORT).show()
                     }
-                }
-                2 -> {
-                    val password = binding.passwordInput.text.toString()
-                    if (checkPassword(password)) {
-                        signUp(password)?.let {
-                            TokenManager.accessToken = it.accessToken
-                            startActivity(Intent(requireActivity(), MainActivity::class.java))
-                            requireActivity().finishAffinity()
+                    2 -> {
+                        val password = binding.passwordInput.text.toString()
+                        if (checkPassword(password)) {
+                            signUp(password)?.let {
+                                TokenManager.accessToken = it.accessToken
+                                startActivity(Intent(requireActivity(), MainActivity::class.java))
+                                requireActivity().finishAffinity()
+                            }
+                        } else {
+                            Toast.makeText(requireContext(), "유효한 비밀번호가 아닙니다", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(requireContext(), "유효한 비밀번호가 아닙니다", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
