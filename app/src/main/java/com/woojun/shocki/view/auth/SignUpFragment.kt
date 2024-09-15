@@ -3,11 +3,11 @@ package com.woojun.shocki.view.auth
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +17,29 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.woojun.shocki.R
+import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentSignUpBinding
-import com.woojun.shocki.view.main.MainActivity
-import com.woojun.shocki.util.Util.checkEmail
+import com.woojun.shocki.dto.AccessTokenResponse
+import com.woojun.shocki.dto.PhoneFinalRequest
+import com.woojun.shocki.dto.PhoneFirstRequest
+import com.woojun.shocki.dto.PhoneSecondRequest
+import com.woojun.shocki.dto.PhoneSecondResponse
+import com.woojun.shocki.dto.PostLoginRequest
+import com.woojun.shocki.network.RetrofitAPI
+import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.Util.checkPassword
+import com.woojun.shocki.util.Util.checkPhone
+import com.woojun.shocki.util.Util.formatPhoneNumber
+import com.woojun.shocki.util.Util.saveToken
+import com.woojun.shocki.view.main.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class SignUpFragment : Fragment() {
 
@@ -31,6 +48,9 @@ class SignUpFragment : Fragment() {
 
     private var index = 0
     private var passwordToggle = true
+
+    private var phone = ""
+    private var token = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,14 +77,14 @@ class SignUpFragment : Fragment() {
             if (!passwordToggle) {
                 (it as ImageView).setImageResource(R.drawable.password_hide_icon)
                 binding.passwordInput.apply {
-                    this.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                    this.setSelection(this.text.length)
+                    inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    setSelection(text.length)
                 }
             } else {
                 (it as ImageView).setImageResource(R.drawable.password_show_icon)
                 binding.passwordInput.apply {
-                    this.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                    this.setSelection(this.text.length)
+                    inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    setSelection(text.length)
                 }
             }
             passwordToggle = !passwordToggle
@@ -75,7 +95,7 @@ class SignUpFragment : Fragment() {
         }
 
         binding.phoneInput.apply {
-            this.setOnEditorActionListener(object : TextView.OnEditorActionListener{
+            setOnEditorActionListener(object : TextView.OnEditorActionListener{
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_GO && binding.phoneInput.text.isNotEmpty()){
                         nextInputAction()
@@ -86,7 +106,8 @@ class SignUpFragment : Fragment() {
                     return false
                 }
             })
-            this.addTextChangedListener(object : TextWatcher {
+            addTextChangedListener(PhoneNumberFormattingTextWatcher())
+            addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 }
                 override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
@@ -104,7 +125,7 @@ class SignUpFragment : Fragment() {
         }
 
         binding.codeInput.apply {
-            this.setOnEditorActionListener(object : TextView.OnEditorActionListener{
+            setOnEditorActionListener(object : TextView.OnEditorActionListener{
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_GO && binding.codeInput.text.isNotEmpty()){
                         nextInputAction()
@@ -115,7 +136,7 @@ class SignUpFragment : Fragment() {
                     return false
                 }
             })
-            this.addTextChangedListener(object : TextWatcher {
+            addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 }
                 override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
@@ -133,7 +154,7 @@ class SignUpFragment : Fragment() {
         }
 
         binding.passwordInput.apply {
-            this.setOnEditorActionListener(object : TextView.OnEditorActionListener{
+            setOnEditorActionListener(object : TextView.OnEditorActionListener{
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_DONE && binding.passwordInput.text.isNotEmpty()){
                         nextInputAction()
@@ -142,7 +163,7 @@ class SignUpFragment : Fragment() {
                     return false
                 }
             })
-            this.addTextChangedListener(object : TextWatcher {
+            addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 }
                 override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
@@ -170,45 +191,124 @@ class SignUpFragment : Fragment() {
         binding.textView.setText(texts[index])
     }
 
-    private fun checkCode(code: String): Boolean {
-        return code.isNotEmpty()
+    private suspend fun postCode(phone: String): Boolean? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.phoneFirst(PhoneFirstRequest(phone))
+                if (response.isSuccessful) {
+                    true
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "코드 전송을 실패하였습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), "코드 전송을 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
+            null
+        }
+    }
+
+    private suspend fun checkCode(code: String, phone: String): PhoneSecondResponse? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.phoneSecond(PhoneSecondRequest(code, phone))
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "코드 확인을 실패하였습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), "코드 확인을 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
+            null
+        }
+    }
+
+    private suspend fun signUp(password: String): AccessTokenResponse? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.phoneFinal(PhoneFinalRequest(password, token))
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "회원가입을 실패하였습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), "회원가입을 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
+            null
+        }
     }
 
     fun nextInputAction() {
-        when(index) {
-            0 -> {
-                if (checkEmail(binding.phoneInput.text.toString())) {
-                    showViewWithAnimation(binding.phoneBox, requireContext())
-                    showViewWithAnimation(binding.codeBox, requireContext())
+        lifecycleScope.launch {
+            when(index) {
+                0 -> {
+                    val phone = binding.phoneInput.text.toString()
+                    if (checkPhone(phone)) {
+                        postCode(formatPhoneNumber(phone))?.let{
+                            showViewWithAnimation(binding.phoneBox, requireContext())
+                            showViewWithAnimation(binding.codeBox, requireContext())
 
-                    binding.phoneInput.isEnabled = false
-                    switchText(index)
+                            binding.phoneInput.isEnabled = false
+                            switchText(index)
 
-                    index = 1
-                } else {
-                    Toast.makeText(requireContext(), "유효한 이메일 주소가 아닙니다", Toast.LENGTH_SHORT).show()
+                            index = 1
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "유효한 전화번호가 아닙니다", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
-            1 -> {
-                if (checkCode(binding.codeInput.text.toString())) {
-                    showViewWithAnimation(binding.phoneBox, requireContext())
-                    showViewWithAnimation(binding.codeBox, requireContext())
-                    showViewWithAnimation(binding.passwordBox, requireContext())
+                1 -> {
+                    val phone = binding.phoneInput.text.toString()
+                    val code = binding.codeInput.text.toString()
 
-                    switchText(index)
-                    binding.codeInput.isEnabled = false
+                    if (code.isNotEmpty()) {
+                        checkCode(code, phone)?.let {
+                            this@SignUpFragment.phone = phone
+                            token = it.token
 
-                    index = 2
-                } else {
-                    Toast.makeText(requireContext(), "유효한 코드 아닙니다", Toast.LENGTH_SHORT).show()
+                            showViewWithAnimation(binding.phoneBox, requireContext())
+                            showViewWithAnimation(binding.codeBox, requireContext())
+                            showViewWithAnimation(binding.passwordBox, requireContext())
+
+                            switchText(index)
+                            binding.codeInput.isEnabled = false
+
+                            index = 2
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "유효한 코드가 아닙니다", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
-            2 -> {
-                if (checkPassword(binding.passwordInput.text.toString())) {
-                    startActivity(Intent(requireActivity(), MainActivity::class.java))
-                    requireActivity().finishAffinity()
-                } else {
-                    Toast.makeText(requireContext(), "유효한 비밀번호가 아닙니다", Toast.LENGTH_SHORT).show()
+                2 -> {
+                    val password = binding.passwordInput.text.toString()
+                    if (checkPassword(password)) {
+                        signUp(password)?.let {
+                            TokenManager.accessToken = it.accessToken
+                            startActivity(Intent(requireActivity(), MainActivity::class.java))
+                            requireActivity().finishAffinity()
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "유효한 비밀번호가 아닙니다", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -224,6 +324,5 @@ class SignUpFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
 
 }
