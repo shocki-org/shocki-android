@@ -53,4 +53,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.mpandroidchart)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.converter.scalars)
 }
