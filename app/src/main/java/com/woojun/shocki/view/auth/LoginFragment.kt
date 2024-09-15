@@ -111,8 +111,8 @@ class LoginFragment : Fragment() {
         return binding.passwordInput.text.isNotEmpty() && binding.phoneInput.text.isNotEmpty()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 

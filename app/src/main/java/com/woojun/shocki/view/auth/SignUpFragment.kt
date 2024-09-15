@@ -334,8 +334,8 @@ class SignUpFragment : Fragment() {
         view.visibility = View.VISIBLE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 

@@ -173,6 +173,11 @@ class ExploreFragment : Fragment() {
         autoScrollStop()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private class BannerHandler(fragment: ExploreFragment) : Handler(Looper.getMainLooper()) {
         private val fragmentRef = WeakReference(fragment)
 
