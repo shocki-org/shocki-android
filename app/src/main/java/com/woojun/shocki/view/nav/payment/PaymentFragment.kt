@@ -29,6 +29,7 @@ class PaymentFragment : Fragment() {
 
     private var paymentOption: Int? = null
     private var index = 0
+    private var isAllowCredit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,16 +149,6 @@ class PaymentFragment : Fragment() {
             0 -> {
                 val defaultColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.Text_Status_Unable))
                 when(paymentOption) {
-                    R.id.token -> {
-                        binding.token.apply {
-                            this.isEnabled = false
-                            this.buttonTintList = defaultColor
-                            this.visibility = View.VISIBLE
-                        }
-
-                        binding.credit.visibility = View.GONE
-                        binding.cash.visibility = View.GONE
-                    }
                     R.id.credit -> {
                         binding.credit.apply {
                             this.isEnabled = false
@@ -165,7 +156,6 @@ class PaymentFragment : Fragment() {
                             this.visibility = View.VISIBLE
                         }
 
-                        binding.token.visibility = View.GONE
                         binding.cash.visibility = View.GONE
                     }
                     R.id.cash -> {
@@ -176,7 +166,6 @@ class PaymentFragment : Fragment() {
                         }
 
                         binding.credit.visibility = View.GONE
-                        binding.token.visibility = View.GONE
                     }
                 }
 
@@ -234,23 +223,36 @@ class PaymentFragment : Fragment() {
         val defaultColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_gray_Border))
         val selectedColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_accent_Default))
 
-        fun initRadioButtonColor() {
+        fun initRadioButton() {
             for (i in 0 until binding.radioGroup.childCount) {
                 val radioButton = binding.radioGroup.getChildAt(i) as RadioButton
                 radioButton.buttonTintList = defaultColor
+                radioButton.setTextColor(resources.getColor(R.color.Text_Status_Unselected))
+            }
+            if (!isAllowCredit) {
+                binding.credit.apply {
+                    isEnabled = false
+                    setTextColor(resources.getColor(R.color.Text_Status_Unable))
+                }
+
             }
         }
 
         binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
-            initRadioButtonColor()
+            initRadioButton()
             when(checkedId) {
-                R.id.token -> binding.token.buttonTintList = selectedColor
-                R.id.credit -> binding.credit.buttonTintList = selectedColor
-                R.id.cash -> binding.cash.buttonTintList = selectedColor
+                R.id.credit -> binding.credit.apply {
+                    buttonTintList = selectedColor
+                    setTextColor(resources.getColor(R.color.Text_Default_Primary))
+                }
+                R.id.cash -> binding.cash.apply {
+                    buttonTintList = selectedColor
+                    setTextColor(resources.getColor(R.color.Text_Default_Primary))
+                }
             }
             paymentOption = checkedId
         }
-        initRadioButtonColor()
+        initRadioButton()
     }
 
     override fun onDestroyView() {

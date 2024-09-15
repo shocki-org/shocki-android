@@ -209,15 +209,6 @@
 
                 <RadioButton
                     android:background="@null"
-                    android:id="@+id/token"
-                    android:textColor="@color/Text_Default_Primary"
-                    style="@style/body_accent"
-                    android:text="토큰으로 구매하기"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <RadioButton
-                    android:background="@null"
                     android:textColor="@color/Text_Default_Primary"
                     style="@style/body_accent"
                     android:id="@+id/credit"
