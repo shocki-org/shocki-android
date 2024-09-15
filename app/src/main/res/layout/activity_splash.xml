@@ -4,12 +4,12 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/background_accent_Default"
     android:gravity="center"
     tools:context=".view.main.SplashActivity">
 
     <ImageView
-        android:src="@drawable/logo_icon"
+        android:src="@drawable/image_logo_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
