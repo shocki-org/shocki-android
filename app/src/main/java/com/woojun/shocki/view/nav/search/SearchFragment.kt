@@ -1,21 +1,34 @@
 package com.woojun.shocki.view.nav.search
 
 import android.os.Bundle
-import android.view.KeyEvent
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.woojun.shocki.data.SearchType
+import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentSearchBinding
+import com.woojun.shocki.dto.SearchResponse
+import com.woojun.shocki.network.RetrofitAPI
+import com.woojun.shocki.network.RetrofitClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+    private val queryFlow = MutableStateFlow("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,22 +50,68 @@ class SearchFragment : Fragment() {
         }
 
         binding.searchList.apply {
-            this.layoutManager = LinearLayoutManager(requireContext())
-            this.adapter = SearchAdapter(listOf(""))
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = SearchAdapter(arrayOf(), SearchType.Default)
         }
 
         binding.searchInput.apply {
-            this.setOnEditorActionListener(object : TextView.OnEditorActionListener{
-                override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH && binding.searchInput.text.isNotEmpty()){
-                        binding.searchList.adapter = SearchAdapter(listOf(binding.searchInput.text.toString()))
-                        return true
-                    }
-                    return false
+            this.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH && text.isNotEmpty()) {
+                    queryFlow.value = text.toString()
+                    true
+                } else {
+                    false
+                }
+            }
+
+            this.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    queryFlow.value = s.toString()
+                }
+
+                override fun afterTextChanged(s: Editable?) {
                 }
             })
         }
 
+        lifecycleScope.launch {
+            queryFlow
+                .debounce(300)
+                .collectLatest { query ->
+                    if (query.isNotEmpty()) {
+                        val searchArray = getSearch(query)
+                        if (searchArray != null) updateRecyclerView(searchArray)
+                    }
+                }
+        }
+
+    }
+
+    private suspend fun getSearch(keyword: String): Array<SearchResponse>? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.getSearch("bearer ${TokenManager.accessToken}", keyword)
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun updateRecyclerView(searchResponse: Array<SearchResponse>) {
+        if (searchResponse.isEmpty()) {
+            binding.searchList.adapter = SearchAdapter(arrayOf(), SearchType.None)
+        } else {
+            binding.searchList.adapter = SearchAdapter(searchResponse, SearchType.Item)
+        }
     }
 
     override fun onDestroyView() {

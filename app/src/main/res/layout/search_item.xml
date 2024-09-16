@@ -38,7 +38,7 @@
     <TextView
         android:textColor="@color/Text_Default_Secondary"
         android:text="위 입력창을 통해"
-        android:id="@+id/title_text"
+        android:id="@+id/default_title_text"
         style="@style/body_default"
         android:layout_width="0dp"
         android:layout_height="24dp"
@@ -52,7 +52,7 @@
     <TextView
         android:textColor="@color/Text_Default_Secondary"
         android:text="찾고 싶은 상품을 입력해주세요"
-        android:id="@+id/body_text"
+        android:id="@+id/default_body_text"
         style="@style/body_default"
         android:layout_width="0dp"
         android:layout_height="24dp"
@@ -60,7 +60,49 @@
         android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="@+id/materialCardView2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/default_title_text"
+        app:layout_constraintTop_toBottomOf="@+id/default_title_text" />
+
+    <TextView
+        android:visibility="gone"
+        android:textColor="@color/Text_Default_Secondary"
+        android:text="어차피 알아야 할 핵심 UI 디자인 시스템"
+        android:id="@+id/title_text"
+        style="@style/body_accent"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:ellipsize="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/materialCardView2"
+        app:layout_constraintTop_toTopOf="@+id/materialCardView2" />
+
+    <TextView
+        android:visibility="gone"
+        android:gravity="center"
+        android:textColor="@color/background_accent_Default"
+        android:text="12321011209"
+        android:id="@+id/credit_number_text"
+        style="@style/body_accent"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/materialCardView2"
         app:layout_constraintStart_toStartOf="@id/title_text"
         app:layout_constraintTop_toBottomOf="@+id/title_text" />
+
+    <TextView
+        android:visibility="gone"
+        android:layout_marginStart="4dp"
+        android:gravity="center"
+        android:id="@+id/credit_text"
+        style="@style/body_accent"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:text="크레딧"
+        android:textColor="@color/Text_Default_Primary"
+        app:layout_constraintTop_toTopOf="@id/credit_number_text"
+        app:layout_constraintBottom_toBottomOf="@+id/credit_number_text"
+        app:layout_constraintStart_toEndOf="@+id/credit_number_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

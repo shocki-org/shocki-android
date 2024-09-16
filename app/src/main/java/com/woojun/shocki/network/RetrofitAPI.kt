@@ -7,12 +7,14 @@ import com.woojun.shocki.dto.PhoneFinalRequest
 import com.woojun.shocki.dto.PhoneFirstRequest
 import com.woojun.shocki.dto.PhoneSecondRequest
 import com.woojun.shocki.dto.PhoneSecondResponse
+import com.woojun.shocki.dto.SearchResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface RetrofitAPI {
 
@@ -46,5 +48,10 @@ interface RetrofitAPI {
         @Header("Authorization") authorization: String,
     ): Response<Array<AlertResponse>>
 
+    @GET("/product/search")
+    suspend fun getSearch(
+        @Header("Authorization") authorization: String,
+        @Query("keyword") keyword: String
+    ): Response<Array<SearchResponse>>
 
 }

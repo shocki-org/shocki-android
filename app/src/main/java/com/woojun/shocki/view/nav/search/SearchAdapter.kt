@@ -1,12 +1,16 @@
 package com.woojun.shocki.view.nav.search
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.woojun.shocki.R
+import com.woojun.shocki.data.SearchType
 import com.woojun.shocki.databinding.SearchItemBinding
+import com.woojun.shocki.dto.SearchResponse
 
-class SearchAdapter (private val searchList: List<String>):
+class SearchAdapter (private val searchList: Array<SearchResponse>, private val searchType: SearchType):
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
@@ -20,19 +24,67 @@ class SearchAdapter (private val searchList: List<String>):
         holder.bind(searchList[position])
     }
 
-    override fun getItemCount(): Int = searchList.size
+    override fun getItemCount(): Int {
+        return if (searchList.isEmpty()) {
+            1
+        } else {
+            searchList.size
+        }
+    }
 
     inner class ViewHolder(private val binding : SearchItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(title: String){
-            if (title.isNotEmpty()) {
-                binding.defaultIcon.setImageResource(R.drawable.null_search_icon)
-                binding.titleText.apply {
-                    this.text = title
-                    this.setTextColor(resources.getColor(R.color.Text_Default_Primary))
-                    this.typeface = resources.getFont(R.font.wanted_semibold)
+        fun bind(item: SearchResponse){
+            when (searchType) {
+                SearchType.Default -> {
+                    binding.defaultTitleText.apply {
+                        text = "위 입력창을 통해"
+                        visibility = View.VISIBLE
+                    }
+                    binding.defaultBodyText.apply {
+                        text = "찾고 싶은 상품을 입력해주세요"
+                        visibility = View.VISIBLE
+                    }
+                    binding.titleText.visibility = View.GONE
+                    binding.creditText.visibility = View.GONE
                 }
-                binding.bodyText.text = "라는 상품을 못찾았어요."
+                SearchType.None -> {
+                    binding.defaultIcon.setImageResource(R.drawable.null_search_icon)
+                    binding.titleText.apply {
+                        text = item.name
+                        typeface = resources.getFont(R.font.wanted_semibold)
+                        visibility = View.VISIBLE
+                    }
+                    binding.creditText.apply {
+                        text = "라는 상품을 못찾았어요."
+                        visibility = View.VISIBLE
+                    }
+                    binding.defaultTitleText.visibility = View.GONE
+                    binding.defaultBodyText.visibility = View.GONE
+                }
+                SearchType.Item -> {
+                    with(binding.thumbnailIcon) {
+                        visibility = View.VISIBLE
+                        Glide
+                            .with(binding.root.context)
+                            .load(item.image)
+                            .centerCrop()
+                            .into(this)
+                    }
+                    binding.titleText.apply {
+                        text = item.name
+                        typeface = resources.getFont(R.font.wanted_medium)
+                        visibility = View.VISIBLE
+                    }
+                    binding.creditText.apply {
+                        text = item.currentAmount.toString()
+                        visibility = View.VISIBLE
+                    }
+                    binding.defaultTitleText.visibility = View.GONE
+                    binding.defaultBodyText.visibility = View.GONE
+                }
+
             }
+
         }
     }
 }
