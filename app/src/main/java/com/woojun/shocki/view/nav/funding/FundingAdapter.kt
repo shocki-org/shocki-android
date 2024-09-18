@@ -7,7 +7,7 @@ import com.woojun.shocki.R
 import com.woojun.shocki.data.Category
 import com.woojun.shocki.databinding.FundingItemBinding
 
-class FundingAdapter (private val categoryList: List<Category>):
+class FundingAdapter (private val categoryList: List<Category>, private val categoryListener: CategoryListener):
     RecyclerView.Adapter<FundingAdapter.ViewHolder>() {
     private var selectedPosition = 0
 
@@ -21,6 +21,8 @@ class FundingAdapter (private val categoryList: List<Category>):
                 selectedPosition = handler.adapterPosition
                 categoryList[handler.adapterPosition].isSelected = true
                 notifyItemChanged(selectedPosition)
+
+                categoryListener.touchCategory(categoryList[handler.adapterPosition].id)
             }
         }
     }
@@ -55,5 +57,9 @@ class FundingAdapter (private val categoryList: List<Category>):
                 }
             }
         }
+    }
+
+    interface CategoryListener {
+        fun touchCategory(categoryId: String)
     }
 }
