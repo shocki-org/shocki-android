@@ -4,5 +4,6 @@ data class SearchResponse(
     val currentAmount: Int,
     val id: String,
     val image: String,
-    val name: String
+    val name: String,
+    val type: String
 )
