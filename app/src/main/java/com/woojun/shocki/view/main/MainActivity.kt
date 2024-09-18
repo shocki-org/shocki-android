@@ -13,6 +13,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.woojun.shocki.R
 import androidx.navigation.NavOptions.Builder
+import com.woojun.shocki.database.MainViewModel
 import com.woojun.shocki.databinding.ActivityMainBinding
 import com.woojun.shocki.util.BaseActivity
 
@@ -21,6 +22,8 @@ class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+
+    private lateinit var mainViewModel: MainViewModel
 
     private var recentPosition = 0
 
@@ -33,6 +36,8 @@ class MainActivity : BaseActivity() {
             v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
             insets
         }
+
+        mainViewModel.fetchDates()
 
         navController = findNavController(R.id.nav_host_fragment)
 
@@ -81,7 +86,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun animationNavigate(id: Int) {
+    fun animationNavigate(id: Int, productId: String? = null) {
         fun getNavOptions(enterAnim: Int, clearBackStack: Boolean): NavOptions {
             val builder = Builder()
                 .setEnterAnim(enterAnim)
@@ -110,7 +115,12 @@ class MainActivity : BaseActivity() {
 
         val navOptions = getNavOptions(enterAnim, clearBackStack)
         recentPosition = newPosition
-        navController.navigate(id, null, navOptions)
+
+        val bundle = Bundle().apply {
+            putString("productId", productId)
+        }
+
+        navController.navigate(id, bundle, navOptions)
     }
 
     private fun setStatusBar(id: Int) {
