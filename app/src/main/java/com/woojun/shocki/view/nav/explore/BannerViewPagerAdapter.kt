@@ -3,17 +3,18 @@ package com.woojun.shocki.view.nav.explore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.woojun.shocki.R
-import com.woojun.shocki.data.Banner
 import com.woojun.shocki.data.BannerType
 import com.woojun.shocki.databinding.GridBannerItemBinding
 import com.woojun.shocki.databinding.LinearBannerItemBinding
 import com.woojun.shocki.databinding.TopBannerItemBinding
+import com.woojun.shocki.dto.SimpleProductResponse
 import com.woojun.shocki.view.main.MainActivity
 
 class BannerViewPagerAdapter(
-    private val bannerList: List<Banner>,
-    private val bannerType: BannerType
+    private val bannerList: List<SimpleProductResponse>,
+    private val bannerType: BannerType,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -28,17 +29,25 @@ class BannerViewPagerAdapter(
         return when (viewType) {
             1 -> {
                 val binding = TopBannerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                TopBannerViewHolder(binding)
+                TopBannerViewHolder(binding).also { handler ->
+                    binding.root.setOnClickListener {
+                        (binding.root.context as MainActivity).animationNavigate(R.id.funding_detail, bannerList[handler.adapterPosition].id)
+                    }
+                }
             }
             2 -> {
                 val binding = LinearBannerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                LinearBannerViewHolder(binding)
+                LinearBannerViewHolder(binding).also { handler ->
+                    binding.root.setOnClickListener {
+                        (binding.root.context as MainActivity).animationNavigate(R.id.funding_detail, bannerList[handler.adapterPosition].id)
+                    }
+                }
             }
             3 -> {
                 val binding = GridBannerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                GridViewHolder(binding).also { hanler->
+                GridViewHolder(binding).also { handler ->
                     binding.root.setOnClickListener {
-                        (binding.root.context as MainActivity).animationNavigate(R.id.funding_detail)
+                        (binding.root.context as MainActivity).animationNavigate(R.id.funding_detail, bannerList[handler.adapterPosition].id)
                     }
                 }
             }
@@ -63,26 +72,38 @@ class BannerViewPagerAdapter(
     }
 
     inner class TopBannerViewHolder(private val binding: TopBannerItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Banner) {
-            binding.textView.text = item.text
-            binding.image.setImageResource(item.image)
+        fun bind(item: SimpleProductResponse) {
+            binding.textView.text = item.name
             binding.background.background.alpha = (0.4 * 255).toInt()
+            Glide
+                .with(binding.root.context)
+                .load(item.image)
+                .centerCrop()
+                .into(binding.image)
         }
     }
 
     inner class LinearBannerViewHolder(private val binding: LinearBannerItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Banner) {
-            binding.nameText.text = item.text
-            binding.priceText.text = item.price
-            binding.imageView.setImageResource(item.image)
+        fun bind(item: SimpleProductResponse) {
+            binding.nameText.text = item.name
+            binding.priceText.text = item.currentAmount.toString()
+            Glide
+                .with(binding.root.context)
+                .load(item.image)
+                .centerCrop()
+                .into(binding.imageView)
         }
     }
 
     inner class GridViewHolder(private val binding: GridBannerItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Banner) {
-            binding.nameText.text = item.text
-            binding.priceText.text = item.price
-            binding.imageView.setImageResource(item.image)
+        fun bind(item: SimpleProductResponse) {
+            binding.nameText.text = item.name
+            binding.priceText.text = item.currentAmount.toString()
+            Glide
+                .with(binding.root.context)
+                .load(item.image)
+                .centerCrop()
+                .into(binding.imageView)
         }
     }
 }

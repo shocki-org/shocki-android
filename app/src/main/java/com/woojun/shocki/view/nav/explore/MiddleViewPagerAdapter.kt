@@ -4,18 +4,29 @@ import android.content.res.Resources
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
-import com.woojun.shocki.data.Banner
+import com.bumptech.glide.Glide
+import com.woojun.shocki.R
 import com.woojun.shocki.databinding.MiddleBannerItemBinding
+import com.woojun.shocki.dto.SimpleProductResponse
+import com.woojun.shocki.view.main.MainActivity
 
-class MiddleViewPagerAdapter(private val pages: List<Pair<MiddleBannerItemBinding, Banner>>) : PagerAdapter() {
+class MiddleViewPagerAdapter(private val pages: List<Pair<MiddleBannerItemBinding, SimpleProductResponse>>) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val pageBinding = pages[position].first
         val bannerItem = pages[position].second
 
-        pageBinding.imageView.setImageResource(bannerItem.image)
-        pageBinding.nameText.text = bannerItem.text
-        pageBinding.priceText.text = bannerItem.price
+        pageBinding.nameText.text = bannerItem.name
+        pageBinding.priceText.text = bannerItem.currentAmount.toString()
+        Glide
+            .with(pageBinding.root.context)
+            .load(bannerItem.image)
+            .centerCrop()
+            .into(pageBinding.imageView)
+
+        pageBinding.root.setOnClickListener {
+            (pageBinding.root.context as MainActivity).animationNavigate(R.id.storeDetail, bannerItem.id)
+        }
 
         when (position) {
             pages.size - 1 -> {

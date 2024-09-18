@@ -15,19 +15,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsetsController
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.woojun.shocki.R
-import com.woojun.shocki.data.Banner
 import com.woojun.shocki.data.BannerType
+import com.woojun.shocki.database.MainViewModel
 import com.woojun.shocki.databinding.FragmentExploreBinding
 import com.woojun.shocki.databinding.MiddleBannerItemBinding
+import com.woojun.shocki.dto.SimpleProductResponse
 import com.woojun.shocki.util.SpacingItemDecoration
 import com.woojun.shocki.view.main.MainActivity
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
 class ExploreFragment : Fragment() {
@@ -40,6 +45,9 @@ class ExploreFragment : Fragment() {
     private val bannerHandler = BannerHandler(this)
     private val intervalTime = 1500.toLong()
     private var currentPosition = 0
+
+    private lateinit var mainViewModel: MainViewModel
+    private val combinedLiveData = MediatorLiveData<Pair<List<SimpleProductResponse>?,  List<SimpleProductResponse>?>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +65,28 @@ class ExploreFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupWindowInsets()
         val activity = (requireActivity() as MainActivity)
-        bannerInit()
+
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+
+        combinedLiveData.addSource(mainViewModel.sellingList) { sellingList ->
+            val fundingList = combinedLiveData.value?.first
+            combinedLiveData.value = Pair(fundingList, sellingList)
+        }
+
+        combinedLiveData.addSource(mainViewModel.fundingList) { fundingList ->
+            val sellingList = combinedLiveData.value?.second
+            combinedLiveData.value = Pair(fundingList, sellingList)
+        }
+
+        combinedLiveData.observe(viewLifecycleOwner) { pair ->
+            val fundingList = pair.first
+            val sellingList = pair.second
+            if (fundingList != null && sellingList != null) {
+                bannerInit(fundingList.slice(0..7), sellingList.slice(0..11))
+            } else {
+                Toast.makeText(requireContext(), "상품 목록 조회를 실패했습니다", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         binding.notificationButton.setOnClickListener {
             activity.animationNavigate(R.id.notification)
@@ -68,11 +97,9 @@ class ExploreFragment : Fragment() {
         }
     }
 
-    private fun bannerInit() {
-        val testBannerList = getTestBannerList("정성담아 키워낸,\n해남 황토 꿀고구마")
-
+    private fun bannerInit(fundingList: List<SimpleProductResponse>, sellingList: List<SimpleProductResponse>) {
         binding.topBannerViewPager.apply {
-            this.adapter = BannerViewPagerAdapter(testBannerList, BannerType.Top)
+            this.adapter = BannerViewPagerAdapter(fundingList.slice(0..3), BannerType.Top)
             this.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     currentPosition = position
@@ -101,7 +128,7 @@ class ExploreFragment : Fragment() {
 
         binding.middleBannerViewPager.apply {
             val inflater = LayoutInflater.from(context)
-            val list = testBannerList.plus(testBannerList).map { item ->
+            val list = sellingList.slice(0..5).map { item ->
                 Pair(MiddleBannerItemBinding.inflate(inflater), item)
             }
             adapter = MiddleViewPagerAdapter(list)
@@ -109,23 +136,14 @@ class ExploreFragment : Fragment() {
 
         binding.linearList.apply {
             this.layoutManager = LinearLayoutManager(requireContext())
-            this.adapter = BannerViewPagerAdapter(getTestBannerList("정성담아 키워낸, 해남 황토 꿀고구마정성담아 키워낸, 해남 황토 꿀고구마"), BannerType.Linear)
+            this.adapter = BannerViewPagerAdapter(fundingList.slice(4..7), BannerType.Linear)
         }
 
         binding.gridList.apply {
             this.layoutManager = GridLayoutManager(requireContext(), 2)
-            this.adapter = BannerViewPagerAdapter(testBannerList, BannerType.Grid)
+            this.adapter = BannerViewPagerAdapter(sellingList.slice(6..11), BannerType.Grid)
             this.addItemDecoration(SpacingItemDecoration())
         }
-    }
-
-    private fun getTestBannerList(text: String): List<Banner> {
-        return listOf(
-            Banner(R.drawable.banner6, text, "1232145"),
-            Banner(R.drawable.banner1, text, "1232145"),
-            Banner(R.drawable.banner4, text, "1232145"),
-            Banner(R.drawable.banner3, text, "1232145"),
-        )
     }
 
     private fun setupWindowInsets() {
