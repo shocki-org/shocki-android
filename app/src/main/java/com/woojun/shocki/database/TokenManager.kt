@@ -9,7 +9,7 @@ object TokenManager {
     private lateinit var preferences: SharedPreferences
 
     private val ACCESS_TOKEN = Pair("accessToken", "")
-
+    private val FCM_TOKEN = Pair("fcmToken", "")
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -25,5 +25,11 @@ object TokenManager {
         get() = preferences.getString(ACCESS_TOKEN.first, ACCESS_TOKEN.second) ?: ""
         set(value) = preferences.edit {
             it.putString(ACCESS_TOKEN.first, value)
+        }
+
+    var fcmToken: String
+        get() = preferences.getString(FCM_TOKEN.first, FCM_TOKEN.second) ?: ""
+        set(value) = preferences.edit {
+            it.putString(FCM_TOKEN.first, value)
         }
 }

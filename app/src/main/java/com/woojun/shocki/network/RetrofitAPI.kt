@@ -4,6 +4,7 @@ import com.woojun.shocki.dto.PostLoginRequest
 import com.woojun.shocki.dto.AccessTokenResponse
 import com.woojun.shocki.dto.AlertResponse
 import com.woojun.shocki.dto.CategoryResponse
+import com.woojun.shocki.dto.FCMResponse
 import com.woojun.shocki.dto.PhoneFinalRequest
 import com.woojun.shocki.dto.PhoneFirstRequest
 import com.woojun.shocki.dto.PhoneSecondRequest
@@ -16,6 +17,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface RetrofitAPI {
@@ -66,5 +68,11 @@ interface RetrofitAPI {
     suspend fun getCategoryList(
         @Header("Authorization") authorization: String,
     ): Response<List<CategoryResponse>>
+
+    @PUT("user/fcm")
+    suspend fun setFCMToken(
+        @Header("Authorization") authorization: String,
+        @Body body: FCMResponse
+    ): Response<Unit>
 
 }

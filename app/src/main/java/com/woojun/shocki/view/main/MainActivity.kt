@@ -1,21 +1,41 @@
 package com.woojun.shocki.view.main
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.view.WindowInsetsController
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.woojun.shocki.R
 import androidx.navigation.NavOptions.Builder
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.woojun.shocki.database.MainViewModel
+import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.ActivityMainBinding
+import com.woojun.shocki.dto.FCMResponse
+import com.woojun.shocki.network.RetrofitAPI
+import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.BaseActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : BaseActivity() {
@@ -27,6 +47,24 @@ class MainActivity : BaseActivity() {
 
     private var recentPosition = 0
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
+                }
+                val token = task.result
+                if (TokenManager.fcmToken != token) {
+                    lifecycleScope.launch {
+                        setFCMToken(token)
+                    }
+                }
+            })
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,8 +75,10 @@ class MainActivity : BaseActivity() {
             insets
         }
 
-        mainViewModel.fetchDates()
+        askNotificationPermission()
 
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        mainViewModel.fetchDates()
         navController = findNavController(R.id.nav_host_fragment)
 
         binding.explore.setOnClickListener { animationNavigate(R.id.explore) }
@@ -83,6 +123,15 @@ class MainActivity : BaseActivity() {
                 }
             }
 
+        }
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
     }
 
@@ -200,6 +249,16 @@ class MainActivity : BaseActivity() {
         binding.profile.isEnabled = true
     }
 
-
+    private suspend fun setFCMToken(token: String): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.setFCMToken("bearer ${TokenManager.accessToken}", FCMResponse(token))
+                response.isSuccessful
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
 
 }
