@@ -95,4 +95,6 @@ dependencies {
 
     implementation(libs.glide)
 
+    implementation(libs.metamask.android.sdk)
+
 }
