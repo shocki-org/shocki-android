@@ -3,11 +3,13 @@ package com.woojun.shocki.network
 import com.woojun.shocki.dto.PostLoginRequest
 import com.woojun.shocki.dto.AccessTokenResponse
 import com.woojun.shocki.dto.AlertResponse
+import com.woojun.shocki.dto.CategoryResponse
 import com.woojun.shocki.dto.PhoneFinalRequest
 import com.woojun.shocki.dto.PhoneFirstRequest
 import com.woojun.shocki.dto.PhoneSecondRequest
 import com.woojun.shocki.dto.PhoneSecondResponse
 import com.woojun.shocki.dto.SearchResponse
+import com.woojun.shocki.dto.SimpleProductResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -54,6 +56,15 @@ interface RetrofitAPI {
         @Query("keyword") keyword: String
     ): Response<List<SearchResponse>>
 
+    @GET("product/list")
+    suspend fun getProductList(
+        @Header("Authorization") authorization: String,
+        @Query("type") type: String
+    ): Response<List<SimpleProductResponse>>
 
+    @GET("category")
+    suspend fun getCategoryList(
+        @Header("Authorization") authorization: String,
+    ): Response<List<CategoryResponse>>
 
 }
