@@ -28,13 +28,11 @@ import com.woojun.shocki.dto.PhoneFinalRequest
 import com.woojun.shocki.dto.PhoneFirstRequest
 import com.woojun.shocki.dto.PhoneSecondRequest
 import com.woojun.shocki.dto.PhoneSecondResponse
-import com.woojun.shocki.dto.PostLoginRequest
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.Util.checkPassword
 import com.woojun.shocki.util.Util.checkPhone
 import com.woojun.shocki.util.Util.formatPhoneNumber
-import com.woojun.shocki.util.Util.saveToken
 import com.woojun.shocki.view.main.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,7 +50,7 @@ class SignUpFragment : Fragment() {
     private var phone = ""
     private var token = ""
 
-    var lastCallTime = 0L
+    private var lastCallTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -321,6 +319,7 @@ class SignUpFragment : Fragment() {
                             }
                         } else {
                             Toast.makeText(requireContext(), "유효한 비밀번호가 아닙니다", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "영문 대소문자, 특수문자, 숫자로 8자리 입력해주세요", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
