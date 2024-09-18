@@ -7,7 +7,7 @@ import com.woojun.shocki.R
 import com.woojun.shocki.databinding.NotificationItemBinding
 import com.woojun.shocki.dto.AlertResponse
 
-class NotificationAdapter (private val notificationList: Array<AlertResponse>):
+class NotificationAdapter (private val notificationList: List<AlertResponse>):
     RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationAdapter.ViewHolder {
         val binding = NotificationItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)

@@ -51,7 +51,7 @@ class SearchFragment : Fragment() {
 
         binding.searchList.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = SearchAdapter(arrayOf(), SearchType.Default)
+            adapter = SearchAdapter(listOf(), SearchType.Default)
         }
 
         binding.searchInput.apply {
@@ -82,15 +82,15 @@ class SearchFragment : Fragment() {
                 .debounce(300)
                 .collectLatest { query ->
                     if (query.isNotEmpty()) {
-                        val searchArray = getSearch(query)
-                        if (searchArray != null) updateRecyclerView(searchArray)
+                        val searchList = getSearch(query)
+                        if (searchList != null) updateRecyclerView(searchList)
                     }
                 }
         }
 
     }
 
-    private suspend fun getSearch(keyword: String): Array<SearchResponse>? {
+    private suspend fun getSearch(keyword: String): List<SearchResponse>? {
         return try {
             withContext(Dispatchers.IO) {
                 val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
@@ -106,9 +106,9 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun updateRecyclerView(searchResponse: Array<SearchResponse>) {
+    private fun updateRecyclerView(searchResponse: List<SearchResponse>) {
         if (searchResponse.isEmpty()) {
-            binding.searchList.adapter = SearchAdapter(arrayOf(), SearchType.None)
+            binding.searchList.adapter = SearchAdapter(listOf(), SearchType.None)
         } else {
             binding.searchList.adapter = SearchAdapter(searchResponse, SearchType.Item)
         }

@@ -46,12 +46,14 @@ interface RetrofitAPI {
     @GET("alert")
     suspend fun getAlert(
         @Header("Authorization") authorization: String,
-    ): Response<Array<AlertResponse>>
+    ): Response<List<AlertResponse>>
 
-    @GET("/product/search")
+    @GET("product/search")
     suspend fun getSearch(
         @Header("Authorization") authorization: String,
         @Query("keyword") keyword: String
-    ): Response<Array<SearchResponse>>
+    ): Response<List<SearchResponse>>
+
+
 
 }

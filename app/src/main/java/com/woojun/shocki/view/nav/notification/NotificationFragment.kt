@@ -51,7 +51,7 @@ class NotificationFragment : Fragment() {
         }
     }
 
-    private suspend fun getAlert(): Array<AlertResponse>? {
+    private suspend fun getAlert(): List<AlertResponse>? {
         return try {
             withContext(Dispatchers.IO) {
                 val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)

@@ -10,7 +10,7 @@ import com.woojun.shocki.data.SearchType
 import com.woojun.shocki.databinding.SearchItemBinding
 import com.woojun.shocki.dto.SearchResponse
 
-class SearchAdapter (private val searchList: Array<SearchResponse>, private val searchType: SearchType):
+class SearchAdapter (private val searchList: List<SearchResponse>, private val searchType: SearchType):
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
