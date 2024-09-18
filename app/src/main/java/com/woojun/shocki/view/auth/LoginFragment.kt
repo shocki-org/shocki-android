@@ -16,6 +16,7 @@ import com.woojun.shocki.databinding.FragmentLoginBinding
 import com.woojun.shocki.dto.PostLoginRequest
 import com.woojun.shocki.util.Util.checkPassword
 import com.woojun.shocki.util.Util.checkPhone
+import com.woojun.shocki.util.Util.formatPhoneNumber
 import com.woojun.shocki.util.Util.saveToken
 import com.woojun.shocki.view.auth.AuthActivity.Companion.PHONE
 
@@ -63,10 +64,9 @@ class LoginFragment : Fragment() {
 
         binding.finishButton.setOnClickListener {
             val phone = binding.phoneInput.text.toString()
-            val password = binding.passwordInput.toString()
-
+            val password = binding.passwordInput.text.toString()
             if (checkPhone(phone) && checkPassword(password)) {
-                saveToken(requireActivity(), PostLoginRequest("", password, phone, PHONE))
+                saveToken(requireActivity(), PostLoginRequest("", password, formatPhoneNumber(phone), PHONE))
             }
         }
 
