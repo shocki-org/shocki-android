@@ -192,7 +192,7 @@ class ExploreFragment : Fragment() {
         _binding = null
     }
 
-    private class BannerHandler(fragment: ExploreFragment) : Handler(Looper.getMainLooper()) {
+    private class BannerHandler(fragment: ExploreFragment?) : Handler(Looper.getMainLooper()) {
         private val fragmentRef = WeakReference(fragment)
 
         override fun handleMessage(msg: Message) {
@@ -200,9 +200,11 @@ class ExploreFragment : Fragment() {
             val fragment = fragmentRef.get()
 
             if(msg.what == 0) {
-                fragment?.let {
-                    fragment.binding.topBannerViewPager.setCurrentItemWithDuration(++fragment.currentPosition, 500)
-                    fragment.autoScrollStart()
+                fragment?.activity?.runOnUiThread {
+                    fragment.binding.let {
+                        fragment.binding.topBannerViewPager.setCurrentItemWithDuration(++fragment.currentPosition, 500)
+                        fragment.autoScrollStart()
+                    }
                 }
             }
         }
