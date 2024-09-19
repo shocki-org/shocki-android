@@ -11,6 +11,7 @@
     tools:context=".view.nav.explore.ExploreFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingBottom="70dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -131,20 +132,27 @@
             app:layout_constraintStart_toStartOf="@+id/textView4"
             app:layout_constraintTop_toBottomOf="@id/middle_banner_view_pager" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
-            android:nestedScrollingEnabled="false"
+        <RelativeLayout
             android:layout_marginTop="4dp"
-            android:id="@+id/linear_list"
+            android:id="@+id/linear_list_box"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:overScrollMode="never"
+                android:nestedScrollingEnabled="false"
+                android:id="@+id/linear_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/textView6"
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@id/linear_list"
+            app:layout_constraintTop_toBottomOf="@id/linear_list_box"
             style="@style/heading_accent"
             android:textColor="@color/Text_Default_Primary"
             android:text="Shocki 핫트렌드 제품 🔥"
