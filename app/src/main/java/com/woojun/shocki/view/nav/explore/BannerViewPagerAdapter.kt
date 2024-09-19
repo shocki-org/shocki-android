@@ -31,7 +31,7 @@ class BannerViewPagerAdapter(
                 val binding = TopBannerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 TopBannerViewHolder(binding).also { handler ->
                     binding.root.setOnClickListener {
-                        (binding.root.context as MainActivity).animationNavigate(R.id.funding_detail, bannerList[handler.adapterPosition].id)
+                        (binding.root.context as MainActivity).animationNavigate(R.id.funding_detail, bannerList[handler.adapterPosition % bannerList.size].id)
                     }
                 }
             }
