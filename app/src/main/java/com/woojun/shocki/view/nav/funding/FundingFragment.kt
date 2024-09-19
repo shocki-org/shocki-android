@@ -1,6 +1,7 @@
 package com.woojun.shocki.view.nav.funding
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.woojun.shocki.R
 import com.woojun.shocki.data.BannerType
+import com.woojun.shocki.data.Category
 import com.woojun.shocki.database.MainViewModel
 import com.woojun.shocki.databinding.FragmentFundingBinding
 import com.woojun.shocki.util.SpacingItemDecoration
@@ -44,9 +47,12 @@ class FundingFragment : Fragment(), FundingAdapter.CategoryListener {
         super.onViewCreated(view, savedInstanceState)
 
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        mainViewModel.categoryList.observe(viewLifecycleOwner) { categoryList ->
+        mainViewModel.categoryList.observe(viewLifecycleOwner) { dataSet ->
             val fundingList = mainViewModel.fundingList.value
-            if (fundingList != null && categoryList != null) {
+            if (fundingList != null && dataSet != null) {
+                val gson = Gson()
+                val categoryList = gson.fromJson(gson.toJson(dataSet), Array<Category>::class.java).toList()
+
                 binding.categoryList.apply {
                     categoryList[0].isSelected = true
                     categoryId = categoryList[0].id
