@@ -19,7 +19,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +31,6 @@ import com.woojun.shocki.databinding.MiddleBannerItemBinding
 import com.woojun.shocki.dto.SimpleProductResponse
 import com.woojun.shocki.util.SpacingItemDecoration
 import com.woojun.shocki.view.main.MainActivity
-import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
 class ExploreFragment : Fragment() {
@@ -43,11 +41,9 @@ class ExploreFragment : Fragment() {
     private val indicatorList by lazy { listOf(binding.indicator0, binding.indicator1, binding.indicator2, binding.indicator3) }
 
     private val bannerHandler = BannerHandler(this)
-    private val intervalTime = 1500.toLong()
     private var currentPosition = 0
 
     private lateinit var mainViewModel: MainViewModel
-    private val combinedLiveData = MediatorLiveData<Pair<List<SimpleProductResponse>?,  List<SimpleProductResponse>?>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,21 +64,17 @@ class ExploreFragment : Fragment() {
 
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
-        combinedLiveData.addSource(mainViewModel.sellingList) { sellingList ->
-            val fundingList = combinedLiveData.value?.first
-            combinedLiveData.value = Pair(fundingList, sellingList)
+        mainViewModel.fundingList.observe(viewLifecycleOwner) { fundingList ->
+            if (fundingList != null && fundingList.size > 7 ) {
+                fundingBannerInit(fundingList.slice(0..7))
+            } else {
+                Toast.makeText(requireContext(), "펀딩 목록 조회를 실패했습니다", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        combinedLiveData.addSource(mainViewModel.fundingList) { fundingList ->
-            val sellingList = combinedLiveData.value?.second
-            combinedLiveData.value = Pair(fundingList, sellingList)
-        }
-
-        combinedLiveData.observe(viewLifecycleOwner) { pair ->
-            val fundingList = pair.first
-            val sellingList = pair.second
-            if (fundingList != null && sellingList != null) {
-                bannerInit(fundingList.slice(0..7), sellingList.slice(0..11))
+        mainViewModel.sellingList.observe(viewLifecycleOwner) { sellingList ->
+            if (sellingList != null && sellingList.size > 11) {
+                sellingBannerInit(sellingList.slice(0..11))
             } else {
                 Toast.makeText(requireContext(), "상품 목록 조회를 실패했습니다", Toast.LENGTH_SHORT).show()
             }
@@ -97,10 +89,10 @@ class ExploreFragment : Fragment() {
         }
     }
 
-    private fun bannerInit(fundingList: List<SimpleProductResponse>, sellingList: List<SimpleProductResponse>) {
+    private fun fundingBannerInit(fundingList: List<SimpleProductResponse>) {
         binding.topBannerViewPager.apply {
-            this.adapter = BannerViewPagerAdapter(fundingList.slice(0..3), BannerType.Top)
-            this.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            adapter = BannerViewPagerAdapter(fundingList.slice(0..3), BannerType.Top)
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     currentPosition = position
 
@@ -115,7 +107,7 @@ class ExploreFragment : Fragment() {
                 override fun onPageScrollStateChanged(state: Int) {
                     super.onPageScrollStateChanged(state)
                     when (state) {
-                        ViewPager2.SCROLL_STATE_IDLE -> autoScrollStart(intervalTime)
+                        ViewPager2.SCROLL_STATE_IDLE -> autoScrollStart()
                         ViewPager2.SCROLL_STATE_DRAGGING -> autoScrollStop()
                         ViewPager2.SCROLL_STATE_SETTLING -> {}
                     }
@@ -123,9 +115,17 @@ class ExploreFragment : Fragment() {
             })
 
             currentPosition = Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2) % indicatorList.size
-            this.setCurrentItem(currentPosition, false)
+            setCurrentItem(currentPosition, false)
         }
 
+        binding.linearList.apply {
+            val list = fundingList.slice(4..7)
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = BannerViewPagerAdapter(list, BannerType.Linear)
+        }
+    }
+
+    private fun sellingBannerInit(sellingList: List<SimpleProductResponse>) {
         binding.middleBannerViewPager.apply {
             val inflater = LayoutInflater.from(context)
             val list = sellingList.slice(0..5).map { item ->
@@ -134,15 +134,10 @@ class ExploreFragment : Fragment() {
             adapter = MiddleViewPagerAdapter(list)
         }
 
-        binding.linearList.apply {
-            this.layoutManager = LinearLayoutManager(requireContext())
-            this.adapter = BannerViewPagerAdapter(fundingList.slice(4..7), BannerType.Linear)
-        }
-
         binding.gridList.apply {
-            this.layoutManager = GridLayoutManager(requireContext(), 2)
-            this.adapter = BannerViewPagerAdapter(sellingList.slice(6..11), BannerType.Grid)
-            this.addItemDecoration(SpacingItemDecoration())
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = BannerViewPagerAdapter(sellingList.slice(6..11), BannerType.Grid)
+            addItemDecoration(SpacingItemDecoration())
         }
     }
 
@@ -155,7 +150,7 @@ class ExploreFragment : Fragment() {
             )
         } else {
             requireActivity().window.apply {
-                this.decorView.systemUiVisibility = this.decorView.systemUiVisibility and
+                decorView.systemUiVisibility = decorView.systemUiVisibility and
                         View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
             }
         }
@@ -172,9 +167,9 @@ class ExploreFragment : Fragment() {
         }
     }
 
-    private fun autoScrollStart(intervalTime: Long) {
+    private fun autoScrollStart() {
         bannerHandler.removeMessages(0)
-        bannerHandler.sendEmptyMessageDelayed(0, intervalTime)
+        bannerHandler.sendEmptyMessageDelayed(0, 1000)
     }
 
     private fun autoScrollStop(){
@@ -183,7 +178,7 @@ class ExploreFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        autoScrollStart(intervalTime)
+        autoScrollStart()
     }
 
     override fun onPause() {
@@ -207,7 +202,7 @@ class ExploreFragment : Fragment() {
             if(msg.what == 0) {
                 fragment?.let {
                     fragment.binding.topBannerViewPager.setCurrentItemWithDuration(++fragment.currentPosition, 500)
-                    fragment.autoScrollStart(fragment.intervalTime)
+                    fragment.autoScrollStart()
                 }
             }
         }
