@@ -13,7 +13,7 @@ import com.woojun.shocki.dto.SimpleProductResponse
 import com.woojun.shocki.view.main.MainActivity
 
 class BannerViewPagerAdapter(
-    private val bannerList: List<SimpleProductResponse>,
+    private var bannerList: List<SimpleProductResponse>,
     private val bannerType: BannerType,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -69,6 +69,11 @@ class BannerViewPagerAdapter(
         } else {
             bannerList.size
         }
+    }
+
+    fun changeDataSet(list: List<SimpleProductResponse>) {
+        bannerList = list
+        notifyDataSetChanged()
     }
 
     inner class TopBannerViewHolder(private val binding: TopBannerItemBinding) : RecyclerView.ViewHolder(binding.root) {

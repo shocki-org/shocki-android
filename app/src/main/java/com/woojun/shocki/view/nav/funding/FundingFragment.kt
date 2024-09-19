@@ -26,6 +26,7 @@ class FundingFragment : Fragment(), FundingAdapter.CategoryListener {
     private var categoryId = ""
 
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var fundingAdapter: BannerViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,14 +51,15 @@ class FundingFragment : Fragment(), FundingAdapter.CategoryListener {
                     categoryList[0].isSelected = true
                     categoryId = categoryList[0].id
 
-                    this.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-                    this.adapter = FundingAdapter(categoryList, this@FundingFragment)
-                    this.addItemDecoration(SpacingItemDecoration())
+                    layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+                    adapter = FundingAdapter(categoryList, this@FundingFragment)
+                    addItemDecoration(SpacingItemDecoration())
                 }
 
                 binding.itemList.apply {
+                    fundingAdapter = BannerViewPagerAdapter(fundingList.filter { it.categoryId == categoryId }, BannerType.Grid)
                     layoutManager = GridLayoutManager(requireContext(), 2)
-                    adapter = BannerViewPagerAdapter(fundingList.filter { it.categoryId == categoryId }, BannerType.Grid)
+                    adapter = fundingAdapter
                     addItemDecoration(SpacingItemDecoration())
                 }
             } else {
@@ -79,7 +81,7 @@ class FundingFragment : Fragment(), FundingAdapter.CategoryListener {
     override fun touchCategory(categoryId: String) {
         this.categoryId = categoryId
         mainViewModel.fundingList.value?.let { fundingList ->
-            binding.itemList.adapter = BannerViewPagerAdapter(fundingList.filter { it.categoryId == categoryId }, BannerType.Grid)
+            fundingAdapter.changeDataSet(fundingList.filter { it.categoryId == this.categoryId })
         }
     }
 
