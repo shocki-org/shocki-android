@@ -1,99 +1,87 @@
 package com.woojun.shocki.view.nav.search
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.woojun.shocki.R
 import com.woojun.shocki.data.SearchType
+import com.woojun.shocki.database.MainViewModel
+import com.woojun.shocki.databinding.SearchDefaultItemBinding
 import com.woojun.shocki.databinding.SearchItemBinding
+import com.woojun.shocki.databinding.SearchNoneItemBinding
 import com.woojun.shocki.dto.SearchResponse
 import com.woojun.shocki.view.main.MainActivity
 
-class SearchAdapter (private val searchList: List<SearchResponse>, private val searchType: SearchType):
-    RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class SearchAdapter (private val searchList: List<SearchResponse>, private val searchType: SearchType) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
-        val binding = SearchItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return ViewHolder(binding).also { handler ->
-            binding.root.setOnClickListener {
-                val activity = (binding.root.context as MainActivity)
-                val item = searchList[handler.adapterPosition]
-                if (item.type == "SELLING") {
-                    activity.animationNavigate(R.id.storeDetail, item.id)
-                } else {
-                    activity.animationNavigate(R.id.funding_detail, item.id)
-                }
-            }
+    override fun getItemViewType(position: Int): Int {
+        return when (searchType) {
+            SearchType.Default -> 1
+            SearchType.None -> 2
+            SearchType.Item -> 3
         }
     }
 
-    override fun onBindViewHolder(holder: SearchAdapter.ViewHolder, position: Int) {
-        holder.bind(searchList[position])
-    }
-
-    override fun getItemCount(): Int {
-        return if (searchList.isEmpty()) {
-            1
-        } else {
-            searchList.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            1 -> {
+                val binding = SearchDefaultItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                DefaultViewHolder(binding)
+            }
+            2 -> {
+                val binding = SearchNoneItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                NoneViewHolder(binding)
+            }
+            3 -> {
+                val binding = SearchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                SearchViewHolder(binding).also { handler ->
+                    binding.root.setOnClickListener {
+                        val item = searchList[handler.adapterPosition]
+                        if (item.type == MainViewModel.SELLING) {
+                            (binding.root.context as MainActivity).animationNavigate(R.id.storeDetail, item.id)
+                        } else {
+                            (binding.root.context as MainActivity).animationNavigate(R.id.funding_detail, item.id)
+                        }
+                    }
+                }
+            }
+            else -> throw IllegalArgumentException("Invalid viewType")
         }
     }
 
-    inner class ViewHolder(private val binding : SearchItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: SearchResponse){
-            when (searchType) {
-                SearchType.Default -> {
-                    binding.defaultTitleText.apply {
-                        text = "위 입력창을 통해"
-                        visibility = View.VISIBLE
-                    }
-                    binding.defaultBodyText.apply {
-                        text = "찾고 싶은 상품을 입력해주세요"
-                        visibility = View.VISIBLE
-                    }
-                    binding.titleText.visibility = View.GONE
-                    binding.creditText.visibility = View.GONE
-                }
-                SearchType.None -> {
-                    binding.defaultIcon.setImageResource(R.drawable.null_search_icon)
-                    binding.titleText.apply {
-                        text = item.name
-                        typeface = resources.getFont(R.font.wanted_semibold)
-                        visibility = View.VISIBLE
-                    }
-                    binding.creditText.apply {
-                        text = "라는 상품을 못찾았어요."
-                        visibility = View.VISIBLE
-                    }
-                    binding.defaultTitleText.visibility = View.GONE
-                    binding.defaultBodyText.visibility = View.GONE
-                }
-                SearchType.Item -> {
-                    with(binding.thumbnailIcon) {
-                        visibility = View.VISIBLE
-                        Glide
-                            .with(binding.root.context)
-                            .load(item.image)
-                            .centerCrop()
-                            .into(this)
-                    }
-                    binding.titleText.apply {
-                        text = item.name
-                        typeface = resources.getFont(R.font.wanted_medium)
-                        visibility = View.VISIBLE
-                    }
-                    binding.creditText.apply {
-                        text = item.currentAmount.toString()
-                        visibility = View.VISIBLE
-                    }
-                    binding.defaultTitleText.visibility = View.GONE
-                    binding.defaultBodyText.visibility = View.GONE
-                }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is NoneViewHolder -> holder.bind(searchList[position].name)
+            is DefaultViewHolder ->holder.bind()
+            is SearchViewHolder -> holder.bind(searchList[position])
+        }
+    }
 
-            }
+    override fun getItemCount(): Int = searchList.size
 
+    inner class NoneViewHolder(private val binding: SearchNoneItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(title: String) {
+            binding.titleText.text = title
+        }
+    }
+
+    inner class DefaultViewHolder(private val binding: SearchDefaultItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind() {
+
+        }
+    }
+
+    inner class SearchViewHolder(private val binding: SearchItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: SearchResponse) {
+            binding.titleText.text = item.name
+            binding.creditText.text = item.currentAmount.toString()
+            Glide
+                .with(binding.root.context)
+                .load(item.image)
+                .centerCrop()
+                .into(binding.thumbnailIcon)
         }
     }
 }

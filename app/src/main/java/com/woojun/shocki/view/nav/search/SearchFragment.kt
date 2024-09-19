@@ -51,7 +51,7 @@ class SearchFragment : Fragment() {
 
         binding.searchList.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = SearchAdapter(listOf(), SearchType.Default)
+            adapter = SearchAdapter(listOf(defaultItem("")), SearchType.Default)
         }
 
         binding.searchInput.apply {
@@ -83,7 +83,7 @@ class SearchFragment : Fragment() {
                 .collectLatest { query ->
                     if (query.isNotEmpty()) {
                         val searchList = getSearch(query)
-                        if (searchList != null) updateRecyclerView(searchList)
+                        if (searchList != null) updateRecyclerView(query, searchList)
                     }
                 }
         }
@@ -106,12 +106,18 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun updateRecyclerView(searchResponse: List<SearchResponse>) {
+    private fun updateRecyclerView(keyword: String, searchResponse: List<SearchResponse>) {
         if (searchResponse.isEmpty()) {
-            binding.searchList.adapter = SearchAdapter(listOf(), SearchType.None)
+            binding.searchList.adapter = SearchAdapter(listOf(defaultItem(keyword)), SearchType.None)
         } else {
             binding.searchList.adapter = SearchAdapter(searchResponse, SearchType.Item)
         }
+    }
+
+    private fun defaultItem(title: String): SearchResponse {
+        return SearchResponse(
+            0, "", "", title, "",
+        )
     }
 
     override fun onDestroyView() {
