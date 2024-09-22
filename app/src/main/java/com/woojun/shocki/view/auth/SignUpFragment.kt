@@ -314,8 +314,7 @@ class SignUpFragment : Fragment() {
                         if (checkPassword(password)) {
                             signUp(password)?.let {
                                 TokenManager.accessToken = it.accessToken
-                                startActivity(Intent(requireActivity(), MainActivity::class.java))
-                                requireActivity().finishAffinity()
+                                (requireContext() as AuthActivity).animationNavigate(R.id.connectWallet)
                             }
                         } else {
                             Toast.makeText(requireContext(), "유효한 비밀번호가 아닙니다", Toast.LENGTH_SHORT).show()
