@@ -84,22 +84,6 @@ class StoreDetailFragment : Fragment() {
         }
     }
 
-    private suspend fun getProduct(id: String): ProductResponse? {
-        return try {
-            withContext(Dispatchers.IO) {
-                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
-                val response = retrofitAPI.getProduct("bearer ${TokenManager.accessToken}", id)
-                if (response.isSuccessful) {
-                    response.body()
-                } else {
-                    null
-                }
-            }
-        } catch (e: Exception) {
-            null
-        }
-    }
-
     private fun setupWindowInsets() {
         requireActivity().enableEdgeToEdge()
 

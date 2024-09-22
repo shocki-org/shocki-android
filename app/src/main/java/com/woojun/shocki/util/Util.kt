@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.dto.AccessTokenResponse
 import com.woojun.shocki.dto.PostLoginRequest
+import com.woojun.shocki.dto.ProductResponse
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.view.main.MainActivity
@@ -78,5 +79,21 @@ object Util {
         val daysUntil = ChronoUnit.DAYS.between(currentDate, endDate)
 
         return daysUntil
+    }
+
+    suspend fun getProduct(id: String): ProductResponse? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.getProduct("bearer ${TokenManager.accessToken}", id)
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            null
+        }
     }
 }
