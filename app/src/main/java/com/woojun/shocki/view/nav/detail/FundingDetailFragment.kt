@@ -207,7 +207,7 @@ class FundingDetailFragment : Fragment() {
             val statusBarHeight = statusBars.top
             val navBarHeight = systemBars.bottom
 
-            binding.backButton.setPadding(0, statusBarHeight, 0, navBarHeight)
+            binding.backButton.setPadding(binding.backButton.paddingLeft, statusBarHeight, binding.backButton.paddingRight, navBarHeight)
             insets
         }
     }
