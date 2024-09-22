@@ -6,6 +6,7 @@ import com.woojun.shocki.dto.AccountResponse
 import com.woojun.shocki.dto.AlertResponse
 import com.woojun.shocki.dto.CategoryResponse
 import com.woojun.shocki.dto.FCMResponse
+import com.woojun.shocki.dto.FavoriteResponse
 import com.woojun.shocki.dto.PhoneFinalRequest
 import com.woojun.shocki.dto.PhoneFirstRequest
 import com.woojun.shocki.dto.PhoneSecondRequest
@@ -100,4 +101,10 @@ interface RetrofitAPI {
     suspend fun getAccount(
         @Header("Authorization") authorization: String,
     ): Response<AccountResponse>
+
+    @GET("user/favorite")
+    suspend fun getFavoriteList(
+        @Header("Authorization") authorization: String,
+    ): Response<List<FavoriteResponse>>
+
 }
