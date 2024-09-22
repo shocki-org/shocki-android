@@ -16,16 +16,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.woojun.shocki.R
-import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentStoreDetailBinding
 import com.woojun.shocki.dto.ProductResponse
-import com.woojun.shocki.network.RetrofitAPI
-import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.Util.calculateEndDate
+import com.woojun.shocki.util.Util.getProduct
 import com.woojun.shocki.view.main.MainActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class StoreDetailFragment : Fragment() {
 
@@ -47,6 +43,10 @@ class StoreDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupWindowInsets()
+
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         val productId = arguments?.getString("productId")
         if (productId != null) {
@@ -77,10 +77,6 @@ class StoreDetailFragment : Fragment() {
         binding.imageList.apply {
             this.adapter = ImageAdapter(productData.detailImages)
             this.layoutManager = LinearLayoutManager(requireContext())
-        }
-
-        binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
         }
 
         binding.buyButton.setOnClickListener {
