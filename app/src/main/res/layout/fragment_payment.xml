@@ -42,7 +42,7 @@
                 style="@style/display_accent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="결제 수단을\n선택해주세요" />
+                android:text="몇 개를 구매할건지\n선택해주세요" />
 
             <TextView
                 android:id="@+id/text2"
@@ -61,6 +61,51 @@
             android:paddingTop="8dp"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/textView">
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/detail_address_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <TextView
+                    style="@style/caption_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상세 주소"
+                    android:textColor="@color/Text_Default_Secondary" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:cardBackgroundColor="@color/background_gray_Elevated"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/background_gray_Border"
+                    app:strokeWidth="1dp">
+
+                    <EditText
+                        android:hint="00동 00호"
+                        android:inputType="text"
+                        android:imeOptions="actionGo"
+                        android:id="@+id/detail_address_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="12dp"
+                        android:textColorHint="@color/Text_Status_Unselected" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:visibility="gone"
@@ -92,8 +137,8 @@
                     app:strokeWidth="1dp">
 
                     <EditText
-                        android:hint="010 0000 0000"
-                        android:inputType="textPostalAddress"
+                        android:hint="주소시 주소동 상세주소 132"
+                        android:inputType="text"
                         android:imeOptions="actionGo"
                         android:id="@+id/address_input"
                         android:layout_width="match_parent"
@@ -105,6 +150,18 @@
                         android:textColorHint="@color/Text_Status_Unselected" />
 
                 </com.google.android.material.card.MaterialCardView>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/address_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
 
             </LinearLayout>
 
@@ -155,7 +212,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/count_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -197,36 +253,16 @@
                         android:textColorHint="@color/Text_Status_Unselected" />
 
                 </com.google.android.material.card.MaterialCardView>
+                
+                <TextView
+                    android:id="@+id/count_number_text"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/Text_Status_Accent"
+                    style="@style/caption_accent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
-
-            <RadioGroup
-                android:id="@+id/radio_group"
-                android:layout_marginStart="16dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:background="@null"
-                    android:textColor="@color/Text_Default_Primary"
-                    style="@style/body_accent"
-                    android:id="@+id/credit"
-                    android:text="크레딧으로 구매하기"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <RadioButton
-                    android:background="@null"
-                    android:id="@+id/cash"
-                    android:textColor="@color/Text_Default_Primary"
-                    style="@style/body_accent"
-                    android:text="현금으로 구매하기"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </RadioGroup>
-
 
         </LinearLayout>
 
