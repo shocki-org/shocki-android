@@ -23,6 +23,9 @@ android {
 
     val CLIENT_ID = localProperties.getProperty("CLIENT_ID") ?: ""
 
+    val READONLYRPCMAP = localProperties.getProperty("READONLYRPCMAP") ?: ""
+    val INFURAAPIKEY = localProperties.getProperty("INFURAAPIKEY") ?: ""
+
     defaultConfig {
         applicationId = "com.woojun.shocki"
         minSdk = 29
@@ -42,6 +45,11 @@ android {
 
         buildConfigField("String", "CLIENT_ID", "\"$CLIENT_ID\"")
         resValue("string", "CLIENT_ID", CLIENT_ID)
+
+        buildConfigField("String", "READONLYRPCMAP", "\"$READONLYRPCMAP\"")
+        resValue("string", "READONLYRPCMAP", READONLYRPCMAP)
+        buildConfigField("String", "INFURAAPIKEY", "\"$INFURAAPIKEY\"")
+        resValue("string", "INFURAAPIKEY", INFURAAPIKEY)
     }
 
     buildTypes {
