@@ -110,4 +110,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
 
     implementation(libs.lottie)
+
+    implementation(libs.payment.sdk.android)
 }

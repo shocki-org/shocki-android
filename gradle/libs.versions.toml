@@ -24,6 +24,7 @@ credentials = "1.2.0"
 credentialsPlayServicesAuth = "1.2.0"
 googleid = "1.1.1"
 firebaseMessagingKtx = "24.0.1"
+paymentSdkAndroid = "0.1.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +51,7 @@ googleid = { module = "com.google.android.libraries.identity.googleid:googleid",
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
 firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+payment-sdk-android = { module = "com.github.tosspayments:payment-sdk-android", version.ref = "paymentSdkAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
