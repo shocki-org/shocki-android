@@ -2,6 +2,7 @@ package com.woojun.shocki.network
 
 import com.woojun.shocki.dto.PostLoginRequest
 import com.woojun.shocki.dto.AccessTokenResponse
+import com.woojun.shocki.dto.AccountResponse
 import com.woojun.shocki.dto.AlertResponse
 import com.woojun.shocki.dto.CategoryResponse
 import com.woojun.shocki.dto.FCMResponse
@@ -94,4 +95,9 @@ interface RetrofitAPI {
     suspend fun getShippingList(
         @Header("Authorization") authorization: String,
     ): Response<List<ShippingResponse>>
+
+    @GET("user/balance")
+    suspend fun getAccount(
+        @Header("Authorization") authorization: String,
+    ): Response<AccountResponse>
 }
