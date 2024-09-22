@@ -8,6 +8,7 @@ import com.woojun.shocki.dto.AlertResponse
 import com.woojun.shocki.dto.CategoryResponse
 import com.woojun.shocki.dto.FCMResponse
 import com.woojun.shocki.dto.FavoriteResponse
+import com.woojun.shocki.dto.MarketRequest
 import com.woojun.shocki.dto.PayRequest
 import com.woojun.shocki.dto.PhoneFinalRequest
 import com.woojun.shocki.dto.PhoneFirstRequest
@@ -120,5 +121,11 @@ interface RetrofitAPI {
         @Header("Authorization") authorization: String,
         @Query("query") query: String
     ): Response<AddressResponse>
+
+    @POST("product/purchase/market")
+    suspend fun buyMarket(
+        @Header("Authorization") authorization: String,
+        @Body body: MarketRequest
+    ): Response<Unit>
 
 }
