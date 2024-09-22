@@ -7,23 +7,25 @@
     android:background="@color/background_gray_Elevated"
     tools:context=".view.nav.detail.FundingDetailFragment">
 
+
     <ScrollView
-        app:layout_constraintTop_toTopOf="parent"
-        android:scrollbars="none"
-        android:fillViewport="true"
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:src="@drawable/banner6"
-                android:scaleType="centerCrop"
-                android:id="@+id/imageView2"
+                android:id="@+id/cover_image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/banner6"
                 app:layout_constraintDimensionRatio="w, 1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,49 +44,49 @@
 
             <TextView
                 android:id="@+id/tag_text"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 style="@style/caption_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="디자인 예술"
                 android:textColor="@color/Text_Default_Quaternary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2"/>
+                app:layout_constraintTop_toBottomOf="@+id/cover_image" />
 
             <TextView
-                android:text="어차피 알아야 할 핵심 UI 디자인 시스템어차피 알아야 할 핵심 UI 디자인 시스템"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/Text_Default_Secondary"
-                style="@style/body_accent"
                 android:id="@+id/title_text"
+                style="@style/body_accent"
                 android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginHorizontal="16dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="4dp"
+                android:text="어차피 알아야 할 핵심 UI 디자인 시스템어차피 알아야 할 핵심 UI 디자인 시스템"
+                android:textColor="@color/Text_Default_Secondary"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tag_text" />
 
             <TextView
-                style="@style/display_accent"
-                android:textColor="@color/Text_Default_Primary"
-                android:text="현재"
                 android:id="@+id/text1"
-                app:layout_constraintStart_toStartOf="@id/title_text"
-                app:layout_constraintTop_toBottomOf="@+id/title_text"
+                style="@style/display_accent"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="현재"
+                android:textColor="@color/Text_Default_Primary"
+                app:layout_constraintStart_toStartOf="@id/title_text"
+                app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
             <TextView
-                android:text="7,794,000"
-                android:layout_marginStart="4dp"
-                app:layout_constraintStart_toEndOf="@id/text1"
-                app:layout_constraintTop_toBottomOf="@+id/title_text"
-                android:textColor="@color/Text_Status_Accent"
-                style="@style/display_accent"
                 android:id="@+id/price_text"
+                style="@style/display_accent"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="7,794,000"
+                android:textColor="@color/Text_Status_Accent"
+                app:layout_constraintStart_toEndOf="@id/text1"
+                app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
             <TextView
                 android:id="@+id/textView8"
@@ -109,24 +111,24 @@
 
             <TextView
                 android:id="@+id/date_text"
-                android:layout_marginStart="4dp"
                 style="@style/caption_accent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:text="NN일"
                 android:textColor="@color/Text_Status_Negative"
                 app:layout_constraintStart_toEndOf="@+id/textView9"
                 app:layout_constraintTop_toTopOf="@+id/textView9" />
 
             <TextView
-                android:layout_marginStart="4dp"
                 style="@style/caption_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:text="남았어요"
                 android:textColor="@color/Text_Default_Tertiary"
                 app:layout_constraintStart_toEndOf="@+id/date_text"
-                app:layout_constraintTop_toTopOf="@+id/date_text"/>
+                app:layout_constraintTop_toTopOf="@+id/date_text" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -160,11 +162,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
             <TextView
-                android:layout_marginStart="8dp"
-                android:id="@+id/token_price"
+                android:id="@+id/now_token_price"
                 style="@style/caption_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="7,794,000원"
                 android:textColor="@color/Text_Default_Tertiary"
                 app:layout_constraintBottom_toBottomOf="@+id/textView11"
@@ -183,11 +185,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
             <TextView
-                android:layout_marginStart="8dp"
                 android:id="@+id/funding_date"
                 style="@style/caption_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="N월 NN일"
                 android:textColor="@color/Text_Default_Tertiary"
                 app:layout_constraintBottom_toBottomOf="@+id/textView12"
@@ -206,11 +208,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
             <TextView
-                android:layout_marginStart="8dp"
-                android:id="@+id/now_funding_price"
+                android:id="@+id/now_funding_amount"
                 style="@style/caption_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="000,000,000원 (0000%)"
                 android:textColor="@color/Text_Default_Tertiary"
                 app:layout_constraintBottom_toBottomOf="@+id/textView13"
@@ -229,11 +231,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
             <TextView
-                android:layout_marginStart="8dp"
                 android:id="@+id/goal_funding_price"
                 style="@style/caption_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="NNNNN원"
                 android:textColor="@color/Text_Default_Tertiary"
                 app:layout_constraintBottom_toBottomOf="@+id/textView14"
@@ -259,15 +261,15 @@
                 android:textColor="@color/Text_Default_Primary"
                 app:layout_constraintStart_toStartOf="@id/constraintLayout1"
                 app:layout_constraintTop_toBottomOf="@id/constraintLayout1" />
-            
+
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/graph_view"
-                app:layout_constraintTop_toBottomOf="@id/text15"
-                android:layout_marginTop="4dp"
-                android:layout_marginHorizontal="16dp"
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="184.5dp"/>
+                android:layout_height="184.5dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/text15" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
@@ -279,65 +281,59 @@
                 app:layout_constraintTop_toBottomOf="@+id/graph_view" />
 
             <com.google.android.material.tabs.TabLayout
-                app:tabRippleColor="@color/background"
-                android:background="@color/background"
                 android:id="@+id/tab_layout"
-                app:tabIndicatorColor="@color/Text_Default_Primary"
-                app:tabGravity="fill"
-                app:tabMode="fixed"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@id/constraintLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/background"
+                app:layout_constraintTop_toBottomOf="@id/constraintLayout2"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/Text_Default_Primary"
+                app:tabMode="fixed"
+                app:tabRippleColor="@color/background"/>
 
-
-            </com.google.android.material.tabs.TabLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
+                android:background="@color/background_gray_Default"
+                android:layout_marginTop="8dp"
                 android:paddingTop="16dp"
                 android:paddingBottom="96dp"
-                android:background="@color/background_gray_Default"
-                app:layout_constraintTop_toBottomOf="@id/tab_layout"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:id="@+id/default_image"
-                    android:layout_marginVertical="128dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="128dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
-                        android:src="@drawable/error_icon"
                         android:layout_width="64dp"
-                        android:layout_height="64dp"/>
+                        android:layout_height="64dp"
+                        android:src="@drawable/error_icon" />
 
                     <TextView
-                        android:textColor="@color/Text_Default_Quaternary"
                         style="@style/body_accent"
-                        android:text="등록된 질문이 없습니다."
-                        android:layout_marginTop="4dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="등록된 질문이 없습니다."
+                        android:textColor="@color/Text_Default_Quaternary" />
 
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:paddingTop="16dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:id="@+id/recycler_view"
+                    android:id="@+id/bottom_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"
                     android:layout_marginHorizontal="16dp" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

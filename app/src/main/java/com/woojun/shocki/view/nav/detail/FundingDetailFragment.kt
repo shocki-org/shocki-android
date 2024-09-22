@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,14 +16,17 @@ import android.view.Window
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -33,7 +37,16 @@ import com.google.android.material.tabs.TabLayout
 import com.woojun.shocki.R
 import com.woojun.shocki.data.Chat
 import com.woojun.shocki.data.ChatType
+import com.woojun.shocki.data.Graph
 import com.woojun.shocki.databinding.FragmentFundingDetailBinding
+import com.woojun.shocki.dto.ProductResponse
+import com.woojun.shocki.util.Util.calculateEndDate
+import com.woojun.shocki.util.Util.getProduct
+import com.woojun.shocki.view.main.MainActivity
+import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class FundingDetailFragment : Fragment() {
     private var _binding: FragmentFundingDetailBinding? = null
@@ -55,22 +68,67 @@ class FundingDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupWindowInsets()
 
-        val adapter1 = ImageAdapter(listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3, R.drawable.banner4, R.drawable.banner5))
-        val adapter2 = ChatAdapter(listOf(Chat("제품 구성품은 무엇이 있나요?", ChatType.Question), Chat("이것 저것 등등등이 들어가있습니다", ChatType.Answer), Chat("", ChatType.Button)))
-
-        binding.graphView.apply {
-            val dataSet = createLineDataSet()
-            val lineData = LineData(dataSet)
-            setupLineChart(this, lineData)
-        }
-
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = adapter1
+        val productId = arguments?.getString("productId")
+        if (productId != null) {
+            lifecycleScope.launch {
+                val productData = getProduct(productId)
+                if (productData != null) {
+                    initView(productData)
+                } else {
+                    Toast.makeText(requireContext(), "상품 조회를 실패하였습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), "상품 조회를 실패하였습니다", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun initView(productData: ProductResponse) {
+        Glide
+            .with(binding.root.context)
+            .load(productData.image)
+            .centerCrop()
+            .into(binding.coverImage)
+        binding.tagText.text = productData.categories[0]
+        binding.titleText.text = productData.name
+        binding.priceText.text = productData.currentAmount.toString()
+        binding.dateText.text = "${calculateEndDate(productData.fundingEndDate)}일"
+
+        binding.nowTokenPrice.text = "${productData.currentAmount}크레딧"
+        binding.fundingDate.text = "${formatFundingDate(productData.fundingEndDate)}일"
+        binding.nowFundingAmount.text = "${productData.collectedAmount}크레딧 ${(productData.collectedAmount / productData.targetAmount) * 100}%"
+        binding.goalFundingPrice.text = "${productData.targetAmount}크레딧"
+
+        binding.graphView.apply {
+            val dataSet = createLineDataSet(productData.graph)
+            val lineData = LineData(dataSet)
+            setupLineChart(this, lineData)
+        }
+
+        bindTabLayout(productData)
+
+        binding.buyButton.setOnClickListener {
+            (requireActivity() as MainActivity).animationNavigate(R.id.payment, productData.id)
+        }
+
+    }
+
+    private fun bindTabLayout(productData: ProductResponse) {
+        val qnaList = productData.productQnA.map { Chat(it.content, if (it.authorType == "BUYER") ChatType.Question else ChatType.Answer) }.toMutableList()
+        qnaList.add(Chat("", ChatType.Button))
+
+        val imageAdapter = ImageAdapter(productData.detailImages)
+        val qnaAdapter = ChatAdapter(qnaList)
+
+        binding.bottomList.apply {
+            binding.defaultImage.visibility = View.GONE
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+            adapter = imageAdapter
         }
 
         binding.buyButton.setOnClickListener {
@@ -89,22 +147,20 @@ class FundingDetailFragment : Fragment() {
                     when (tab.position) {
                         0 -> {
                             binding.defaultImage.visibility = View.GONE
-                            binding.recyclerView.apply {
-                                visibility = View.VISIBLE
-                                adapter = adapter1
+                            binding.bottomList.apply {
+                                adapter = imageAdapter
                                 layoutManager = LinearLayoutManager(requireContext())
                             }
                         }
                         1 -> {
-                            if (adapter2.itemCount == 0) {
-                                binding.recyclerView.visibility = View.GONE
+                            binding.bottomList.apply {
+                                adapter = qnaAdapter
+                                layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+                            }
+                            if (qnaAdapter.itemCount <= 1) {
                                 binding.defaultImage.visibility = View.VISIBLE
                             } else {
-                                binding.recyclerView.apply {
-                                    visibility = View.VISIBLE
-                                    adapter = adapter2
-                                    layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
-                                }
+
                                 binding.defaultImage.visibility = View.GONE
                             }
                         }
@@ -120,8 +176,14 @@ class FundingDetailFragment : Fragment() {
                 }
             })
         }
+    }
 
+    private fun formatFundingDate(dateString: String): String {
+        val zoneKST = ZoneId.of("Asia/Seoul")
+        val zonedDateTime = Instant.parse(dateString).atZone(zoneKST)
 
+        val formatter = DateTimeFormatter.ofPattern("M월 dd일")
+        return zonedDateTime.format(formatter)
     }
 
     private fun tokenDialog(context: Context) {
@@ -152,12 +214,8 @@ class FundingDetailFragment : Fragment() {
         customDialog.show()
     }
 
-
-    private fun createLineDataSet(): LineDataSet {
-        val values = ArrayList<Entry>()
-        for (i in 0 until 10) {
-            values.add(Entry(i.toFloat(), (Math.random() * 100).toFloat()))
-        }
+    private fun createLineDataSet(chartData: List<Graph>): LineDataSet {
+        val values = chartData.map { Entry(it.x.toFloat(), it.y.toFloat()) }
 
         return LineDataSet(values, "").apply {
             color = resources.getColor(R.color.background_accent_Default)
