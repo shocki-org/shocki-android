@@ -7,13 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsetsController
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.woojun.shocki.R
+import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentStoreDetailBinding
+import com.woojun.shocki.dto.ProductResponse
+import com.woojun.shocki.network.RetrofitAPI
+import com.woojun.shocki.network.RetrofitClient
+import com.woojun.shocki.util.Util.calculateEndDate
+import com.woojun.shocki.view.main.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class StoreDetailFragment : Fragment() {
 
@@ -36,19 +48,59 @@ class StoreDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupWindowInsets()
 
+        val productId = arguments?.getString("productId")
+        if (productId != null) {
+            lifecycleScope.launch {
+                val productData = getProduct(productId)
+                if (productData != null) {
+                    initView(productData)
+                } else {
+                    Toast.makeText(requireContext(), "상품 조회를 실패하였습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), "상품 조회를 실패하였습니다", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun initView(productData: ProductResponse) {
+        Glide
+            .with(binding.root.context)
+            .load(productData.image)
+            .centerCrop()
+            .into(binding.coverImage)
+        binding.titleText.text = productData.name
+        binding.priceText.text = productData.currentAmount.toString()
+        binding.dateText.text = "${calculateEndDate(productData.marketEndDate)}일"
+
+        binding.imageList.apply {
+            this.adapter = ImageAdapter(productData.detailImages)
+            this.layoutManager = LinearLayoutManager(requireContext())
+        }
+
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        binding.imageList.apply {
-            this.adapter = ImageAdapter(
-                listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3, R.drawable.banner4, R.drawable.banner5)
-            )
-            this.layoutManager = LinearLayoutManager(requireContext())
-        }
-
         binding.buyButton.setOnClickListener {
+            (requireActivity() as MainActivity).animationNavigate(R.id.payment, productData.id)
+        }
+    }
 
+    private suspend fun getProduct(id: String): ProductResponse? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.getProduct("bearer ${TokenManager.accessToken}", id)
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            null
         }
     }
 

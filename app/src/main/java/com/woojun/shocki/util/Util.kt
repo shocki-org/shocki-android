@@ -15,6 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import java.util.regex.Pattern
 
 object Util {
@@ -66,4 +70,13 @@ object Util {
         }
     }
 
+    fun calculateEndDate(endDateString: String): Long {
+        val zoneKST = ZoneId.of("Asia/Seoul")
+        val endDate = Instant.parse(endDateString).atZone(zoneKST).toLocalDate()
+
+        val currentDate = LocalDate.now(zoneKST)
+        val daysUntil = ChronoUnit.DAYS.between(currentDate, endDate)
+
+        return daysUntil
+    }
 }
