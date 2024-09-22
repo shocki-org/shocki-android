@@ -3,6 +3,7 @@ package com.woojun.shocki.network
 import com.woojun.shocki.dto.PostLoginRequest
 import com.woojun.shocki.dto.AccessTokenResponse
 import com.woojun.shocki.dto.AccountResponse
+import com.woojun.shocki.dto.AddressResponse
 import com.woojun.shocki.dto.AlertResponse
 import com.woojun.shocki.dto.CategoryResponse
 import com.woojun.shocki.dto.FCMResponse
@@ -113,5 +114,11 @@ interface RetrofitAPI {
         @Header("Authorization") authorization: String,
         @Body body: PayRequest
     ): Response<Unit>
+
+    @GET("address/search")
+    suspend fun searchAddress(
+        @Header("Authorization") authorization: String,
+        @Query("query") query: String
+    ): Response<AddressResponse>
 
 }
