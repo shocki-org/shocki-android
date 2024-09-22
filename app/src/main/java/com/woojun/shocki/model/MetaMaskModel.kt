@@ -1,4 +1,4 @@
-package com.woojun.shocki.view.model
+package com.woojun.shocki.model
 
 import android.content.Context
 import com.woojun.shocki.BuildConfig

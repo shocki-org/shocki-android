@@ -14,7 +14,7 @@ import com.woojun.shocki.databinding.FragmentConnectWalletBinding
 import com.woojun.shocki.dto.WalletRequest
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
-import com.woojun.shocki.view.model.MetaMaskModel
+import com.woojun.shocki.model.MetaMaskModel
 import io.metamask.androidsdk.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
