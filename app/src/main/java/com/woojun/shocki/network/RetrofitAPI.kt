@@ -12,6 +12,7 @@ import com.woojun.shocki.dto.PhoneSecondResponse
 import com.woojun.shocki.dto.ProductResponse
 import com.woojun.shocki.dto.SearchResponse
 import com.woojun.shocki.dto.SimpleProductResponse
+import com.woojun.shocki.dto.WalletRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -82,4 +83,9 @@ interface RetrofitAPI {
         @Query("id") id: String
     ): Response<ProductResponse>
 
+    @PUT("user/address")
+    suspend fun setWallet(
+        @Header("Authorization") authorization: String,
+        @Body body: WalletRequest
+    ): Response<Unit>
 }
