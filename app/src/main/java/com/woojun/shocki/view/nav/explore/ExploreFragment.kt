@@ -199,10 +199,12 @@ class ExploreFragment : Fragment() {
             super.handleMessage(msg)
             val fragment = fragmentRef.get()
 
-            if(msg.what == 0) {
+            if (msg.what == 0) {
                 fragment?.activity?.runOnUiThread {
-                    fragment.binding.let {
-                        fragment.binding.topBannerViewPager.setCurrentItemWithDuration(++fragment.currentPosition, 500)
+                    fragment.view?.let { view ->
+                        val viewPager = view.findViewById<ViewPager2>(R.id.top_banner_view_pager)
+                        viewPager?.setCurrentItemWithDuration(++fragment.currentPosition, 500)
+
                         fragment.autoScrollStart()
                     }
                 }
