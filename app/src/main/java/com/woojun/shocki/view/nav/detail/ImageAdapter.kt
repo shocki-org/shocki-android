@@ -3,9 +3,10 @@ package com.woojun.shocki.view.nav.detail
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.woojun.shocki.databinding.ImageItemBinding
 
-class ImageAdapter(private val imageList: List<Int>):
+class ImageAdapter(private val imageList: List<String>):
     RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageAdapter.ViewHolder {
@@ -22,8 +23,12 @@ class ImageAdapter(private val imageList: List<Int>):
     override fun getItemCount(): Int = imageList.size
 
     inner class ViewHolder(private val binding : ImageItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(image: Int){
-            binding.imageView.setImageResource(image)
+        fun bind(image: String){
+            Glide
+                .with(binding.root.context)
+                .load(image)
+                .centerCrop()
+                .into(binding.imageView)
         }
     }
 }

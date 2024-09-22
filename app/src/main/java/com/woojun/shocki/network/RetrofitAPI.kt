@@ -9,6 +9,7 @@ import com.woojun.shocki.dto.PhoneFinalRequest
 import com.woojun.shocki.dto.PhoneFirstRequest
 import com.woojun.shocki.dto.PhoneSecondRequest
 import com.woojun.shocki.dto.PhoneSecondResponse
+import com.woojun.shocki.dto.ProductResponse
 import com.woojun.shocki.dto.SearchResponse
 import com.woojun.shocki.dto.SimpleProductResponse
 import retrofit2.Response
@@ -74,5 +75,11 @@ interface RetrofitAPI {
         @Header("Authorization") authorization: String,
         @Body body: FCMResponse
     ): Response<Unit>
+
+    @GET("product")
+    suspend fun getProduct(
+        @Header("Authorization") authorization: String,
+        @Query("id") id: String
+    ): Response<ProductResponse>
 
 }
