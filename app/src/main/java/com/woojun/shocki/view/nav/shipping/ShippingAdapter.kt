@@ -12,11 +12,13 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.woojun.shocki.R
 import com.woojun.shocki.databinding.ShippingItemBinding
+import com.woojun.shocki.dto.ShippingResponse
 
-class ShippingAdapter (private val shippingList: List<String>):
+class ShippingAdapter (private val shippingList: List<ShippingResponse>):
     RecyclerView.Adapter<ShippingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShippingAdapter.ViewHolder {
@@ -89,9 +91,29 @@ class ShippingAdapter (private val shippingList: List<String>):
     override fun getItemCount(): Int = shippingList.size
 
     inner class ViewHolder(private val binding : ShippingItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(title: String){
-            binding.imageView.setImageResource(R.drawable.banner1)
-            binding.titleText.text = title
+        fun bind(item: ShippingResponse){
+            binding.titleText.text = item.productName
+            binding.shippingTypeText.apply {
+                when (item.status) {
+                    "WAITING_DELIVERY" -> {
+                        text = "배송하기 전"
+                        setTextColor(resources.getColor(R.color.Text_Default_Quaternary))
+                    }
+                    "ON_DELIVERY" -> {
+                        text = "배송 중"
+                        setTextColor(resources.getColor(R.color.Text_Status_Positive))
+                    }
+                    "DELIVERED" -> {
+                        text = "배송 완료!"
+                        setTextColor(resources.getColor(R.color.Text_Status_Accent))
+                    }
+                }
+            }
+            Glide
+                .with(binding.root.context)
+                .load(item.productImage)
+                .centerCrop()
+                .into(binding.imageView)
         }
     }
 }

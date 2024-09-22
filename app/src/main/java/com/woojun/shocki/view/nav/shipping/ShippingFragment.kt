@@ -5,9 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentShippingBinding
+import com.woojun.shocki.dto.ShippingResponse
+import com.woojun.shocki.network.RetrofitAPI
+import com.woojun.shocki.network.RetrofitClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ShippingFragment : Fragment() {
 
@@ -33,21 +42,36 @@ class ShippingFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        binding.shippingList.apply {
-            this.layoutManager = LinearLayoutManager(requireContext())
-            this.adapter = ShippingAdapter(testList())
+        lifecycleScope.launch {
+            getShippingList()?.let {
+                binding.shippingList.apply {
+                    this.layoutManager = LinearLayoutManager(requireContext())
+                    this.adapter = ShippingAdapter(it)
+                }
+            }
         }
 
 
     }
 
-    private fun testList(): List<String> {
-        return listOf(
-            "활용법까지 알려주는 디자이너 PICK <무료 폰트 가이드>",
-            "활용법까지 알려주는 디자이너 PICK <무료 폰트 가이드>",
-            "활용법까지 알려주는 디자이너 PICK <무료 폰트 가이드>",
-            "활용법까지 알려주는 디자이너 PICK <무료 폰트 가이드>"
-        )
+    private suspend fun getShippingList(): List<ShippingResponse>? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.getShippingList("bearer ${TokenManager.accessToken}")
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "배송 목록 조회를 실패하였습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "배송 목록 조회를 실패하였습니다", Toast.LENGTH_SHORT).show()
+            null
+        }
     }
 
     override fun onDestroyView() {
