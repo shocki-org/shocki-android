@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="16dp"
+    android:background="@color/background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="w, 1:1"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        style="@style/caption_default"
+        android:id="@+id/name_text"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/Text_Default_Primary"
+        app:layout_constraintEnd_toEndOf="@id/cardView"
+        app:layout_constraintStart_toStartOf="@id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <TextView
+        android:id="@+id/price_text"
+        style="@style/body_accent"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:maxLines="1"
+        android:textColor="@color/Text_Status_Accent"
+        app:layout_constraintStart_toStartOf="@+id/name_text"
+        app:layout_constraintTop_toBottomOf="@+id/name_text" />
+
+    <TextView
+        style="@style/body_accent"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="4dp"
+        android:text="크레딧"
+        android:textColor="@color/Text_Default_Primary"
+        app:layout_constraintStart_toEndOf="@+id/price_text"
+        app:layout_constraintTop_toBottomOf="@+id/name_text" />
+
+    <TextView
+        android:id="@+id/date_text"
+        style="@style/caption_accent"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:maxLines="1"
+        android:textColor="@color/Text_Status_Positive"
+        app:layout_constraintStart_toStartOf="@+id/price_text"
+        app:layout_constraintTop_toBottomOf="@+id/price_text" />
+
+    <TextView
+        style="@style/caption_default"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="4dp"
+        android:text="정산 예정"
+        android:textColor="@color/Text_Default_Primary"
+        app:layout_constraintStart_toEndOf="@+id/date_text"
+        app:layout_constraintTop_toBottomOf="@+id/price_text" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
