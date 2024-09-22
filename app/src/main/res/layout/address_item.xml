@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/background"
+    app:strokeColor="@color/background_gray_Border"
+    app:strokeWidth="1dp"
+    app:cardCornerRadius="4dp"
+    android:layout_marginHorizontal="16dp"
+    app:cardElevation="0dp"
+    android:layout_marginTop="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            style="@style/body_default"
+            android:textColor="@color/Text_Default_Primary"
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_text"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="12dp"
+            style="@style/caption_default"
+            android:textColor="@color/Text_Default_Quaternary"
+            android:id="@+id/body_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
