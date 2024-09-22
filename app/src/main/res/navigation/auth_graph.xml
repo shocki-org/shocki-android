@@ -20,4 +20,14 @@
         android:name="com.woojun.shocki.view.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/connectWallet"
+        android:name="com.woojun.shocki.view.auth.ConnectWalletFragment"
+        android:label="fragment_connect_wallet"
+        tools:layout="@layout/fragment_connect_wallet" />
+    <fragment
+        android:id="@+id/walletFinish"
+        android:name="com.woojun.shocki.view.auth.WalletFinishFragment"
+        android:label="fragment_wallet_finish"
+        tools:layout="@layout/fragment_wallet_finish" />
 </navigation>
