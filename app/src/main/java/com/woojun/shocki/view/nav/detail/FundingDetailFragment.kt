@@ -79,6 +79,10 @@ class FundingDetailFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         val productId = arguments?.getString("productId")
         if (productId != null) {
             lifecycleScope.launch {
@@ -92,7 +96,6 @@ class FundingDetailFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "상품 조회를 실패하였습니다", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private fun initView(productData: ProductResponse) {
@@ -120,7 +123,7 @@ class FundingDetailFragment : Fragment() {
         bindTabLayout(productData)
 
         binding.buyButton.apply {
-            if (productData.purchaseIsDisabled) {
+            if (!productData.purchaseIsDisabled) {
                 isEnabled = false
                 strokeColor = resources.getColor(R.color.background_gray_Border)
                 setCardBackgroundColor(resources.getColor(R.color.background_gray_Default))
@@ -133,7 +136,7 @@ class FundingDetailFragment : Fragment() {
         }
 
         binding.saleButton.apply {
-            if (productData.saleIsDisabled) {
+            if (!productData.saleIsDisabled) {
                 isEnabled = false
                 strokeColor = resources.getColor(R.color.background_gray_Border)
                 setCardBackgroundColor(resources.getColor(R.color.background_gray_Default))
@@ -203,7 +206,7 @@ class FundingDetailFragment : Fragment() {
 
     private fun bindTabLayout(productData: ProductResponse) {
         val qnaList = productData.productQnA.map { Chat(it.content, if (it.authorType == "BUYER") ChatType.Question else ChatType.Answer) }.toMutableList()
-        qnaList.add(Chat("", ChatType.Button))
+        qnaList.add(Chat("", ChatType.Button, productData.id))
 
         val imageAdapter = ImageAdapter(productData.detailImages)
         val qnaAdapter = ChatAdapter(qnaList)
