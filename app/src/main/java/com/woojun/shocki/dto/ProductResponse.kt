@@ -9,7 +9,7 @@ data class ProductResponse(
     val createdAt: String,
     val currentAmount: Int,
     val detailImages: List<String>,
-    val distributionPercent: Int,
+    val distributionPercent: Double,
     val fundingEndDate: String,
     val graph: List<Graph>,
     val id: String,
