@@ -367,16 +367,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/buy_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    app:strokeColor="@color/background_accent_Default"
                     app:cardBackgroundColor="@color/background_accent_Default"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp">
 
                     <TextView
+                        android:id="@+id/buy_text"
                         style="@style/body_accent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -385,7 +387,7 @@
                         android:text="구매"
                         android:textColor="@color/white" />
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/sale_button"
@@ -399,13 +401,14 @@
                     app:strokeWidth="1dp">
 
                     <TextView
+                        android:id="@+id/sale_text"
                         style="@style/body_default"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginVertical="16dp"
                         android:text="판매"
-                        android:textColor="@color/Text_Status_Unable" />
+                        android:textColor="@color/Text_Default_Primary" />
 
                 </com.google.android.material.card.MaterialCardView>
 

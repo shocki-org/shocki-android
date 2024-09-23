@@ -119,6 +119,32 @@ class FundingDetailFragment : Fragment() {
 
         bindTabLayout(productData)
 
+        binding.buyButton.apply {
+            if (productData.purchaseIsDisabled) {
+                isEnabled = false
+                strokeColor = resources.getColor(R.color.background_gray_Border)
+                setCardBackgroundColor(resources.getColor(R.color.background_gray_Default))
+                binding.buyText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
+            } else {
+                setOnClickListener {
+
+                }
+            }
+        }
+
+        binding.saleButton.apply {
+            if (productData.saleIsDisabled) {
+                isEnabled = false
+                strokeColor = resources.getColor(R.color.background_gray_Border)
+                setCardBackgroundColor(resources.getColor(R.color.background_gray_Default))
+                binding.saleText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
+            } else {
+                setOnClickListener {
+
+                }
+            }
+        }
+
         binding.buyButton.setOnClickListener {
             (requireActivity() as MainActivity).animationNavigate(R.id.payment, productData.id)
         }
