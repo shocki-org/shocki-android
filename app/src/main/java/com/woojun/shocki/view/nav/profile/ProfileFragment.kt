@@ -1,7 +1,6 @@
 package com.woojun.shocki.view.nav.profile
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -14,7 +13,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,7 +25,7 @@ import com.tosspayments.paymentsdk.model.paymentinfo.TossCardPaymentInfo
 import com.woojun.shocki.R
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentProfileBinding
-import com.woojun.shocki.databinding.MiddleBannerItemBinding
+import com.woojun.shocki.databinding.MiddleAccountBannerItemBinding
 import com.woojun.shocki.dto.AccountResponse
 import com.woojun.shocki.dto.FavoriteResponse
 import com.woojun.shocki.dto.PayRequest
@@ -36,7 +34,6 @@ import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.SpacingItemDecoration
 import com.woojun.shocki.view.main.MainActivity
-import com.woojun.shocki.view.nav.explore.MiddleViewPagerAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -95,11 +92,14 @@ class ProfileFragment : Fragment() {
                 binding.pinList.apply {
                     val inflater = LayoutInflater.from(context)
                     val list = it.map { item ->
-                        Pair(MiddleBannerItemBinding.inflate(inflater),
+                        Pair(MiddleAccountBannerItemBinding.inflate(inflater),
                             SimpleProductResponse(item.productPrice, item.productId, item.productImage, item.productName, "")
                         )
                     }
-                    adapter = MiddleViewPagerAdapter(list)
+                    adapter = MiddleAccountViewPagerAdapter(list)
+                    if (list.size < 3) {
+                        binding.pinList.setOnTouchListener { _, _ -> true }
+                    }
                 }
             }
         }
