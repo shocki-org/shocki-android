@@ -57,6 +57,9 @@ class AuthHomeFragment : Fragment() {
             paintFlags = Paint.UNDERLINE_TEXT_FLAG
             setOnClickListener { phoneLogin() }
         }
+        binding.testButton.setOnClickListener {
+            saveToken(requireActivity(), PostLoginRequest("shockitestkeybyseogaemo", "playstore-test", "", "TEST"))
+        }
 
     }
 
