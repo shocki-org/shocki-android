@@ -128,4 +128,15 @@ interface RetrofitAPI {
         @Body body: MarketRequest
     ): Response<Unit>
 
+    @PUT("product/favorite")
+    suspend fun putLike(
+        @Header("Authorization") authorization: String,
+        @Query("productId") productId: String
+    ): Response<Unit>
+
+    @PUT("product/unfavorite")
+    suspend fun putUnLike(
+        @Header("Authorization") authorization: String,
+        @Query("productId") productId: String
+    ): Response<Unit>
 }

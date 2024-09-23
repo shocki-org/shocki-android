@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -38,19 +37,27 @@ import com.woojun.shocki.R
 import com.woojun.shocki.data.Chat
 import com.woojun.shocki.data.ChatType
 import com.woojun.shocki.data.Graph
+import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentFundingDetailBinding
 import com.woojun.shocki.dto.ProductResponse
+import com.woojun.shocki.network.RetrofitAPI
+import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.Util.calculateEndDate
 import com.woojun.shocki.util.Util.getProduct
 import com.woojun.shocki.view.main.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class FundingDetailFragment : Fragment() {
+
     private var _binding: FragmentFundingDetailBinding? = null
     private val binding get() = _binding!!
+
+    private var isLike = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +123,56 @@ class FundingDetailFragment : Fragment() {
             (requireActivity() as MainActivity).animationNavigate(R.id.payment, productData.id)
         }
 
+        isLike = productData.userFavorite
+
+        if (isLike) {
+            binding.likeButtonIcon.setImageResource(R.drawable.like_pin_icon)
+        } else {
+            binding.likeButtonIcon.setImageResource(R.drawable.like_icon)
+        }
+
+        binding.likeButton.setOnClickListener {
+            lifecycleScope.launch {
+                if (isLike) {
+                    putUnLike(productData.id)
+                } else {
+                    putLike(productData.id)
+                }
+
+                isLike = !isLike
+
+                if (isLike) {
+                    binding.likeButtonIcon.setImageResource(R.drawable.like_pin_icon)
+                } else {
+                    binding.likeButtonIcon.setImageResource(R.drawable.like_icon)
+                }
+            }
+        }
+
+    }
+
+    private suspend fun putLike(productId: String): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.putLike("bearer ${TokenManager.accessToken}", productId)
+                response.isSuccessful
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private suspend fun putUnLike(productId: String): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.putUnLike("bearer ${TokenManager.accessToken}", productId)
+                response.isSuccessful
+            }
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private fun bindTabLayout(productData: ProductResponse) {

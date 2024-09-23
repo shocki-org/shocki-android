@@ -423,9 +423,9 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/like_button_icon"
                     android:layout_margin="12dp"
                     android:layout_gravity="center"
-                    app:tint="@color/Text_Status_Unselected"
                     android:src="@drawable/like_icon"
                     android:layout_width="32dp"
                     android:layout_height="32dp"/>
