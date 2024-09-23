@@ -238,15 +238,6 @@ class ExploreFragment : Fragment() {
                 animator.duration = duration
                 animator.start()
             }
-            animator.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator) { beginFakeDrag() }
-                override fun onAnimationEnd(animation: Animator) { endFakeDrag() }
-                override fun onAnimationCancel(animation: Animator) {}
-                override fun onAnimationRepeat(animation: Animator) {}
-            })
-            animator.interpolator = interpolator
-            animator.duration = duration
-            animator.start()
         }
     }
 
