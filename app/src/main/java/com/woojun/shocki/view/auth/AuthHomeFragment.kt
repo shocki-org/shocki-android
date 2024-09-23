@@ -50,6 +50,7 @@ class AuthHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.testButton.setOnClickListener { testSignIn() }
         binding.phoneSignInButton.setOnClickListener { phoneSignIn() }
         binding.kakaoLoginButton.setOnClickListener { kakaoLogin() }
         binding.googleLoginButton.setOnClickListener { googleLogin() }
@@ -57,10 +58,15 @@ class AuthHomeFragment : Fragment() {
             paintFlags = Paint.UNDERLINE_TEXT_FLAG
             setOnClickListener { phoneLogin() }
         }
-        binding.testButton.setOnClickListener {
-            saveToken(requireActivity(), PostLoginRequest("shockitestkeybyseogaemo", "playstore-test", "", "TEST"))
-        }
 
+    }
+
+    private fun testSignIn() {
+        saveToken(
+            requireActivity(),
+            PostLoginRequest("shockitestkeybyseogaemo", "playstore-test", "", "TEST"),
+            true
+        )
     }
 
     private fun phoneSignIn() {
@@ -145,4 +151,5 @@ class AuthHomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

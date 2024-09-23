@@ -5,12 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.util.Patterns
 import android.widget.Toast
+import com.woojun.shocki.R
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.dto.AccessTokenResponse
 import com.woojun.shocki.dto.PostLoginRequest
 import com.woojun.shocki.dto.ProductResponse
+import com.woojun.shocki.model.MetaMaskModel
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
+import com.woojun.shocki.view.auth.AuthActivity
 import com.woojun.shocki.view.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -58,12 +61,16 @@ object Util {
         }
     }
 
-    fun saveToken(context: Activity, postLoginRequest: PostLoginRequest) {
+    fun saveToken(context: Activity, postLoginRequest: PostLoginRequest, isTest: Boolean = false) {
         CoroutineScope(Dispatchers.Main).launch {
             val signInResponses = postSignIn(context, postLoginRequest)
             if (signInResponses != null) {
                 TokenManager.accessToken = signInResponses.accessToken
-                context.startActivity(Intent(context, MainActivity::class.java))
+                if (isTest) {
+                    context.startActivity(Intent(context, MainActivity::class.java))
+                } else {
+                    (context as AuthActivity).animationNavigate(R.id.connectWallet)
+                }
                 context.finishAffinity()
             } else {
                 Toast.makeText(context, "오류 발생", Toast.LENGTH_SHORT).show()
