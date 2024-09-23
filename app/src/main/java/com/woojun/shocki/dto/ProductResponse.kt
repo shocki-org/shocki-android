@@ -19,6 +19,7 @@ data class ProductResponse(
     val ownerId: String,
     val productQnA: List<QnA>,
     val purchaseIsDisabled: Boolean,
+    val saleIsDisabled: Boolean,
     val startAmount: Int,
     val targetAmount: Int,
     val tokenAddress: String,
