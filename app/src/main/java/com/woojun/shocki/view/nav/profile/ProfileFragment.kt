@@ -201,12 +201,12 @@ class ProfileFragment : Fragment() {
         )
 
         customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
-            customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()} 크레딧 · "
-            customDialog.findViewById<TextView>(R.id.credit_text).text = "${value.toInt() * 10}원"
+            customDialog.findViewById<TextView>(R.id.credit_text).text = "${value.toInt()} 크레딧 · "
+            customDialog.findViewById<TextView>(R.id.won_text).text = "${value.toInt()}원"
         }
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
-            creditPaymentDialog(customDialog.findViewById<TextView>(R.id.token_text).text.toString().toLong())
+            creditPaymentDialog(customDialog.findViewById<TextView>(R.id.won_text).text.toString().substring(0, customDialog.findViewById<TextView>(R.id.won_text).text.length - 1).toLong())
             customDialog.cancel()
         }
 
