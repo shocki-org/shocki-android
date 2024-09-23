@@ -2,10 +2,10 @@ package com.woojun.shocki.view.nav.payment
 
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -21,12 +21,12 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tosspayments.paymentsdk.TossPayments
+import com.tosspayments.paymentsdk.model.TossPaymentResult
 import com.tosspayments.paymentsdk.model.paymentinfo.TossCardPaymentInfo
 import com.woojun.shocki.R
 import com.woojun.shocki.database.TokenManager
@@ -36,6 +36,7 @@ import com.woojun.shocki.dto.MarketRequest
 import com.woojun.shocki.dto.PayRequest
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
+import com.woojun.shocki.util.Util.checkPhone
 import com.woojun.shocki.util.Util.getProduct
 import com.woojun.shocki.view.main.MainActivity
 import kotlinx.coroutines.Dispatchers
@@ -58,24 +59,6 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
 
     private val queryFlow = MutableStateFlow("")
 
-    private val tossPaymentActivityResult: ActivityResultLauncher<Intent> =
-        TossPayments.getPaymentResultLauncher(
-            (requireActivity() as MainActivity),
-            { success ->
-                lifecycleScope.launch {
-                    val isSuccess = postPay(PayRequest(success.amount.toInt(), success.orderId, success.paymentKey))
-                    if (isSuccess) {
-                        creditFinishDialog(success.amount.toLong())
-                        userCredit = getUserCredit()
-                    } else {
-                        Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            },
-            { _ ->
-                Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
-            }
-        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,7 +127,7 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
                     if (binding.countInput.text.isNotEmpty()) {
                         binding.nextButton.visibility = View.VISIBLE
                         binding.noneButton.visibility = View.GONE
-                        binding.countText.text = "${(binding.countInput.text.toString().toInt() * productPrice)} 크레딧"
+                        binding.countNumberText.text = "${(binding.countInput.text.toString().toInt() * productPrice)} 크레딧"
                     } else {
                         binding.noneButton.visibility = View.VISIBLE
                         binding.nextButton.visibility = View.GONE
@@ -156,6 +139,7 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
         }
 
         binding.phoneInput.apply {
+            addTextChangedListener(PhoneNumberFormattingTextWatcher())
             setOnEditorActionListener(object : TextView.OnEditorActionListener{
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_GO && binding.phoneInput.text.isNotEmpty()){
@@ -254,7 +238,7 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
     private fun nextAction() {
         when(index) {
             1 -> {
-                switchText(index)
+                switchText(0)
                 showViewWithAnimation(binding.countBox, requireContext())
                 showViewWithAnimation(binding.phoneBox, requireContext())
                 binding.countInput.isEnabled = false
@@ -262,19 +246,24 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
                 index = 2
             }
             2 -> {
-                switchText(index)
-                showViewWithAnimation(binding.countBox, requireContext())
-                showViewWithAnimation(binding.phoneBox, requireContext())
-                showViewWithAnimation(binding.addressBox, requireContext())
-                binding.phoneInput.isEnabled = false
+                if (checkPhone(binding.phoneInput.text.toString())) {
+                    switchText(1)
+                    showViewWithAnimation(binding.countBox, requireContext())
+                    showViewWithAnimation(binding.phoneBox, requireContext())
+                    showViewWithAnimation(binding.addressBox, requireContext())
+                    binding.phoneInput.isEnabled = false
 
-                index = 3
+                    index = 3
+                } else {
+                    Toast.makeText(requireContext(), "전화번호 형식을 지켜주세요", Toast.LENGTH_SHORT).show()
+                }
             }
             3 -> {
                 if (!binding.addressInput.isEnabled) {
                     showViewWithAnimation(binding.countBox, requireContext())
                     showViewWithAnimation(binding.phoneBox, requireContext())
                     showViewWithAnimation(binding.addressBox, requireContext())
+                    binding.addressList.visibility = View.GONE
                     showViewWithAnimation(binding.detailAddressBox, requireContext())
 
                     index = 4
@@ -372,11 +361,27 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
             tossPayments.requestCardPayment(
                 requireActivity(),
                 tossPaymentInfo,
-                tossPaymentActivityResult
+                (requireActivity() as MainActivity).tossPaymentActivityResult2
             )
         }
 
         customDialog.show()
+    }
+
+    fun handlePaymentResult(success: TossPaymentResult.Success) {
+        lifecycleScope.launch {
+            val isSuccess = postPay(PayRequest(success.amount.toInt(), success.orderId, success.paymentKey))
+            if (isSuccess) {
+                creditFinishDialog(success.amount.toLong())
+                userCredit = getUserCredit()
+            } else {
+                Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun handlePaymentFailure() {
+        Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
     }
 
     private suspend fun getUserCredit(): Int {

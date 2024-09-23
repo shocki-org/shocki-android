@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.slider.Slider
 import com.tosspayments.paymentsdk.TossPayments
+import com.tosspayments.paymentsdk.model.TossPaymentResult
 import com.tosspayments.paymentsdk.model.paymentinfo.TossCardPaymentInfo
 import com.woojun.shocki.R
 import com.woojun.shocki.database.TokenManager
@@ -36,7 +37,6 @@ import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.SpacingItemDecoration
 import com.woojun.shocki.view.main.MainActivity
 import com.woojun.shocki.view.nav.explore.MiddleViewPagerAdapter
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,8 +46,6 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var tossPaymentActivityResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -159,29 +157,10 @@ class ProfileFragment : Fragment() {
             val tossPayments = TossPayments("test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq")
             val tossPaymentInfo = TossCardPaymentInfo(orderId = UUID.randomUUID().toString(), orderName = "Shocki 크레딧", price)
 
-            tossPaymentActivityResult =
-                TossPayments.getPaymentResultLauncher(
-                    (requireActivity() as MainActivity),
-                    { success ->
-                        CoroutineScope(Dispatchers.Main).launch {
-                            val isSuccess = postPay(PayRequest(success.amount.toInt(), success.orderId, success.paymentKey))
-                            if (isSuccess) {
-                                creditFinishDialog(success.amount.toLong())
-                                initView()
-                            } else {
-                                Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    },
-                    { _ ->
-                        Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
-                    }
-                )
-
             tossPayments.requestCardPayment(
                 requireActivity(),
                 tossPaymentInfo,
-                tossPaymentActivityResult
+                (requireActivity() as MainActivity).tossPaymentActivityResult1
             )
         }
 
@@ -215,6 +194,22 @@ class ProfileFragment : Fragment() {
         }
 
         customDialog.show()
+    }
+
+    fun handlePaymentResult(success: TossPaymentResult.Success) {
+        lifecycleScope.launch {
+            val isSuccess = postPay(PayRequest(success.amount.toInt(), success.orderId, success.paymentKey))
+            if (isSuccess) {
+                creditFinishDialog(success.amount.toLong())
+                initView()
+            } else {
+                Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun handlePaymentFailure() {
+        Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
     }
 
     private suspend fun getFavoriteList(): List<FavoriteResponse>? {

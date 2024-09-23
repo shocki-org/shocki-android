@@ -25,13 +25,17 @@ import com.woojun.shocki.R
 import androidx.navigation.NavOptions.Builder
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.tosspayments.paymentsdk.TossPayments
 import com.woojun.shocki.database.MainViewModel
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.ActivityMainBinding
 import com.woojun.shocki.dto.FCMResponse
+import com.woojun.shocki.dto.PayRequest
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.BaseActivity
+import com.woojun.shocki.view.nav.payment.PaymentFragment
+import com.woojun.shocki.view.nav.profile.ProfileFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -65,6 +69,9 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    lateinit var tossPaymentActivityResult1: ActivityResultLauncher<Intent>
+    lateinit var tossPaymentActivityResult2: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -76,6 +83,7 @@ class MainActivity : BaseActivity() {
         }
 
         askNotificationPermission()
+        initTossPayments()
 
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mainViewModel.fetchDates()
@@ -124,6 +132,32 @@ class MainActivity : BaseActivity() {
             }
 
         }
+    }
+
+    private fun initTossPayments() {
+        tossPaymentActivityResult1 = TossPayments.getPaymentResultLauncher(
+            this,
+            { success ->
+                val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? ProfileFragment
+                fragment?.handlePaymentResult(success)
+            },
+            { _ ->
+                val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? ProfileFragment
+                fragment?.handlePaymentFailure()
+            }
+        )
+
+        tossPaymentActivityResult2 = TossPayments.getPaymentResultLauncher(
+            this,
+            { success ->
+                val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? PaymentFragment
+                fragment?.handlePaymentResult(success)
+            },
+            { _ ->
+                val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? PaymentFragment
+                fragment?.handlePaymentFailure()
+            }
+        )
     }
 
     private fun askNotificationPermission() {
