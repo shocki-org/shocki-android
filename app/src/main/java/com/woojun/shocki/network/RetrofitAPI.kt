@@ -15,6 +15,7 @@ import com.woojun.shocki.dto.PhoneFirstRequest
 import com.woojun.shocki.dto.PhoneSecondRequest
 import com.woojun.shocki.dto.PhoneSecondResponse
 import com.woojun.shocki.dto.ProductResponse
+import com.woojun.shocki.dto.QnaRequest
 import com.woojun.shocki.dto.SearchResponse
 import com.woojun.shocki.dto.ShippingResponse
 import com.woojun.shocki.dto.SimpleProductResponse
@@ -138,5 +139,11 @@ interface RetrofitAPI {
     suspend fun putUnLike(
         @Header("Authorization") authorization: String,
         @Query("productId") productId: String
+    ): Response<Unit>
+
+    @POST("product/qna")
+    suspend fun postQnA(
+        @Header("Authorization") authorization: String,
+        @Body body: QnaRequest
     ): Response<Unit>
 }
