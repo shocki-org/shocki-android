@@ -18,7 +18,7 @@ class ChatAdapter(private val chatList: List<Chat>):
         return ViewHolder(binding).also { handler ->
             binding.root.setOnClickListener {
                 if (handler.adapterPosition == chatList.size.dec()) {
-                    (binding.root.context as MainActivity).animationNavigate(R.id.qnaFragment)
+                    (binding.root.context as MainActivity).animationNavigate(R.id.qnaFragment, chatList[handler.adapterPosition].productId)
                 }
             }
         }
