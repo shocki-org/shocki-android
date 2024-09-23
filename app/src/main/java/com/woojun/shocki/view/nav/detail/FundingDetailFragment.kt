@@ -58,6 +58,8 @@ class FundingDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var isLike = false
+    private var productId: String? = ""
+    private var userToken = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,14 +81,18 @@ class FundingDetailFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        lifecycleScope.launch {
+            userToken = getUserCredit()
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
-        val productId = arguments?.getString("productId")
+        productId = arguments?.getString("productId")
         if (productId != null) {
             lifecycleScope.launch {
-                val productData = getProduct(productId)
+                val productData = getProduct(productId!!)
                 if (productData != null) {
                     initView(productData)
                 } else {
@@ -130,7 +136,7 @@ class FundingDetailFragment : Fragment() {
                 binding.buyText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
             } else {
                 setOnClickListener {
-
+                    creditNumberDialog(productData.id, productData.currentAmount)
                 }
             }
         }
@@ -143,13 +149,9 @@ class FundingDetailFragment : Fragment() {
                 binding.saleText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
             } else {
                 setOnClickListener {
-
+                    // TODO 미정
                 }
             }
-        }
-
-        binding.buyButton.setOnClickListener {
-            (requireActivity() as MainActivity).animationNavigate(R.id.payment, productData.id)
         }
 
         isLike = productData.userFavorite
@@ -178,6 +180,79 @@ class FundingDetailFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun creditNumberDialog(productId: String, price: Int) {
+        var tokenPrice = 0
+        val customDialog = Dialog(requireContext())
+        customDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        customDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        customDialog.window?.setGravity(Gravity.BOTTOM)
+
+        customDialog.setContentView(R.layout.dialog_token)
+        customDialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+        customDialog.findViewById<TextView>(R.id.token_text).text = "0개 · "
+        customDialog.findViewById<TextView>(R.id.credit_text).text = "0 크레딧"
+
+        customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
+            tokenPrice = value.toInt() * price
+            customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
+            customDialog.findViewById<TextView>(R.id.credit_text).text = "$tokenPrice 크레딧"
+        }
+
+        customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
+            lifecycleScope.launch {
+                if (userToken >= tokenPrice) {
+                    val isSuccess = buyToken(productId, (tokenPrice / price).toString())
+                    if (isSuccess) {
+                        Toast.makeText(requireContext(), "구매 완료", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "구매 실패", Toast.LENGTH_SHORT).show()
+                    }
+                    customDialog.cancel()
+                } else {
+                    Toast.makeText(requireContext(), "잔액 부족 토큰을 충전해주세요", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        customDialog.findViewById<MaterialCardView>(R.id.cancel_button).setOnClickListener {
+            customDialog.cancel()
+        }
+
+        customDialog.show()
+    }
+
+    private suspend fun getUserCredit(): Int {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.getAccount("bearer ${TokenManager.accessToken}")
+                if (response.isSuccessful) {
+                    response.body()?.credit ?: 0
+                } else {
+                    0
+                }
+            }
+        } catch (e: Exception) {
+            0
+        }
+    }
+
+    private suspend fun buyToken(productId: String, amount: String): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.buyToken("bearer ${TokenManager.accessToken}", productId, amount)
+                response.isSuccessful
+            }
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private suspend fun putLike(productId: String): Boolean {

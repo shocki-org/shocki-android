@@ -16,6 +16,7 @@ import com.woojun.shocki.dto.PhoneSecondRequest
 import com.woojun.shocki.dto.PhoneSecondResponse
 import com.woojun.shocki.dto.ProductResponse
 import com.woojun.shocki.dto.QnaRequest
+import com.woojun.shocki.dto.SaleTokenResponse
 import com.woojun.shocki.dto.SearchResponse
 import com.woojun.shocki.dto.ShippingResponse
 import com.woojun.shocki.dto.SimpleProductResponse
@@ -146,4 +147,11 @@ interface RetrofitAPI {
         @Header("Authorization") authorization: String,
         @Body body: QnaRequest
     ): Response<Unit>
+
+    @POST("product/purchase/token")
+    suspend fun buyToken(
+        @Header("Authorization") authorization: String,
+        @Query("productId") productId: String,
+        @Query("amount") amount: String
+    ): Response<SaleTokenResponse>
 }
