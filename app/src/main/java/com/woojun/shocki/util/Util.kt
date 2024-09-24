@@ -80,10 +80,10 @@ object Util {
                 TokenManager.accessToken = signInResponses.accessToken
                 if (isTest) {
                     context.startActivity(Intent(context, MainActivity::class.java))
+                    context.finishAffinity()
                 } else {
                     (context as AuthActivity).animationNavigate(R.id.connectWallet)
                 }
-                context.finishAffinity()
             } else {
                 Toast.makeText(context, "오류 발생", Toast.LENGTH_SHORT).show()
             }
