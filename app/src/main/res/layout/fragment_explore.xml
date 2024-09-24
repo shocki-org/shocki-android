@@ -133,7 +133,7 @@
             app:layout_constraintTop_toBottomOf="@id/middle_banner_view_pager" />
 
         <RelativeLayout
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:id="@+id/linear_list_box"
             app:layout_constraintTop_toBottomOf="@+id/textView5"
             android:layout_width="match_parent"
