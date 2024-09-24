@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.woojun.shocki.R
 import com.woojun.shocki.databinding.MiddleAccountBannerItemBinding
 import com.woojun.shocki.dto.SimpleProductResponse
+import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.view.main.MainActivity
 
 class MiddleAccountViewPagerAdapter(private val pages: List<Pair<MiddleAccountBannerItemBinding, SimpleProductResponse>>) : PagerAdapter() {
@@ -17,7 +18,7 @@ class MiddleAccountViewPagerAdapter(private val pages: List<Pair<MiddleAccountBa
         val bannerItem = pages[position].second
 
         pageBinding.nameText.text = bannerItem.name
-        pageBinding.priceText.text = bannerItem.currentAmount.toString()
+        pageBinding.priceText.text = formatAmount(bannerItem.currentAmount)
         Glide
             .with(pageBinding.root.context)
             .load(bannerItem.image)

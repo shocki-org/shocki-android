@@ -11,6 +11,7 @@ import com.woojun.shocki.databinding.SearchDefaultItemBinding
 import com.woojun.shocki.databinding.SearchItemBinding
 import com.woojun.shocki.databinding.SearchNoneItemBinding
 import com.woojun.shocki.dto.SearchResponse
+import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.view.main.MainActivity
 
 class SearchAdapter (private val searchList: List<SearchResponse>, private val searchType: SearchType) :
@@ -76,7 +77,7 @@ class SearchAdapter (private val searchList: List<SearchResponse>, private val s
     inner class SearchViewHolder(private val binding: SearchItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SearchResponse) {
             binding.titleText.text = item.name
-            binding.creditText.text = item.currentAmount.toString()
+            binding.creditText.text = formatAmount(item.currentAmount)
             Glide
                 .with(binding.root.context)
                 .load(item.image)

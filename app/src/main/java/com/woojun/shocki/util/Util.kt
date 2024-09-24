@@ -19,10 +19,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.NumberFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 import java.util.regex.Pattern
 
 object Util {
@@ -102,5 +104,10 @@ object Util {
         } catch (e: Exception) {
             null
         }
+    }
+
+    fun formatAmount(value: Number): String {
+        val numberFormat = NumberFormat.getNumberInstance(Locale.getDefault())
+        return numberFormat.format(value)
     }
 }

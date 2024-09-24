@@ -37,6 +37,7 @@ import com.woojun.shocki.dto.PayRequest
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.Util.checkPhone
+import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.util.Util.getProduct
 import com.woojun.shocki.view.main.MainActivity
 import kotlinx.coroutines.Dispatchers
@@ -127,7 +128,7 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
                     if (binding.countInput.text.isNotEmpty()) {
                         binding.nextButton.visibility = View.VISIBLE
                         binding.noneButton.visibility = View.GONE
-                        binding.countNumberText.text = "${(binding.countInput.text.toString().toInt() * productPrice)} 크레딧"
+                        binding.countNumberText.text = "${formatAmount(binding.countInput.text.toString().toInt() * productPrice)} 크레딧"
                     } else {
                         binding.noneButton.visibility = View.VISIBLE
                         binding.nextButton.visibility = View.GONE
@@ -351,8 +352,8 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
             WindowManager.LayoutParams.WRAP_CONTENT
         )
 
-        customDialog.findViewById<TextView>(R.id.title_text).text = "$price 크레딧 충전을 위해\n토스를 실행할게요"
-        customDialog.findViewById<TextView>(R.id.body_text).text = "크레딧 구매를 위한 ${price}원 결제가\n토스를 통해 진행 될 예정이에요"
+        customDialog.findViewById<TextView>(R.id.title_text).text = "${formatAmount(price)} 크레딧 충전을 위해\n토스를 실행할게요"
+        customDialog.findViewById<TextView>(R.id.body_text).text = "크레딧 구매를 위한 ${formatAmount(price)}원 결제가\n토스를 통해 진행 될 예정이에요"
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
             val tossPayments = TossPayments("test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq")

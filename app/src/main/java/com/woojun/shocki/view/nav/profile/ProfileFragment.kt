@@ -33,6 +33,7 @@ import com.woojun.shocki.dto.SimpleProductResponse
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.SpacingItemDecoration
+import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.view.main.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -73,9 +74,9 @@ class ProfileFragment : Fragment() {
     private fun initView() {
         lifecycleScope.launch {
             getAccount()?.let {
-                binding.assetText.text = (it.credit+it.settlement.totalSettlementAmount).toString()
-                binding.nowCreditText.text = it.credit.toString()
-                binding.futureCreditText.text = it.settlement.totalSettlementAmount.toString()
+                binding.assetText.text = formatAmount(it.credit+it.settlement.totalSettlementAmount)
+                binding.nowCreditText.text = formatAmount(it.credit)
+                binding.futureCreditText.text = formatAmount(it.settlement.totalSettlementAmount)
 
                 binding.tokenAssetsList.apply {
                     layoutManager = LinearLayoutManager(requireContext())
@@ -129,7 +130,7 @@ class ProfileFragment : Fragment() {
             WindowManager.LayoutParams.WRAP_CONTENT
         )
 
-        customDialog.findViewById<TextView>(R.id.body_text).text = "결제를 성공적으로 진행하여\n${price} 크레딧 충전에 성공했어요!"
+        customDialog.findViewById<TextView>(R.id.body_text).text = "결제를 성공적으로 진행하여\n${formatAmount(price)} 크레딧 충전에 성공했어요!"
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
             customDialog.cancel()
@@ -150,8 +151,8 @@ class ProfileFragment : Fragment() {
             WindowManager.LayoutParams.WRAP_CONTENT
         )
 
-        customDialog.findViewById<TextView>(R.id.title_text).text = "$price 크레딧 충전을 위해\n토스를 실행할게요"
-        customDialog.findViewById<TextView>(R.id.body_text).text = "크레딧 구매를 위한 ${price}원 결제가\n토스를 통해 진행 될 예정이에요"
+        customDialog.findViewById<TextView>(R.id.title_text).text = "${formatAmount(price)} 크레딧 충전을 위해\n토스를 실행할게요"
+        customDialog.findViewById<TextView>(R.id.body_text).text = "크레딧 구매를 위한 ${formatAmount(price)}원 결제가\n토스를 통해 진행 될 예정이에요"
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
             val tossPayments = TossPayments("test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq")
@@ -180,8 +181,8 @@ class ProfileFragment : Fragment() {
         )
 
         customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
-            customDialog.findViewById<TextView>(R.id.credit_text).text = "${value.toInt()} 크레딧 · "
-            customDialog.findViewById<TextView>(R.id.won_text).text = "${value.toInt()}원"
+            customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(value.toInt())} 크레딧 · "
+            customDialog.findViewById<TextView>(R.id.won_text).text = "${formatAmount(value.toInt())}원"
         }
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {

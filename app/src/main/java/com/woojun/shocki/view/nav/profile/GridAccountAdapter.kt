@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.woojun.shocki.R
 import com.woojun.shocki.data.SettlementProduct
 import com.woojun.shocki.databinding.GridAccountItemBinding
+import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.view.main.MainActivity
 import java.time.Instant
 import java.time.ZoneId
@@ -33,7 +34,7 @@ class GridAccountAdapter(private val list: List<SettlementProduct>):
     inner class ViewHolder(private val binding: GridAccountItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SettlementProduct) {
             binding.nameText.text = item.productName
-            binding.priceText.text = item.settlementAmount.toString()
+            binding.priceText.text = formatAmount(item.settlementAmount)
             binding.dateText.text = formatToDate(item.settlementDate)
             Glide
                 .with(binding.root.context)

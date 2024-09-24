@@ -19,6 +19,7 @@ import com.woojun.shocki.R
 import com.woojun.shocki.databinding.FragmentStoreDetailBinding
 import com.woojun.shocki.dto.ProductResponse
 import com.woojun.shocki.util.Util.calculateEndDate
+import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.util.Util.getProduct
 import com.woojun.shocki.view.main.MainActivity
 import kotlinx.coroutines.launch
@@ -71,7 +72,7 @@ class StoreDetailFragment : Fragment() {
             .centerCrop()
             .into(binding.coverImage)
         binding.titleText.text = productData.name
-        binding.priceText.text = productData.currentAmount.toString()
+        binding.priceText.text = formatAmount(productData.currentAmount)
         binding.dateText.text = "${calculateEndDate(productData.marketEndDate)}일"
 
         binding.imageList.apply {

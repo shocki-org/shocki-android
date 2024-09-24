@@ -10,6 +10,7 @@ import com.woojun.shocki.databinding.GridBannerItemBinding
 import com.woojun.shocki.databinding.LinearBannerItemBinding
 import com.woojun.shocki.databinding.TopBannerItemBinding
 import com.woojun.shocki.dto.SimpleProductResponse
+import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.view.main.MainActivity
 
 class BannerViewPagerAdapter(
@@ -91,7 +92,7 @@ class BannerViewPagerAdapter(
     inner class LinearBannerViewHolder(private val binding: LinearBannerItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SimpleProductResponse) {
             binding.nameText.text = item.name
-            binding.priceText.text = item.currentAmount.toString()
+            binding.priceText.text = formatAmount(item.currentAmount)
             Glide
                 .with(binding.root.context)
                 .load(item.image)
@@ -103,7 +104,7 @@ class BannerViewPagerAdapter(
     inner class GridViewHolder(private val binding: GridBannerItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SimpleProductResponse) {
             binding.nameText.text = item.name
-            binding.priceText.text = item.currentAmount.toString()
+            binding.priceText.text = formatAmount(item.currentAmount)
             Glide
                 .with(binding.root.context)
                 .load(item.image)

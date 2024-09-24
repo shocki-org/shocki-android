@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.woojun.shocki.R
 import com.woojun.shocki.databinding.StoreItemBinding
 import com.woojun.shocki.dto.SimpleProductResponse
+import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.view.main.MainActivity
 
 class StoreAdapter (private val storeList: List<SimpleProductResponse>):
@@ -30,7 +31,7 @@ class StoreAdapter (private val storeList: List<SimpleProductResponse>):
     inner class ViewHolder(private val binding : StoreItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item: SimpleProductResponse) {
             binding.nameText.text = item.name
-            binding.priceText.text = item.currentAmount.toString()
+            binding.priceText.text = formatAmount(item.currentAmount)
             Glide
                 .with(binding.root.context)
                 .load(item.image)

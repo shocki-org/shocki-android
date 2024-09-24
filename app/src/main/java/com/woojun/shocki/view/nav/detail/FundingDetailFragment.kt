@@ -43,6 +43,7 @@ import com.woojun.shocki.dto.ProductResponse
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.Util.calculateEndDate
+import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.util.Util.getProduct
 import com.woojun.shocki.view.main.MainActivity
 import kotlinx.coroutines.Dispatchers
@@ -112,13 +113,13 @@ class FundingDetailFragment : Fragment() {
             .into(binding.coverImage)
         binding.tagText.text = productData.categories[0]
         binding.titleText.text = productData.name
-        binding.priceText.text = productData.currentAmount.toString()
+        binding.priceText.text = formatAmount(productData.currentAmount)
         binding.dateText.text = "${calculateEndDate(productData.fundingEndDate)}일"
 
-        binding.nowTokenPrice.text = "${productData.currentAmount}크레딧"
+        binding.nowTokenPrice.text = "${formatAmount(productData.currentAmount)}크레딧"
         binding.fundingDate.text = "${formatFundingDate(productData.fundingEndDate)}일"
-        binding.nowFundingAmount.text = "${productData.collectedAmount}크레딧 ${(productData.collectedAmount / productData.targetAmount) * 100}%"
-        binding.goalFundingPrice.text = "${productData.targetAmount}크레딧"
+        binding.nowFundingAmount.text = "${formatAmount(productData.collectedAmount)}크레딧 ${(productData.collectedAmount / productData.targetAmount) * 100}%"
+        binding.goalFundingPrice.text = "${formatAmount(productData.targetAmount)}크레딧"
 
         binding.graphView.apply {
             val dataSet = createLineDataSet(productData.graph)
@@ -201,7 +202,7 @@ class FundingDetailFragment : Fragment() {
         customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
             tokenPrice = value.toInt() * price
             customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
-            customDialog.findViewById<TextView>(R.id.credit_text).text = "$tokenPrice 크레딧"
+            customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(tokenPrice)} 크레딧"
         }
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
