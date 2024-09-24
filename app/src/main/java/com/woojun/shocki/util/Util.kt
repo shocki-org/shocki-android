@@ -3,14 +3,12 @@ package com.woojun.shocki.util
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Patterns
 import android.widget.Toast
 import com.woojun.shocki.R
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.dto.AccessTokenResponse
 import com.woojun.shocki.dto.PostLoginRequest
 import com.woojun.shocki.dto.ProductResponse
-import com.woojun.shocki.model.MetaMaskModel
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.view.auth.AuthActivity

@@ -7,7 +7,7 @@ import io.metamask.androidsdk.Ethereum
 import io.metamask.androidsdk.Result
 import io.metamask.androidsdk.SDKOptions
 
-object MetaMaskModel {
+object MetamaskModel {
 
     private val dappMetadata = DappMetadata("Shocki", "https://www.shocki.org")
 
