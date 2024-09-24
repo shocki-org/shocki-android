@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.woojun.shocki.R
+import com.woojun.shocki.database.SharedPreference
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentSettingBinding
 import com.woojun.shocki.network.RetrofitAPI
@@ -55,6 +56,9 @@ class SettingFragment : Fragment() {
         binding.logoutButton.setOnClickListener {
             createDialog("계정에서 로그아웃하시겠어요?", "계정에서 로그아웃 할 시,\n" + "로그인 할 때까지 Shocki를 사용하지 못해요") {
                 TokenManager.accessToken = ""
+                TokenManager.fcmToken = ""
+                SharedPreference.walletAddress = ""
+                SharedPreference.isTestMode = false
                 startActivity(Intent(requireContext(), AuthActivity::class.java))
                 requireActivity().finishAffinity()
             }
@@ -66,6 +70,9 @@ class SettingFragment : Fragment() {
                     val isSuccess = deleteUser()
                     if (isSuccess) {
                         TokenManager.accessToken = ""
+                        TokenManager.fcmToken = ""
+                        SharedPreference.walletAddress = ""
+                        SharedPreference.isTestMode = false
                         startActivity(Intent(requireContext(), AuthActivity::class.java))
                         requireActivity().finishAffinity()
                     } else {

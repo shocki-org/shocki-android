@@ -1,4 +1,4 @@
-package com.woojun.shocki.view.auth
+package com.woojun.shocki.view.wallet
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.woojun.shocki.R
+import com.woojun.shocki.database.SharedPreference.walletAddress
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentConnectWalletBinding
 import com.woojun.shocki.dto.WalletRequest
@@ -41,10 +41,6 @@ class ConnectWalletFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
         binding.mainButton.setOnClickListener {
             lifecycleScope.launch {
                 MetamaskModel.connectToEthereum(requireContext()) {
@@ -53,7 +49,8 @@ class ConnectWalletFragment : Fragment() {
                             lifecycleScope.launch {
                                 val isSuccess = setWallet(it.value[0])
                                 if (isSuccess) {
-                                    (activity as AuthActivity).animationNavigate(R.id.walletFinish)
+                                    walletAddress = it.value[0]
+                                    (activity as WalletActivity).animationNavigate(R.id.walletFinish)
                                 } else {
                                     Toast.makeText(requireContext(), "메타마스크 지갑 연결을 실패했어요", Toast.LENGTH_SHORT).show()
                                 }

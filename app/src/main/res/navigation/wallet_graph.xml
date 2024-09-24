@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/connectWallet">
+
+
+    <fragment
+        android:id="@+id/walletFinish"
+        android:name="com.woojun.shocki.view.wallet.WalletFinishFragment"
+        android:label="fragment_wallet_finish"
+        tools:layout="@layout/fragment_wallet_finish" />
+    <fragment
+        android:id="@+id/connectWallet"
+        android:name="com.woojun.shocki.view.wallet.ConnectWalletFragment"
+        android:label="fragment_connect_wallet"
+        tools:layout="@layout/fragment_connect_wallet" />
+
+</navigation>

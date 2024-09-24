@@ -4,15 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.woojun.shocki.R
+import com.woojun.shocki.database.SharedPreference.isTestMode
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.dto.AccessTokenResponse
 import com.woojun.shocki.dto.PostLoginRequest
 import com.woojun.shocki.dto.ProductResponse
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
-import com.woojun.shocki.view.auth.AuthActivity
 import com.woojun.shocki.view.main.MainActivity
+import com.woojun.shocki.view.wallet.WalletActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -77,11 +77,12 @@ object Util {
             if (signInResponses != null) {
                 TokenManager.accessToken = signInResponses.accessToken
                 if (isTest) {
+                    isTestMode = true
                     context.startActivity(Intent(context, MainActivity::class.java))
-                    context.finishAffinity()
                 } else {
-                    (context as AuthActivity).animationNavigate(R.id.connectWallet)
+                    context.startActivity(Intent(context, WalletActivity::class.java))
                 }
+                context.finishAffinity()
             } else {
                 Toast.makeText(context, "오류 발생", Toast.LENGTH_SHORT).show()
             }

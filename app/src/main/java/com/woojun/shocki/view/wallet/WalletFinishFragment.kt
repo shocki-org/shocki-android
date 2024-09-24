@@ -1,4 +1,4 @@
-package com.woojun.shocki.view.auth
+package com.woojun.shocki.view.wallet
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.woojun.shocki.R
 import com.woojun.shocki.databinding.FragmentWalletFinishBinding
 import com.woojun.shocki.view.main.MainActivity
 
