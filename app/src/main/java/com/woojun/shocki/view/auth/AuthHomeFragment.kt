@@ -90,8 +90,7 @@ class AuthHomeFragment : Fragment() {
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                         return@loginWithKakaoTalk
                     }
-
-                    UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
+                    Toast.makeText(requireContext(), "카카오 로그인 실패", Toast.LENGTH_SHORT).show()
                 } else if (token != null) {
                     saveToken(requireActivity(), PostLoginRequest(token.accessToken, "", "", KAKAO))
                 }
