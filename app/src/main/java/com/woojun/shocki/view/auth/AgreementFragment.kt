@@ -39,7 +39,7 @@ class AgreementFragment : Fragment() {
             isCheck = !isCheck
 
             if (isCheck) {
-                val url = BuildConfig.URL
+                val url = "https://shocki.seogaemo.com/privacy"
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 startActivity(intent)
 
