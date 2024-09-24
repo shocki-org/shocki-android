@@ -151,6 +151,7 @@ class FundingDetailFragment : Fragment() {
             } else {
                 setOnClickListener {
                     // TODO 미정
+                    Toast.makeText(requireContext(), "판매는 웹에서 가능합니다", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -184,7 +185,9 @@ class FundingDetailFragment : Fragment() {
     }
 
     private fun creditNumberDialog(productId: String, price: Int) {
-        var tokenPrice = 0
+        var tokenPrice = price
+        var amount = 1
+
         val customDialog = Dialog(requireContext())
         customDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         customDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -196,11 +199,11 @@ class FundingDetailFragment : Fragment() {
             WindowManager.LayoutParams.WRAP_CONTENT
         )
 
-        customDialog.findViewById<TextView>(R.id.token_text).text = "0개 · "
-        customDialog.findViewById<TextView>(R.id.credit_text).text = "0 크레딧"
+        customDialog.findViewById<TextView>(R.id.token_text).text = "1개 · "
+        customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price)} 크레딧"
 
         customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
-            tokenPrice = value.toInt() * price
+            amount = value.toInt()
             customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
             customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(tokenPrice)} 크레딧"
         }
@@ -208,7 +211,7 @@ class FundingDetailFragment : Fragment() {
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
             lifecycleScope.launch {
                 if (userToken >= tokenPrice) {
-                    val isSuccess = buyToken(productId, (tokenPrice / price).toString())
+                    val isSuccess = buyToken(productId, amount.toString())
                     if (isSuccess) {
                         Toast.makeText(requireContext(), "구매 완료", Toast.LENGTH_SHORT).show()
                     } else {
@@ -216,7 +219,7 @@ class FundingDetailFragment : Fragment() {
                     }
                     customDialog.cancel()
                 } else {
-                    Toast.makeText(requireContext(), "잔액 부족 토큰을 충전해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "잔액 부족, 크레딧을 충전해주세요", Toast.LENGTH_SHORT).show()
                 }
             }
         }

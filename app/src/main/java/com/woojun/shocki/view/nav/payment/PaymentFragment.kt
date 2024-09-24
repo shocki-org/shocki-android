@@ -1,39 +1,28 @@
 package com.woojun.shocki.view.nav.payment
 
-import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Gravity
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tosspayments.paymentsdk.TossPayments
-import com.tosspayments.paymentsdk.model.TossPaymentResult
-import com.tosspayments.paymentsdk.model.paymentinfo.TossCardPaymentInfo
 import com.woojun.shocki.R
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentPaymentBinding
 import com.woojun.shocki.dto.AddressResponse
 import com.woojun.shocki.dto.MarketRequest
-import com.woojun.shocki.dto.PayRequest
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.Util.checkPhone
@@ -46,7 +35,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.UUID
 
 class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
 
@@ -57,6 +45,7 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
     private var userCredit = 0
     private var productPrice = Int.MAX_VALUE
     private var productId: String? = null
+    private var amount = 0
 
     private val queryFlow = MutableStateFlow("")
 
@@ -244,6 +233,7 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
                 showViewWithAnimation(binding.countBox, requireContext())
                 showViewWithAnimation(binding.phoneBox, requireContext())
                 binding.countInput.isEnabled = false
+                amount = binding.countInput.text.toString().toInt()
 
                 index = 2
             }
@@ -276,16 +266,18 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
             4 -> {
                 if (binding.addressInput.text.isNotEmpty()) {
                     if (productPrice > userCredit) {
-                        creditPaymentDialog((productPrice - userCredit).toLong())
+                        Toast.makeText(requireContext(), "잔액 부족, 크레딧을 충전해주세요", Toast.LENGTH_SHORT).show()
                     } else {
                         lifecycleScope.launch {
                             val address = binding.addressInput.text.toString() + binding.detailAddressInput.text.toString()
                             val phone = binding.phoneInput.text.toString()
-                            val isSuccess = buyMarket(MarketRequest(address, productPrice, phone, productId!!))
+                            val isSuccess = buyMarket(MarketRequest(address, amount, phone, productId!!))
 
                             if (isSuccess) {
                                 Toast.makeText(requireContext(), "구매 완료", Toast.LENGTH_SHORT).show()
                                 (requireActivity() as MainActivity).animationNavigate(R.id.explore)
+                            } else {
+                                Toast.makeText(requireContext(), "구매 실패", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -306,84 +298,6 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
         } catch (e: Exception) {
             false
         }
-    }
-
-    private suspend fun postPay(payRequest: PayRequest): Boolean {
-        return try {
-            withContext(Dispatchers.IO) {
-                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
-                val response = retrofitAPI.postPay("bearer ${TokenManager.accessToken}", payRequest)
-                response.isSuccessful
-            }
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    private fun creditFinishDialog(price: Long) {
-        val customDialog = Dialog(requireContext())
-        customDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        customDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        customDialog.window?.setGravity(Gravity.BOTTOM)
-
-        customDialog.setContentView(R.layout.dialog_credit_finish)
-        customDialog.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT
-        )
-
-        customDialog.findViewById<TextView>(R.id.body_text).text = "결제를 성공적으로 진행하여\n${price} 크레딧 충전에 성공했어요!"
-
-        customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
-            customDialog.cancel()
-        }
-
-        customDialog.show()
-    }
-
-    private fun creditPaymentDialog(price: Long) {
-        val customDialog = Dialog(requireContext())
-        customDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        customDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        customDialog.window?.setGravity(Gravity.BOTTOM)
-
-        customDialog.setContentView(R.layout.dialog_credit_payment)
-        customDialog.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT
-        )
-
-        customDialog.findViewById<TextView>(R.id.title_text).text = "${formatAmount(price)} 크레딧 충전을 위해\n토스를 실행할게요"
-        customDialog.findViewById<TextView>(R.id.body_text).text = "크레딧 구매를 위한 ${formatAmount(price)}원 결제가\n토스를 통해 진행 될 예정이에요"
-
-        customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
-            val tossPayments = TossPayments("test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq")
-            val tossPaymentInfo = TossCardPaymentInfo(orderId = UUID.randomUUID().toString(), orderName = "Shocki 크레딧", price)
-
-            tossPayments.requestCardPayment(
-                requireActivity(),
-                tossPaymentInfo,
-                (requireActivity() as MainActivity).tossPaymentActivityResult2
-            )
-        }
-
-        customDialog.show()
-    }
-
-    fun handlePaymentResult(success: TossPaymentResult.Success) {
-        lifecycleScope.launch {
-            val isSuccess = postPay(PayRequest(success.amount.toInt(), success.orderId, success.paymentKey))
-            if (isSuccess) {
-                creditFinishDialog(success.amount.toLong())
-                userCredit = getUserCredit()
-            } else {
-                Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    fun handlePaymentFailure() {
-        Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
     }
 
     private suspend fun getUserCredit(): Int {
@@ -407,6 +321,7 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
             setText(item)
             isEnabled = false
         }
+        binding.detailAddressInput.requestFocus()
         nextAction()
     }
 

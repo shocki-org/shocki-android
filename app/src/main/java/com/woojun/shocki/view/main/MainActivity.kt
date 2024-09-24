@@ -4,15 +4,13 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import android.view.WindowInsetsController
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,16 +25,15 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tosspayments.paymentsdk.TossPayments
 import com.woojun.shocki.database.MainViewModel
+import com.woojun.shocki.database.PaymentViewModel
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.ActivityMainBinding
 import com.woojun.shocki.dto.FCMResponse
-import com.woojun.shocki.dto.PayRequest
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.BaseActivity
 import com.woojun.shocki.view.nav.payment.PaymentFragment
 import com.woojun.shocki.view.nav.profile.ProfileFragment
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -69,8 +66,9 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    lateinit var tossPaymentActivityResult1: ActivityResultLauncher<Intent>
-    lateinit var tossPaymentActivityResult2: ActivityResultLauncher<Intent>
+    lateinit var tossPaymentActivityResult: ActivityResultLauncher<Intent>
+
+    private val paymentViewModel: PaymentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,29 +133,16 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initTossPayments() {
-        tossPaymentActivityResult1 = TossPayments.getPaymentResultLauncher(
+        tossPaymentActivityResult = TossPayments.getPaymentResultLauncher(
             this,
             { success ->
-                val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? ProfileFragment
-                fragment?.handlePaymentResult(success)
+                paymentViewModel.setPaymentResult(success)
             },
-            { _ ->
-                val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? ProfileFragment
-                fragment?.handlePaymentFailure()
+            { failure ->
+                paymentViewModel.setPaymentResult(failure)
             }
         )
 
-        tossPaymentActivityResult2 = TossPayments.getPaymentResultLauncher(
-            this,
-            { success ->
-                val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? PaymentFragment
-                fragment?.handlePaymentResult(success)
-            },
-            { _ ->
-                val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? PaymentFragment
-                fragment?.handlePaymentFailure()
-            }
-        )
     }
 
     private fun askNotificationPermission() {

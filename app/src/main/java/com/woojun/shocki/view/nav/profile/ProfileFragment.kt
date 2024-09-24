@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,7 +14,10 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +27,7 @@ import com.tosspayments.paymentsdk.TossPayments
 import com.tosspayments.paymentsdk.model.TossPaymentResult
 import com.tosspayments.paymentsdk.model.paymentinfo.TossCardPaymentInfo
 import com.woojun.shocki.R
+import com.woojun.shocki.database.PaymentViewModel
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentProfileBinding
 import com.woojun.shocki.databinding.MiddleAccountBannerItemBinding
@@ -44,6 +49,8 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
+    private val paymentViewModel: PaymentViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +76,14 @@ class ProfileFragment : Fragment() {
         }
 
         initView()
+
+        paymentViewModel.paymentResult.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is TossPaymentResult.Success -> handlePaymentResult(result)
+                is TossPaymentResult.Fail -> handlePaymentFailure()
+                null -> {}
+            }
+        }
     }
 
     private fun initView() {
@@ -155,13 +170,14 @@ class ProfileFragment : Fragment() {
         customDialog.findViewById<TextView>(R.id.body_text).text = "크레딧 구매를 위한 ${formatAmount(price)}원 결제가\n토스를 통해 진행 될 예정이에요"
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
+            customDialog.cancel()
             val tossPayments = TossPayments("test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq")
             val tossPaymentInfo = TossCardPaymentInfo(orderId = UUID.randomUUID().toString(), orderName = "Shocki 크레딧", price)
 
             tossPayments.requestCardPayment(
                 requireActivity(),
                 tossPaymentInfo,
-                (requireActivity() as MainActivity).tossPaymentActivityResult1
+                (requireActivity() as MainActivity).tossPaymentActivityResult
             )
         }
 
@@ -169,6 +185,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun creditNumberDialog() {
+        var won = 0L
+
         val customDialog = Dialog(requireContext())
         customDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         customDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -183,11 +201,14 @@ class ProfileFragment : Fragment() {
         customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
             customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(value.toInt())} 크레딧 · "
             customDialog.findViewById<TextView>(R.id.won_text).text = "${formatAmount(value.toInt())}원"
+            won = value.toLong()
         }
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
-            creditPaymentDialog(customDialog.findViewById<TextView>(R.id.won_text).text.toString().substring(0, customDialog.findViewById<TextView>(R.id.won_text).text.length - 1).toLong())
-            customDialog.cancel()
+            if (won != 0L){
+                creditPaymentDialog(won)
+                customDialog.cancel()
+            }
         }
 
         customDialog.findViewById<MaterialCardView>(R.id.cancel_button).setOnClickListener {
@@ -197,7 +218,7 @@ class ProfileFragment : Fragment() {
         customDialog.show()
     }
 
-    fun handlePaymentResult(success: TossPaymentResult.Success) {
+    private fun handlePaymentResult(success: TossPaymentResult.Success) {
         lifecycleScope.launch {
             val isSuccess = postPay(PayRequest(success.amount.toInt(), success.orderId, success.paymentKey))
             if (isSuccess) {
@@ -206,11 +227,13 @@ class ProfileFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
             }
+            paymentViewModel.resetPaymentResult()
         }
     }
 
-    fun handlePaymentFailure() {
+    private fun handlePaymentFailure() {
         Toast.makeText(requireContext(), "결제를 실패하였습니다", Toast.LENGTH_SHORT).show()
+        paymentViewModel.resetPaymentResult()
     }
 
     private suspend fun getFavoriteList(): List<FavoriteResponse>? {
