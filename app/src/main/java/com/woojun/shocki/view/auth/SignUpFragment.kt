@@ -34,6 +34,7 @@ import com.woojun.shocki.util.Util.checkPassword
 import com.woojun.shocki.util.Util.checkPhone
 import com.woojun.shocki.util.Util.formatPhoneNumber
 import com.woojun.shocki.view.main.MainActivity
+import com.woojun.shocki.view.wallet.WalletActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -314,7 +315,8 @@ class SignUpFragment : Fragment() {
                         if (checkPassword(password)) {
                             signUp(password)?.let {
                                 TokenManager.accessToken = it.accessToken
-                                (requireContext() as AuthActivity).animationNavigate(R.id.connectWallet)
+                                requireActivity().startActivity(Intent(requireActivity(), WalletActivity::class.java))
+                                requireActivity().finishAffinity()
                             }
                         } else {
                             Toast.makeText(requireContext(), "유효한 비밀번호가 아닙니다", Toast.LENGTH_SHORT).show()
