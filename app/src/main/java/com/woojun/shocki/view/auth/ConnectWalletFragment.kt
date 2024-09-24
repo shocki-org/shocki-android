@@ -46,19 +46,23 @@ class ConnectWalletFragment : Fragment() {
         }
 
         binding.mainButton.setOnClickListener {
-            when (val result = MetaMaskModel.connectToEthereum(requireContext())) {
-                is Result.Success.Items -> {
-                    lifecycleScope.launch {
-                        val isSuccess = setWallet(result.value[0])
-                        if (isSuccess) {
-                            (activity as AuthActivity).animationNavigate(R.id.walletFinish)
-                        } else {
+            lifecycleScope.launch {
+                MetaMaskModel.connectToEthereum(requireContext()) {
+                    when (it) {
+                        is Result.Success.Items -> {
+                            lifecycleScope.launch {
+                                val isSuccess = setWallet(it.value[0])
+                                if (isSuccess) {
+                                    (activity as AuthActivity).animationNavigate(R.id.walletFinish)
+                                } else {
+                                    Toast.makeText(requireContext(), "메타마스크 지갑 연결을 실패했어요", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                        else -> {
                             Toast.makeText(requireContext(), "메타마스크 지갑 연결을 실패했어요", Toast.LENGTH_SHORT).show()
                         }
                     }
-                }
-                else -> {
-                    Toast.makeText(requireContext(), "메타마스크 지갑 연결을 실패했어요", Toast.LENGTH_SHORT).show()
                 }
             }
         }

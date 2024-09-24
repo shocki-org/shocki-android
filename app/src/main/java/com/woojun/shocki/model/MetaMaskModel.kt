@@ -15,13 +15,10 @@ object MetaMaskModel {
 
     private val readonlyRPCMap = mapOf("0x79a" to BuildConfig.READONLYRPCMAP)
 
-    fun connectToEthereum(context: Context): Result {
-        lateinit var metamaskResult: Result
-
+    fun connectToEthereum(context: Context, callback: (Result?) -> Unit) {
         val ethereum = Ethereum(context, dappMetadata, SDKOptions(infuraAPIKey, readonlyRPCMap))
         ethereum.connect { result ->
-            metamaskResult = result
+            callback(result)
         }
-        return metamaskResult
     }
 }
