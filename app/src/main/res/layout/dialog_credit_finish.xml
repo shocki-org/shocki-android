@@ -34,7 +34,6 @@
             style="@style/body_default"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="결제를 성공적으로 진행하여\n23,000 크레딧 충전에 성공했어요!"
             android:textColor="@color/Text_Default_Quaternary"
             app:layout_constraintEnd_toEndOf="@+id/title_text"
             app:layout_constraintStart_toStartOf="@+id/title_text"
