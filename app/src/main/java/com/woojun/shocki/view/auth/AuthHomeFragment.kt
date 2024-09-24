@@ -128,19 +128,19 @@ class AuthHomeFragment : Fragment() {
                                 saveToken(requireActivity(), PostLoginRequest(googleIdTokenCredential.idToken, "", "", GOOGLE))
 
                             } catch (e: GoogleIdTokenParsingException) {
-                                Toast.makeText(context, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
                             }
                         }
                         else {
-                            Toast.makeText(context, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
                         }
                     }
                     else -> {
-                        Toast.makeText(context, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
-                Toast.makeText(context, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
             }
         }
 
