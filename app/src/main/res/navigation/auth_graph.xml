@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/authHome">
+    app:startDestination="@id/agreement">
 
     <fragment
         android:id="@+id/authHome"
@@ -20,5 +20,10 @@
         android:name="com.woojun.shocki.view.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/agreement"
+        android:name="com.woojun.shocki.view.auth.AgreementFragment"
+        android:label="fragment_agreement"
+        tools:layout="@layout/fragment_agreement" />
 
 </navigation>
