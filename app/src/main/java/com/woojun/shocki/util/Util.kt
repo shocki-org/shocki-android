@@ -29,7 +29,17 @@ import java.util.regex.Pattern
 
 object Util {
     fun checkPhone(phone: String): Boolean {
-        return Patterns.PHONE.matcher(phone).matches()
+        var returnValue = false
+        val regex = "^\\s*(010|011|012|013|014|015|016|017|018|019)(-|\\)|\\s)*(\\d{3,4})(-|\\s)*(\\d{4})\\s*$"
+        val p = Pattern.compile(regex)
+
+        val m = p.matcher(phone)
+
+        if (m.matches()) {
+            returnValue = true
+        }
+
+        return returnValue
     }
 
     fun checkPassword(password: String): Boolean {
