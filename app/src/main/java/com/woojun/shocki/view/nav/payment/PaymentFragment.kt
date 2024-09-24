@@ -109,6 +109,8 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
 
         binding.addressList.layoutManager = LinearLayoutManager(context)
 
+        binding.countNumberText.text = "${formatAmount(binding.countInput.text.toString().toInt() * productPrice)} 크레딧"
+
         binding.countInput.apply {
             setOnEditorActionListener(object : TextView.OnEditorActionListener{
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
