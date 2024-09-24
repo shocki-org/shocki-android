@@ -60,7 +60,6 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
 
     private val queryFlow = MutableStateFlow("")
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -413,6 +412,7 @@ class PaymentFragment : Fragment(), AddressAdapter.ItemClick {
 
     private fun updateRecyclerView(addressResponse: AddressResponse) {
         binding.addressList.adapter = AddressAdapter(addressResponse.documents, this)
+        binding.scrollView.smoothScrollTo(0, 0)
     }
 
     private suspend fun searchAddress(name: String): AddressResponse? {
