@@ -44,6 +44,7 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lines="2"
+        style="@style/body_default"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/date_text"
         app:layout_constraintStart_toStartOf="@id/type_text"

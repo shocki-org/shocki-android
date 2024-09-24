@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.woojun.shocki.R
 import com.woojun.shocki.databinding.NotificationItemBinding
 import com.woojun.shocki.dto.AlertResponse
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class NotificationAdapter (private val notificationList: List<AlertResponse>):
     RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
@@ -48,8 +51,14 @@ class NotificationAdapter (private val notificationList: List<AlertResponse>):
                 this.setTextColor(color)
             }
             binding.typeImage.setColorFilter(color)
-            binding.dateText.text = item.date
+            binding.dateText.text = item.date ?: getCurrentDate()
             binding.contentText.text = item.content
+        }
+
+        private fun getCurrentDate(): String {
+            val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
+            val date = Date()
+            return dateFormat.format(date)
         }
     }
 }
