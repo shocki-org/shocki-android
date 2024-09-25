@@ -35,6 +35,7 @@ class StoreAdapter (private val storeList: List<SimpleProductResponse>):
             Glide
                 .with(binding.root.context)
                 .load(item.image)
+                .override(300, 300)
                 .centerCrop()
                 .into(binding.imageView)
         }

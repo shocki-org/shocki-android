@@ -22,6 +22,7 @@ class MiddleViewPagerAdapter(private val pages: List<Pair<MiddleBannerItemBindin
         Glide
             .with(pageBinding.root.context)
             .load(bannerItem.image)
+            .override(300, 300)
             .centerCrop()
             .into(pageBinding.imageView)
 

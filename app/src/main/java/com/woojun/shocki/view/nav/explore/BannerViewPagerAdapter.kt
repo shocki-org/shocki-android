@@ -84,6 +84,7 @@ class BannerViewPagerAdapter(
             Glide
                 .with(binding.root.context)
                 .load(item.image)
+                .override(300, 300)
                 .centerCrop()
                 .into(binding.image)
         }
@@ -96,6 +97,7 @@ class BannerViewPagerAdapter(
             Glide
                 .with(binding.root.context)
                 .load(item.image)
+                .override(300, 300)
                 .centerCrop()
                 .into(binding.imageView)
         }
@@ -108,6 +110,7 @@ class BannerViewPagerAdapter(
             Glide
                 .with(binding.root.context)
                 .load(item.image)
+                .override(300, 300)
                 .centerCrop()
                 .into(binding.imageView)
         }
