@@ -128,7 +128,7 @@ class FundingDetailFragment : Fragment() {
         binding.dateText.text = "${calculateEndDate(productData.fundingEndDate)}일"
 
         binding.nowTokenPrice.text = "${formatAmount(productData.currentAmount)}크레딧"
-        binding.fundingDate.text = "${formatFundingDate(productData.fundingEndDate)}일"
+        binding.fundingDate.text = "${formatFundingDate(productData.fundingEndDate)}"
         binding.nowFundingAmount.text = "${formatAmount(productData.collectedAmount)}크레딧 ${(productData.collectedAmount / productData.targetAmount) * 100}%"
         binding.goalFundingPrice.text = "${formatAmount(productData.targetAmount)}크레딧"
 
