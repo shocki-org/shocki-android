@@ -15,11 +15,14 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowInsetsController
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import android.widget.TextSwitcher
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -324,13 +327,16 @@ class FundingDetailFragment : Fragment() {
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
             lifecycleScope.launch {
                 if (userToken >= price) {
-
+                    val (loadingDialog, setDialogText) = createLoadingDialog(requireContext())
+                    loadingDialog.show()
+                    setDialogText("구매 중")
                     val isSuccess = buyToken(productId, amount.toString())
                     if (isSuccess) {
                         Toast.makeText(requireContext(), "구매 완료", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(requireContext(), "구매 실패", Toast.LENGTH_SHORT).show()
                     }
+                    loadingDialog.dismiss()
                     customDialog.cancel()
                 } else {
                     Toast.makeText(requireContext(), "잔액 부족, 크레딧을 충전해주세요", Toast.LENGTH_SHORT)
@@ -408,6 +414,37 @@ class FundingDetailFragment : Fragment() {
         } catch (e: Exception) {
             false
         }
+    }
+
+    private fun createLoadingDialog(context: Context): Pair<Dialog, (String) -> Unit> {
+        val dialog = Dialog(context)
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setContentView(R.layout.loading_dialog)
+
+        val textSwitcher = dialog.findViewById<TextSwitcher>(R.id.text_switcher)
+        textSwitcher.setFactory {
+            val textView = TextView(context)
+            textView.gravity = Gravity.CENTER
+            textView.setTextColor(Color.WHITE)
+            textView.textSize = 16f
+            textView.typeface = ResourcesCompat.getFont(context, R.font.wanted_semibold)
+            textView
+        }
+
+        val inAnim = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
+        val outAnim = AnimationUtils.loadAnimation(context, android.R.anim.slide_out_right)
+
+        textSwitcher.inAnimation = inAnim
+        textSwitcher.outAnimation = outAnim
+
+        val setText: (String) -> Unit = { newText ->
+            textSwitcher.setText(newText)
+        }
+
+        return Pair(dialog, setText)
     }
 
     private fun bindTabLayout(productData: ProductResponse) {
