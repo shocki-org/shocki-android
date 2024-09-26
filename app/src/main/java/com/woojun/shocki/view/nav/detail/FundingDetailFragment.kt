@@ -166,7 +166,7 @@ class FundingDetailFragment : Fragment() {
                 binding.saleText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
             } else {
                 setOnClickListener {
-                    saleCreditNumberDialog(productData.currentAmount, productData.tokenAddress , productData.tokenAmount)
+                    saleCreditNumberDialog(productData.currentAmount, productData.tokenAddress , productData.userTokenBalance)
                 }
             }
         }
@@ -324,6 +324,7 @@ class FundingDetailFragment : Fragment() {
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
             lifecycleScope.launch {
                 if (userToken >= price) {
+
                     val isSuccess = buyToken(productId, amount.toString())
                     if (isSuccess) {
                         Toast.makeText(requireContext(), "구매 완료", Toast.LENGTH_SHORT).show()
