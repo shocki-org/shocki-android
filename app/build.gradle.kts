@@ -106,6 +106,7 @@ dependencies {
     implementation(libs.glide)
 
     implementation(libs.metamask.android.sdk)
+    implementation(libs.web3j)
 
     implementation(platform(libs.firebase.bom))
 
