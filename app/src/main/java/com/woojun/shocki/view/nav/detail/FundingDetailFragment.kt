@@ -236,9 +236,9 @@ class FundingDetailFragment : Fragment() {
                     return@connectToEthereum
                 }
 
-                ethereum.switchEthereumChain("0x79A") { result ->
-                    when (result) {
-                        is Result.Success.Items -> {
+//                ethereum.switchEthereumChain("0x79A") { result ->
+//                    when (result) {
+//                        is Result.Success.Items -> {
                             val from = ethereum.selectedAddress
                             val to = "0x1ebf3eBD147E4D16C50c856F84A9e0e3aD672d99"
                             val value = BigInteger.ZERO
@@ -274,7 +274,8 @@ class FundingDetailFragment : Fragment() {
                                                 Toast.makeText(requireContext(), "판매 성공", Toast.LENGTH_SHORT).show()
                                                 customDialog.cancel()
                                             } else {
-                                                Toast.makeText(requireContext(), "판매 실패", Toast.LENGTH_SHORT).show()
+//                                                Toast.makeText(requireContext(), "판매 실패", Toast.LENGTH_SHORT).show()
+                                                customDialog.cancel()
                                             }
                                         }
                                     }
@@ -284,12 +285,12 @@ class FundingDetailFragment : Fragment() {
                                     }
                                 }
                             }
-                        }
-                        else -> {
-                            Toast.makeText(requireContext(), "메타 마스크 연결 오류", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
+//                        }
+//                        else -> {
+//                            Toast.makeText(requireContext(), "메타 마스크 연결 오류", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+//                }
 
             }
         }
