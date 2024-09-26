@@ -47,16 +47,13 @@ import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.Util.calculateEndDate
 import com.woojun.shocki.util.Util.formatAmount
 import com.woojun.shocki.util.Util.getProduct
-import com.woojun.shocki.view.main.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import io.metamask.androidsdk.Ethereum
 import io.metamask.androidsdk.EthereumRequest
-import io.metamask.androidsdk.RpcRequest
 import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Address
@@ -151,7 +148,7 @@ class FundingDetailFragment : Fragment() {
                 binding.buyText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
             } else {
                 setOnClickListener {
-                    creditNumberDialog(productData.id, productData.currentAmount)
+                    buyCreditNumberDialog(productData.id, productData.currentAmount)
                 }
             }
         }
@@ -164,64 +161,7 @@ class FundingDetailFragment : Fragment() {
                 binding.saleText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
             } else {
                 setOnClickListener {
-                    // TODO: 여기에용~~
-                    MetamaskModel.connectToEthereum(requireContext()) { _, ethereum ->
-                        if (ethereum?.selectedAddress == null) {
-                            Toast.makeText(requireContext(), "먼저 지갑을 선택해주세요", Toast.LENGTH_SHORT).show()
-                            return@connectToEthereum
-                        }
-
-//                        if (ethereum.chainId != "0x79A") {
-//                            ethereum.switchEthereumChain("0x79A") { result ->
-//                                when (result) {
-//                                    is Result.Success.Items -> {
-//
-//                                    }
-//                                    else -> {
-//                                        Log.d("METAMASK TRANSFER", result.toString())
-//                                    }
-//                                }
-//                            }
-//                        }
-
-                        val from = ethereum.selectedAddress
-                        val to = "0x1ebf3eBD147E4D16C50c856F84A9e0e3aD672d99"
-                        val value = BigInteger.ZERO
-
-                        val amountToSend = Convert.toWei("1", Convert.Unit.ETHER)
-                        Log.d("METAMASK TRANSFER", amountToSend.toString())
-
-                        val transferFunction = org.web3j.abi.datatypes.Function(
-                            "transfer",
-                            listOf(Address(to), Uint256(amountToSend.toBigInteger())),
-                            listOf(TypeReference.create(Bool::class.java))
-                        )
-                        val data = FunctionEncoder.encode(transferFunction)
-
-                        val rpcRequest = EthereumRequest(
-                            method = "eth_sendTransaction",
-                            params = listOf(mutableMapOf(
-                                "from" to from,
-                                "to" to productData.tokenAddress,
-                                "value" to value,
-                                "data" to data,
-                                "gas" to "0x927C0",
-                                "gasPrice" to "0x4a817c800"
-                            ))
-                        )
-
-                        ethereum.sendRequest(rpcRequest) { transferResult ->
-                            when(transferResult) {
-                                is Result.Success.Item -> {
-                                    Log.d("METAMASK TRANSFER", transferResult.toString())
-                                }
-
-                                else -> {
-                                    Log.d("METAMASK TRANSFER", transferResult.toString())
-                                }
-                            }
-                        }
-                    }
+                    saleCreditNumberDialog(productData.currentAmount, productData.tokenAddress)
                 }
             }
         }
@@ -254,8 +194,95 @@ class FundingDetailFragment : Fragment() {
 
     }
 
-    private fun creditNumberDialog(productId: String, price: Int) {
-        var tokenPrice = price
+    private fun saleCreditNumberDialog(price: Int, tokenAddress: String) {
+        var amount = 1
+
+        val customDialog = Dialog(requireContext())
+        customDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        customDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        customDialog.window?.setGravity(Gravity.BOTTOM)
+
+        customDialog.setContentView(R.layout.dialog_token)
+        customDialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+        customDialog.findViewById<TextView>(R.id.title_text).text = "토큰을 몇 개 판매하시겠어요?"
+        customDialog.findViewById<TextView>(R.id.token_text).text = "${amount}개 · "
+        customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price * amount)} 크레딧"
+
+        customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
+            amount = value.toInt()
+            customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
+            customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price * amount)} 크레딧"
+        }
+
+        customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
+            MetamaskModel.connectToEthereum(requireContext()) { _, ethereum ->
+                if (ethereum?.selectedAddress == null) {
+                    Toast.makeText(requireContext(), "먼저 지갑을 선택해주세요", Toast.LENGTH_SHORT).show()
+                    return@connectToEthereum
+                }
+
+                ethereum.switchEthereumChain("0x79A") { result ->
+                    when (result) {
+                        is Result.Success.Items -> {
+                            val from = ethereum.selectedAddress
+                            val to = "0x1ebf3eBD147E4D16C50c856F84A9e0e3aD672d99"
+                            val value = BigInteger.ZERO
+
+                            val amountToSend = Convert.toWei("$amount", Convert.Unit.ETHER)
+                            Log.d("METAMASK TRANSFER", amountToSend.toString())
+
+                            val transferFunction = org.web3j.abi.datatypes.Function(
+                                "transfer",
+                                listOf(Address(to), Uint256(amountToSend.toBigInteger())),
+                                listOf(TypeReference.create(Bool::class.java))
+                            )
+                            val data = FunctionEncoder.encode(transferFunction)
+
+                            val rpcRequest = EthereumRequest(
+                                method = "eth_sendTransaction",
+                                params = listOf(mutableMapOf(
+                                    "from" to from,
+                                    "to" to tokenAddress,
+                                    "value" to value,
+                                    "data" to data,
+                                    "gas" to "0x927C0",
+                                    "gasPrice" to "0x4a817c800"
+                                ))
+                            )
+
+                            ethereum.sendRequest(rpcRequest) { transferResult ->
+                                when(transferResult) {
+                                    is Result.Success.Item -> {
+                                        Log.d("METAMASK TRANSFER", transferResult.toString())
+                                    }
+
+                                    else -> {
+                                        Log.d("METAMASK TRANSFER", transferResult.toString())
+                                    }
+                                }
+                            }
+                        }
+                        else -> {
+                            Log.d("METAMASK TRANSFER", result.toString())
+                        }
+                    }
+                }
+
+            }
+        }
+
+        customDialog.findViewById<MaterialCardView>(R.id.cancel_button).setOnClickListener {
+            customDialog.cancel()
+        }
+
+        customDialog.show()
+    }
+
+    private fun buyCreditNumberDialog(productId: String, price: Int) {
         var amount = 1
 
         val customDialog = Dialog(requireContext())
@@ -275,12 +302,12 @@ class FundingDetailFragment : Fragment() {
         customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
             amount = value.toInt()
             customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
-            customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(tokenPrice)} 크레딧"
+            customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price * value)} 크레딧"
         }
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
             lifecycleScope.launch {
-                if (userToken >= tokenPrice) {
+                if (userToken >= price) {
                     val isSuccess = buyToken(productId, amount.toString())
                     if (isSuccess) {
                         Toast.makeText(requireContext(), "구매 완료", Toast.LENGTH_SHORT).show()
@@ -289,7 +316,8 @@ class FundingDetailFragment : Fragment() {
                     }
                     customDialog.cancel()
                 } else {
-                    Toast.makeText(requireContext(), "잔액 부족, 크레딧을 충전해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "잔액 부족, 크레딧을 충전해주세요", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
