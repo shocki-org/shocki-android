@@ -38,8 +38,6 @@ class ExploreFragment : Fragment() {
     private var _binding: FragmentExploreBinding? = null
     private val binding get() = _binding!!
 
-    private val indicatorList by lazy { listOf(binding.indicator0, binding.indicator1, binding.indicator2, binding.indicator3) }
-
     private val bannerHandler = BannerHandler(this)
     private var currentPosition = 0
 
@@ -91,6 +89,9 @@ class ExploreFragment : Fragment() {
 
     private fun fundingBannerInit(fundingList: List<SimpleProductResponse>) {
         binding.topBannerViewPager.apply {
+
+            val indicatorList = listOf(binding.indicator0, binding.indicator1, binding.indicator2, binding.indicator3)
+
             adapter = BannerViewPagerAdapter(fundingList.slice(0..3), BannerType.Top)
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
