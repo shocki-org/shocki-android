@@ -24,5 +24,6 @@ data class ProductResponse(
     val targetAmount: Int,
     val tokenAddress: String,
     val type: String,
-    val userFavorite: Boolean
+    val userFavorite: Boolean,
+    val tokenAmount: Int
 )

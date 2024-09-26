@@ -161,7 +161,7 @@ class FundingDetailFragment : Fragment() {
                 binding.saleText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
             } else {
                 setOnClickListener {
-                    saleCreditNumberDialog(productData.currentAmount, productData.tokenAddress)
+                    saleCreditNumberDialog(productData.currentAmount, productData.tokenAddress , productData.tokenAmount)
                 }
             }
         }
@@ -194,7 +194,7 @@ class FundingDetailFragment : Fragment() {
 
     }
 
-    private fun saleCreditNumberDialog(price: Int, tokenAddress: String) {
+    private fun saleCreditNumberDialog(price: Int, tokenAddress: String, maxAmount: Int) {
         var amount = 1
 
         val customDialog = Dialog(requireContext())
@@ -212,10 +212,13 @@ class FundingDetailFragment : Fragment() {
         customDialog.findViewById<TextView>(R.id.token_text).text = "${amount}개 · "
         customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price * amount)} 크레딧"
 
-        customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
-            amount = value.toInt()
-            customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
-            customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price * amount)} 크레딧"
+        customDialog.findViewById<Slider>(R.id.slider).apply {
+            valueTo = maxAmount.toFloat()
+            addOnChangeListener { _, value, _ ->
+                amount = value.toInt()
+                customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
+                customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price * amount)} 크레딧"
+            }
         }
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
@@ -257,17 +260,25 @@ class FundingDetailFragment : Fragment() {
                             ethereum.sendRequest(rpcRequest) { transferResult ->
                                 when(transferResult) {
                                     is Result.Success.Item -> {
-                                        Log.d("METAMASK TRANSFER", transferResult.toString())
+                                        lifecycleScope.launch {
+                                            val isSuccess = saleToken(productId!!)
+                                            if (isSuccess) {
+                                                Toast.makeText(requireContext(), "판매 성공", Toast.LENGTH_SHORT).show()
+                                                customDialog.cancel()
+                                            } else {
+                                                Toast.makeText(requireContext(), "판매 실패", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
                                     }
 
                                     else -> {
-                                        Log.d("METAMASK TRANSFER", transferResult.toString())
+                                        Toast.makeText(requireContext(), "판매 실패", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }
                         }
                         else -> {
-                            Log.d("METAMASK TRANSFER", result.toString())
+                            Toast.makeText(requireContext(), "메타 마스크 연결 오류", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -342,6 +353,18 @@ class FundingDetailFragment : Fragment() {
             }
         } catch (e: Exception) {
             0
+        }
+    }
+
+    private suspend fun saleToken(productId: String): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                val retrofitAPI = RetrofitClient.getInstance().create(RetrofitAPI::class.java)
+                val response = retrofitAPI.saleToken("bearer ${TokenManager.accessToken}", productId)
+                response.isSuccessful
+            }
+        } catch (e: Exception) {
+            false
         }
     }
 

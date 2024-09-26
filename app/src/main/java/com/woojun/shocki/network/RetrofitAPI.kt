@@ -153,5 +153,11 @@ interface RetrofitAPI {
         @Header("Authorization") authorization: String,
         @Query("productId") productId: String,
         @Query("amount") amount: String
+    ): Response<Unit>
+
+    @POST("product/sale/token")
+    suspend fun saleToken(
+        @Header("Authorization") authorization: String,
+        @Query("productId") productId: String,
     ): Response<SaleTokenResponse>
 }
