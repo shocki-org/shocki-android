@@ -527,6 +527,8 @@ class FundingDetailFragment : Fragment() {
         lineChart.isScaleYEnabled = false
         lineChart.isHighlightPerDragEnabled = false
         lineChart.legend.isEnabled = false
+        lineChart.xAxis.setDrawLabels(false)
+        lineChart.axisLeft.setDrawLabels(false)
         lineChart.invalidate()
     }
 
