@@ -143,7 +143,7 @@ class FundingDetailFragment : Fragment() {
         }
 
         binding.saleButton.apply {
-            if (!productData.saleIsDisabled) {
+            if (productData.saleIsDisabled) {
                 isEnabled = false
                 strokeColor = resources.getColor(R.color.background_gray_Border)
                 setCardBackgroundColor(resources.getColor(R.color.background_gray_Default))
