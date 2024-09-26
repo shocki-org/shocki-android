@@ -164,6 +164,7 @@ class FundingDetailFragment : Fragment() {
                 binding.saleText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
             } else {
                 setOnClickListener {
+                    // TODO: 여기에용~~
                     MetamaskModel.connectToEthereum(requireContext()) { _, ethereum ->
                         if (ethereum?.selectedAddress == null) {
                             Toast.makeText(requireContext(), "먼저 지갑을 선택해주세요", Toast.LENGTH_SHORT).show()
