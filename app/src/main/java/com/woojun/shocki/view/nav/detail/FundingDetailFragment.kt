@@ -97,6 +97,11 @@ class FundingDetailFragment : Fragment() {
             userToken = getUserCredit()
         }
 
+        binding.tabLayout.apply {
+            addTab(newTab().setCustomView(createTabView("제품소개", true)))
+            addTab(newTab().setCustomView(createTabView("QnA")))
+        }
+
     }
 
     override fun onResume() {
@@ -422,9 +427,6 @@ class FundingDetailFragment : Fragment() {
         }
 
         binding.tabLayout.apply {
-            addTab(newTab().setCustomView(createTabView("제품소개")))
-            addTab(newTab().setCustomView(createTabView("QnA")))
-
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     val tabView = tab.customView?.findViewById<TextView>(R.id.tab_text)
@@ -559,10 +561,13 @@ class FundingDetailFragment : Fragment() {
     }
 
 
-    private fun createTabView(tabName: String): View {
+    private fun createTabView(tabName: String, isChecked: Boolean = false): View {
         val tabView = LayoutInflater.from(requireContext()).inflate(R.layout.custom_tab, null)
         val tabTextView = tabView.findViewById<TextView>(R.id.tab_text)
         tabTextView.text = tabName
+        if (isChecked) {
+            tabTextView.setTextColor(resources.getColor(R.color.Text_Default_Primary))
+        }
         return tabView
     }
 
