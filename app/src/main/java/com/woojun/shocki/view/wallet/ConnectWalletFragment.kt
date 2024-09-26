@@ -15,6 +15,7 @@ import com.woojun.shocki.dto.WalletRequest
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.model.MetamaskModel
+import io.metamask.androidsdk.Ethereum
 import io.metamask.androidsdk.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,13 +44,13 @@ class ConnectWalletFragment : Fragment() {
 
         binding.mainButton.setOnClickListener {
             lifecycleScope.launch {
-                MetamaskModel.connectToEthereum(requireContext()) {
-                    when (it) {
+                MetamaskModel.connectToEthereum(requireContext()) { result, _ ->
+                    when (result) {
                         is Result.Success.Items -> {
                             lifecycleScope.launch {
-                                val isSuccess = setWallet(it.value[0])
+                                val isSuccess = setWallet(result.value[0])
                                 if (isSuccess) {
-                                    walletAddress = it.value[0]
+                                    walletAddress = result.value[0]
                                     (activity as WalletActivity).animationNavigate(R.id.walletFinish)
                                 } else {
                                     Toast.makeText(requireContext(), "메타마스크 지갑 연결을 실패했어요", Toast.LENGTH_SHORT).show()

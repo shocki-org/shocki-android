@@ -8,17 +8,16 @@ import io.metamask.androidsdk.Result
 import io.metamask.androidsdk.SDKOptions
 
 object MetamaskModel {
-
     private val dappMetadata = DappMetadata("Shocki", "https://www.shocki.org")
 
     private val infuraAPIKey = BuildConfig.INFURAAPIKEY
 
     private val readonlyRPCMap = mapOf("0x79a" to BuildConfig.READONLYRPCMAP)
 
-    fun connectToEthereum(context: Context, callback: (Result?) -> Unit) {
+    fun connectToEthereum(context: Context, callback: (Result?, Ethereum?) -> Unit) {
         val ethereum = Ethereum(context, dappMetadata, SDKOptions(infuraAPIKey, readonlyRPCMap))
         ethereum.connect { result ->
-            callback(result)
+            callback(result, ethereum)
         }
     }
 }

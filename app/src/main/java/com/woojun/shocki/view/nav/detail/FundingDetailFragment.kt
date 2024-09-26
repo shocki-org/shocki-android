@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -40,6 +41,7 @@ import com.woojun.shocki.data.Graph
 import com.woojun.shocki.database.TokenManager
 import com.woojun.shocki.databinding.FragmentFundingDetailBinding
 import com.woojun.shocki.dto.ProductResponse
+import com.woojun.shocki.model.MetamaskModel
 import com.woojun.shocki.network.RetrofitAPI
 import com.woojun.shocki.network.RetrofitClient
 import com.woojun.shocki.util.Util.calculateEndDate
@@ -52,6 +54,18 @@ import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import io.metamask.androidsdk.Ethereum
+import io.metamask.androidsdk.EthereumRequest
+import io.metamask.androidsdk.RpcRequest
+import org.web3j.abi.FunctionEncoder
+import org.web3j.abi.TypeReference
+import org.web3j.abi.datatypes.Address
+import org.web3j.abi.datatypes.Bool
+import org.web3j.abi.datatypes.generated.Uint256
+import org.web3j.utils.Convert
+import io.metamask.androidsdk.Result
+import java.math.BigInteger
+
 
 class FundingDetailFragment : Fragment() {
 
@@ -150,8 +164,63 @@ class FundingDetailFragment : Fragment() {
                 binding.saleText.setTextColor(resources.getColor(R.color.Text_Status_Unable))
             } else {
                 setOnClickListener {
-                    // TODO 미정
-                    Toast.makeText(requireContext(), "판매는 웹에서 가능합니다", Toast.LENGTH_SHORT).show()
+                    MetamaskModel.connectToEthereum(requireContext()) { _, ethereum ->
+                        if (ethereum?.selectedAddress == null) {
+                            Toast.makeText(requireContext(), "먼저 지갑을 선택해주세요", Toast.LENGTH_SHORT).show()
+                            return@connectToEthereum
+                        }
+
+//                        if (ethereum.chainId != "0x79A") {
+//                            ethereum.switchEthereumChain("0x79A") { result ->
+//                                when (result) {
+//                                    is Result.Success.Items -> {
+//
+//                                    }
+//                                    else -> {
+//                                        Log.d("METAMASK TRANSFER", result.toString())
+//                                    }
+//                                }
+//                            }
+//                        }
+
+                        val from = ethereum.selectedAddress
+                        val to = "0x1ebf3eBD147E4D16C50c856F84A9e0e3aD672d99"
+                        val value = BigInteger.ZERO
+
+                        val amountToSend = Convert.toWei("1", Convert.Unit.ETHER)
+                        Log.d("METAMASK TRANSFER", amountToSend.toString())
+
+                        val transferFunction = org.web3j.abi.datatypes.Function(
+                            "transfer",
+                            listOf(Address(to), Uint256(amountToSend.toBigInteger())),
+                            listOf(TypeReference.create(Bool::class.java))
+                        )
+                        val data = FunctionEncoder.encode(transferFunction)
+
+                        val rpcRequest = EthereumRequest(
+                            method = "eth_sendTransaction",
+                            params = listOf(mutableMapOf(
+                                "from" to from,
+                                "to" to productData.tokenAddress,
+                                "value" to value,
+                                "data" to data,
+                                "gas" to "0x927C0",
+                                "gasPrice" to "0x4a817c800"
+                            ))
+                        )
+
+                        ethereum.sendRequest(rpcRequest) { transferResult ->
+                            when(transferResult) {
+                                is Result.Success.Item -> {
+                                    Log.d("METAMASK TRANSFER", transferResult.toString())
+                                }
+
+                                else -> {
+                                    Log.d("METAMASK TRANSFER", transferResult.toString())
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
