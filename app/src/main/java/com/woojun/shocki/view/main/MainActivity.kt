@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(true) {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
