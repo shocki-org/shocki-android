@@ -130,7 +130,7 @@ class FundingDetailFragment : Fragment() {
         bindTabLayout(productData)
 
         binding.buyButton.apply {
-            if (!productData.purchaseIsDisabled) {
+            if (productData.purchaseIsDisabled) {
                 isEnabled = false
                 strokeColor = resources.getColor(R.color.background_gray_Border)
                 setCardBackgroundColor(resources.getColor(R.color.background_gray_Default))
