@@ -221,6 +221,8 @@ class FundingDetailFragment : Fragment() {
         customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price * amount)} 크레딧"
 
         customDialog.findViewById<Slider>(R.id.slider).apply {
+            valueFrom = 1f
+            value = 1f
             valueTo = maxAmount.toFloat()
             addOnChangeListener { _, value, _ ->
                 amount = value.toInt()
@@ -318,10 +320,15 @@ class FundingDetailFragment : Fragment() {
         customDialog.findViewById<TextView>(R.id.token_text).text = "1개 · "
         customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price)} 크레딧"
 
-        customDialog.findViewById<Slider>(R.id.slider).addOnChangeListener { _, value, _ ->
-            amount = value.toInt()
-            customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
-            customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price * value)} 크레딧"
+        customDialog.findViewById<Slider>(R.id.slider).apply {
+            valueFrom = 1f
+            value = 1f
+            valueTo = 15f
+            addOnChangeListener { _, value, _ ->
+                amount = value.toInt()
+                customDialog.findViewById<TextView>(R.id.token_text).text = "${value.toInt()}개 · "
+                customDialog.findViewById<TextView>(R.id.credit_text).text = "${formatAmount(price * value)} 크레딧"
+            }
         }
 
         customDialog.findViewById<CardView>(R.id.main_button).setOnClickListener {
