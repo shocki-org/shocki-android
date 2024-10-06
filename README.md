@@ -1,6 +1,6 @@
 # Shocki
 > 쇼키
-![Frame 210612603](https://github.com/user-attachments/assets/0c0b755b-97d2-4d45-83fb-a29814900e53)
+<img width="1930" alt="25" src="https://github.com/user-attachments/assets/6f3db380-490a-4b99-aa32-568a4fb4e9c5">
 
 ## 프로젝트 소개
 
