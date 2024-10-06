@@ -9,7 +9,7 @@
 - 제작 기간 : ~ 일 (날짜)
 - 사용 기술 : Kotlin, XML, MetaMask SDK, FCM, Toss Payments SDK, ViewBinding, Glide, Retrofit2, ViewPager2, Google OAuth, KakaO OAuth
 
-'쇼키'는 ~~ 설명
+'쇼키'는 
 
 ## 사용 예제
 
@@ -27,7 +27,43 @@ https://github.com/user-attachments/assets/cc460d38-2732-4c76-9940-fb1940677768
 
 ## 구현 기능
 
-기능 설명
+- 로그인 & 회원가입
+    - 구글 OAuth
+    - 카카오 OAuth
+    - 전화번호 로그인 (문자 인증)
+- 지갑 연결
+    - MetaMask 지갑 연결
+- 홈
+    - 펀딩 상품 및 판매 상품 배너
+    - FCM 알림
+- 알림
+    - 알림 리스트
+- 검색
+    - 펀딩 상품 및 판매 상품 검색 (Debounce)
+- 마켓
+    - 판매 상품 라스트
+- 배송
+    - 구매 상품 배송 상태 조회
+    - 상품 신고
+- 상품 상세 페이지 & 구매 페이지
+    - 상품 구매하기
+    - 상품 상세 정보
+    - 주소 검색
+- 펀딩 상세 페이지
+    - 찜
+    - 펀딩 가격 변경 그래프
+    - 펀딩 상품 상세 정보
+    - QnA 목록 및 QnA 작성
+    - 토큰 구매
+    - 토큰 판매
+- 마이페이지
+    - 자산 조회 (평가 자산, 보유 자산, 정산 예정 자산)
+    - 크레딧 충전 하기 (토스 페이먼츠)
+    - 찜 상품 리스트
+    - 보유 토큰 상품 리스트
+    - 정산 예정 상품 리스트
+    - 계정 로그아웃
+    - 계정 탈퇴
 
 <br>
 
@@ -37,4 +73,4 @@ https://github.com/user-attachments/assets/cc460d38-2732-4c76-9940-fb1940677768
 
 ## 느낀 점
 
-느낀점
+Shocki 프로젝트에서 Kotlin을 사용한 Android 앱 개발 총괄 및 구글 플레이 스토어 출시를 담당하였으며 개발하였습니다. 해당 앱을 통해 처음으로 MetaMask SDK, TossPayments SDK 등 다양한 SDK 사용 및 토스트틱한 UI 구현 경험을 얻을 수 있었습니다. 또한 'STA+C 2024'에서 우수상을 수상하는 결과를 얻을 수 있었습니다.
