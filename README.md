@@ -9,7 +9,9 @@
 - 제작 기간 : ~ 일 (날짜)
 - 사용 기술 : Kotlin, XML, MetaMask SDK, FCM, Toss Payments SDK, ViewBinding, Glide, Retrofit2, ViewPager2, Google OAuth, KakaO OAuth
 
-'쇼키'는 
+'쇼키'는 창의적인 아이디어를 가진 창작자들이 자신의 아이디어를 실현할 수 있도록 지원하는 블록체인 기반의 크라우드 펀딩 플랫폼으로
+NFT와 F-NFT를 이용해 기존 플랫폼들이 가지고 있던 수수료, 리워드 등의 문제를 효과적으로 해결하며, 새롭고 신선한 투자의 방식을 제시하는
+서비스입니다
 
 ## 사용 예제
 
