@@ -6,7 +6,7 @@
 
 - 플랫폼 : 안드로이드/모바일
 - 제작 인원 : 5 인 (팀 구성 ― 안드로이드 1명, 백엔드 1명, 디자이너 1명, 블록체인 1명, 기획자 1명)
-- 제작 기간 : ~ 일 (날짜)
+- 제작 기간 : 82 일 (2024.07.06 ~ 2024.09.26)
 - 사용 기술 : Kotlin, XML, MetaMask SDK, FCM, Toss Payments SDK, ViewBinding, Glide, Retrofit2, ViewPager2, Google OAuth, KakaO OAuth
 
 '쇼키'는 창의적인 아이디어를 가진 창작자들이 자신의 아이디어를 실현할 수 있도록 지원하는 블록체인 기반의 크라우드 펀딩 플랫폼으로
