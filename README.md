@@ -75,4 +75,4 @@ https://github.com/user-attachments/assets/cc460d38-2732-4c76-9940-fb1940677768
 
 ## 느낀 점
 
-Shocki 프로젝트에서 Kotlin을 사용한 Android 앱 개발 총괄 및 구글 플레이 스토어 출시를 담당하였으며 개발하였습니다. 해당 앱을 통해 처음으로 MetaMask SDK, TossPayments SDK 등 다양한 SDK 사용 및 토스트틱한 UI 구현 경험을 얻을 수 있었습니다. 또한 'STA+C 2024'에서 우수상을 수상하는 결과를 얻을 수 있었습니다.
+Shocki 프로젝트에서 Kotlin을 사용한 Android 앱 개발 총괄 및 구글 플레이 스토어 출시를 담당하였으며 개발하였습니다. 해당 앱을 통해 처음으로 MetaMask SDK, TossPayments SDK 등 다양한 SDK 사용 및 토스트틱한 UI 구현 경험을 얻을 수 있었습니다. 또한 'STA+C 2024'에서 장려상을 수상하는 결과를 얻을 수 있었습니다.
