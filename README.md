@@ -9,9 +9,8 @@
 - 제작 기간 : 82 일 (2024.07.06 ~ 2024.09.26)
 - 사용 기술 : Kotlin, XML, MetaMask SDK, FCM, Toss Payments SDK, ViewBinding, Glide, Retrofit2, ViewPager2, Google OAuth, KakaO OAuth
 
-'쇼키'는 창의적인 아이디어를 가진 창작자들이 자신의 아이디어를 실현할 수 있도록 지원하는 블록체인 기반의 크라우드 펀딩 플랫폼으로
-NFT와 F-NFT를 이용해 기존 플랫폼들이 가지고 있던 수수료, 리워드 등의 문제를 효과적으로 해결하며, 새롭고 신선한 투자의 방식을 제시하는
-서비스입니다
+'스마틴 앱챌린지 생활부문 장려' 수상작
+블록체인 기반의 크라우드 펀딩 플랫폼 '쇼키' 프로젝트에서 Kotlin과 XML을 사용한 Android 앱 개발 총괄 및 PM을 담당하였습니다. 해당 프로젝트를 통해 Metamask SDK, Toss Payment SDK 등 다양한 결제 관련 SDK를 사용하는 경험 및 PM으로써 일정 관리, 프로젝트 매니징 경험을 얻을 수 있었습니다.
 
 ## 사용 예제
 
